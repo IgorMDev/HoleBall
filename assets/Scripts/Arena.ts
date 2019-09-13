@@ -4,12 +4,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Arena extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
-
-    @property
-    text: string = 'hello';
-
     onLoad () {
         const pm = cc.director.getPhysicsManager();
         pm.enabled = true;
