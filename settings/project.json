@@ -2,11 +2,23 @@
   "assets-sort-type": "name",
   "collision-matrix": [
     [
+      true,
+      true,
+      true
+    ],
+    [
+      true,
+      false,
+      true
+    ],
+    [
+      true,
+      true,
       true
     ]
   ],
-  "design-resolution-height": 1920,
-  "design-resolution-width": 1080,
+  "design-resolution-height": 2560,
+  "design-resolution-width": 1440,
   "excluded-modules": [
     "TiledMap",
     "Spine Skeleton",
@@ -25,7 +37,9 @@
   "fit-height": false,
   "fit-width": true,
   "group-list": [
-    "default"
+    "default",
+    "platform",
+    "ball"
   ],
   "last-module-event-record-time": 0,
   "simulator-orientation": false,
@@ -34,5 +48,6 @@
     "width": 720
   },
   "use-customize-simulator": true,
-  "use-project-simulator-setting": true
+  "use-project-simulator-setting": true,
+  "start-scene": "current"
 }

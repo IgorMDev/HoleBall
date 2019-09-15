@@ -3,16 +3,10 @@
  */
 export default class MathUtils{
     /**
-     * clamps the value between min and max
+     * clamps the value between min (default 0) and max (default 1)
      */
-    static clamp(value: number, min: number, max: number):number{
+    static clamp(value: number, min: number = 0, max: number = 1):number{
         return (value < min) ? min : (value > max) ? max : value;
-    }
-    /**
-     * clamps the value between 0 and 1
-     */
-    static clamp01(value: number):number{
-        return (value < 0) ? 0 : (value > 1) ? 1 : value;
     }
     /**
      * linearly interpolates from - to by a ratio
