@@ -41,13 +41,13 @@
     "platform",
     "ball"
   ],
-  "last-module-event-record-time": 0,
+  "last-module-event-record-time": 1568651048516,
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 1280,
     "width": 720
   },
+  "start-scene": "current",
   "use-customize-simulator": true,
-  "use-project-simulator-setting": true,
-  "start-scene": "current"
+  "use-project-simulator-setting": true
 }

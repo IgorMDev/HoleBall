@@ -22,6 +22,7 @@ export default class NavigationBtn extends cc.Component {
         if(this.isFocused && !NavigationBtn.focusedBtn){
             NavigationBtn.focusedBtn = this;
             cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, NavigationBtn.onKeyDown);
+            cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, NavigationBtn.onKeyUp);
             this.isFocused = false;
         }
         
@@ -45,6 +46,12 @@ export default class NavigationBtn extends cc.Component {
             nb.onFocused();
             this.onUnfocused();
         }
+    }
+    clickDown(){
+        this.btn.node.dispatchEvent(new cc.Event.EventCustom('touchstart',true));
+    }
+    clickUp(){
+        this.btn.node.dispatchEvent(new cc.Event.EventCustom('touchend',true));
     }
     onFocused(){
         if(!this.isFocused){
@@ -82,13 +89,8 @@ export default class NavigationBtn extends cc.Component {
     }
     static onKeyDown(event: cc.Event.EventKeyboard){
         switch(event.keyCode){
-            case cc.macro.KEY.back:
-            case cc.macro.KEY.backspace:
-            case cc.macro.KEY.escape:
-               
-            break;
             case cc.macro.KEY.enter:
-                
+                NavigationBtn.focusedBtn.clickDown();
             break;
             case cc.macro.KEY.up:
                 NavigationBtn.focusedBtn!.moveUp();
@@ -101,6 +103,13 @@ export default class NavigationBtn extends cc.Component {
             break;
             case cc.macro.KEY.left:
                 NavigationBtn.focusedBtn!.moveLeft();
+            break;
+        }
+    }
+    static onKeyUp(event: cc.Event.EventKeyboard){
+        switch(event.keyCode){
+            case cc.macro.KEY.enter:
+                NavigationBtn.focusedBtn.clickUp();
             break;
         }
     }
