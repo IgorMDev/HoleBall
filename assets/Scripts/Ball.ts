@@ -17,7 +17,11 @@ export default class Ball extends cc.Component {
         this.getComponent(cc.Animation).play("ballSpawn");
     }
     onSpawned(){
-        console.log("ball Spawned");
+        console.log("--------------ball Spawned");
         this.rb.awake = true;
+    }
+    onDestroy(){
+        console.log("-------------Ball destroyed");
+        
     }
 }

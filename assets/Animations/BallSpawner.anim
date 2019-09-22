@@ -3,7 +3,7 @@
   "_name": "BallSpawner",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 1.3333333333333333,
+  "_duration": 1.6666666666666667,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -30,7 +30,7 @@
               }
             },
             {
-              "frame": 1.1666666666666667,
+              "frame": 1.5,
               "value": {
                 "__type__": "cc.Vec2",
                 "x": 1,
@@ -38,7 +38,7 @@
               }
             },
             {
-              "frame": 1.3333333333333333,
+              "frame": 1.6666666666666667,
               "value": {
                 "__type__": "cc.Vec2",
                 "x": 0,

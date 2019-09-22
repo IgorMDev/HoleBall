@@ -4,6 +4,7 @@
     [
       true,
       true,
+      true,
       true
     ],
     [
@@ -15,6 +16,12 @@
       true,
       true,
       true
+    ],
+    [
+      true,
+      false,
+      false,
+      false
     ]
   ],
   "design-resolution-height": 2560,
@@ -39,7 +46,8 @@
   "group-list": [
     "default",
     "platform",
-    "ball"
+    "ball",
+    "hole"
   ],
   "last-module-event-record-time": 1568651048516,
   "simulator-orientation": false,
@@ -47,7 +55,6 @@
     "height": 1280,
     "width": 720
   },
-  "start-scene": "current",
   "use-customize-simulator": true,
   "use-project-simulator-setting": true
 }
