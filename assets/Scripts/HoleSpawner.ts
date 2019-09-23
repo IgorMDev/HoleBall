@@ -59,10 +59,10 @@ export default class HoleSpawner extends cc.Component {
             
             for(var j = 0; j < this.k; j++){
                 let h = this.generateAround(ah);
-                if(this.checkExtent(h) && !this.checkNear(h)){
+                /* if(this.checkExtent(h) && !this.checkNear(h)){
                     this.spawnSample(h);
                     break;
-                }
+                } */
             }
             if(j === this.k){
                 this.actives[i] = this.actives[--this.n];
@@ -99,12 +99,12 @@ export default class HoleSpawner extends cc.Component {
         return this.rect.containsRect(hrect);
     }
     generateAround(h: Hole){
-        let a = Math.random() * 2 * Math.PI,
+        /* let a = Math.random() * 2 * Math.PI,
             r = h.R*2 + h.margin + Math.random()*h.r;
         let p = cc.v2(h.node.position.x + r*Math.cos(a),h.node.position.y + r*Math.sin(a));
         console.log("*******gen at point "+p);
         
-        return this.getHoleSample(p);
+        return this.getHoleSample(p); */
     }
     getHoleSample(p?: cc.Vec2){
         if(!this.holeSample){

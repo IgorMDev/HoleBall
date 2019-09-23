@@ -679,7 +679,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "HoleSpawner",
+    "_name": "HoleField",
     "_objFlags": 0,
     "_parent": {
       "__id__": 13

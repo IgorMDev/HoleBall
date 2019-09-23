@@ -7,12 +7,11 @@ export default class Hole extends cc.Component {
     spawnProbability = 1;
     @property
     maxPercentage = 1;
-    margin = 64;
-    r = 0;
-    R = 0;
+    @property(cc.Vec2)
+    sizes: cc.Vec2[] = [];
+    
     onLoad () {
-        this.r = this.node.width/2;
-        this.R = this.r + this.margin;
+        
     }
     start () {
 
