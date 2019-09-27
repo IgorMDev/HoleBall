@@ -13,7 +13,8 @@ export default class HoleField extends cc.Component {
     cellSize = 100;
     @property({min: 0, max: 1})
     maxFillPercentage = 0.5;
-
+    @property(cc.Node)
+    rectNode: cc.Node = null;
     holesPool: cc.Node[] = [];
     activeHoles: cc.Node[] = [];
     holeSampleIndex = null;
@@ -32,10 +33,7 @@ export default class HoleField extends cc.Component {
     startTime = 0;
     done = false;
     onLoad() {
-        this.rect = this.node.getBoundingBox();
-        
-        this.node.on('touchstart', this.touchStart, this);
-        
+        this.rect = this.rectNode.getBoundingBox();
         this.rows = Math.ceil(this.rect.height / this.cellSize);
         this.columns = Math.ceil(this.rect.width / this.cellSize);
         console.log("---------grid initialized rows "+this.rows+" cols "+this.columns);
@@ -55,6 +53,9 @@ export default class HoleField extends cc.Component {
         //this.reset(cc.v2(this.rect.center.x, this.rect.center.y));
         
     }
+    resetR(){
+        this.reset(cc.v2(this.rect.center.x, this.rect.center.y));
+    }
     reset(p: cc.Vec2){
         this.numOfHoles = 0;
         for(let [,cn] of this.cellsMap){
@@ -66,6 +67,8 @@ export default class HoleField extends cc.Component {
             this.holesPool.push(...this.activeHoles);
             this.activeHoles = [];
         }
+        
+        console.log("rect "+this.rect);
         this.startTime = Date.now();
         this.done = false;
         console.log("---------reset");
@@ -95,7 +98,7 @@ export default class HoleField extends cc.Component {
         }
     }
     spawnSample(h: cc.Node){
-        h.parent = this.node;
+        h.parent = this.rectNode;
         let cell = this.freeCells.splice(this.freeCellIndex, 1)[0];
         this.cellsMap.set(cell[0]+''+cell[1], h);
         this.holesPool.splice(this.holeSampleIndex, 1);
@@ -115,7 +118,7 @@ export default class HoleField extends cc.Component {
                     let bb1 = {position: h.position, radius: Math.max(h.width, h.height)/2},
                     bb2 = {position: p.position, radius: Math.max(p.width, p.height)/2};
                     if(cc.Intersection.circleCircle(bb1, bb2)) {
-                        console.log("*******intersects");
+                        //console.log("*******intersects");
                         
                         return true;
                     }
@@ -140,7 +143,7 @@ export default class HoleField extends cc.Component {
             let offsetp = cc.Vec2.RIGHT.mulSelf(r*(this.cellSize/2)).rotateSelf(r*2*Math.PI);
             hole.position = cpos.addSelf(offsetp);
 
-            console.log("------returned hole sample");
+            //console.log("------returned hole sample");
             return hole;
         }
         return null;
@@ -155,7 +158,5 @@ export default class HoleField extends cc.Component {
             console.log("-------pool filled with "+fillNum+" holes of variant "+variant);
         }
     }
-    touchStart(event: cc.Event.EventTouch){
-        this.reset(event.getLocation());
-    }
+    
 }
