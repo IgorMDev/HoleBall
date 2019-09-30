@@ -56,22 +56,28 @@ export default class HoleField extends cc.Component {
     resetR(){
         this.reset(cc.v2(this.rect.center.x, this.rect.center.y));
     }
+    clear(){
+        if(this.cellsMap.size){
+            for(let [,cn] of this.cellsMap){
+                cn.parent = null;
+            }
+            this.cellsMap.clear();
+        }
+        
+    }
     reset(p: cc.Vec2){
         this.numOfHoles = 0;
-        for(let [,cn] of this.cellsMap){
-            cn.parent = null;
-        }
-        this.cellsMap.clear();
+        this.clear();
         this.freeCells = [...this.gridPoints.keys()];
         if(this.activeHoles.length){
             this.holesPool.push(...this.activeHoles);
             this.activeHoles = [];
         }
         
-        console.log("rect "+this.rect);
+        //console.log("rect "+this.rect);
         this.startTime = Date.now();
         this.done = false;
-        console.log("---------reset");
+        //console.log("---------reset");
         
         //this.spawnSample();
     }
@@ -98,13 +104,13 @@ export default class HoleField extends cc.Component {
         }
     }
     spawnSample(h: cc.Node){
-        h.parent = this.rectNode;
+        h.parent = this.node;
         let cell = this.freeCells.splice(this.freeCellIndex, 1)[0];
         this.cellsMap.set(cell[0]+''+cell[1], h);
         this.holesPool.splice(this.holeSampleIndex, 1);
         this.activeHoles.push(h);
         this.numOfHoles++;
-        console.log("----------sample spawned at cell "+cell+" map size "+this.cellsMap.size);
+        //console.log("----------sample spawned at cell "+cell+" map size "+this.cellsMap.size);
     }
     intersectNear(h: cc.Node){
         let l = 2,
@@ -137,8 +143,7 @@ export default class HoleField extends cc.Component {
             let hole = this.holesPool[this.holeSampleIndex];
             this.freeCellIndex = Math.floor(Math.random()*this.freeCells.length);
             let r = Math.random();
-            let size = hole.getComponent(Hole).sizes[Math.floor(r*hole.getComponent(Hole).sizes.length)];
-            hole.width = size.x; hole.height = size.y;
+            hole.getComponent(Hole).setRandSize();
             let cpos = cc.v2(this.gridPoints.get(this.freeCells[this.freeCellIndex]));
             let offsetp = cc.Vec2.RIGHT.mulSelf(r*(this.cellSize/2)).rotateSelf(r*2*Math.PI);
             hole.position = cpos.addSelf(offsetp);
@@ -155,7 +160,7 @@ export default class HoleField extends cc.Component {
             for(let i = 0; i < fillNum; i++){
                 this.holesPool.push(cc.instantiate(h));
             }
-            console.log("-------pool filled with "+fillNum+" holes of variant "+variant);
+            //console.log("-------pool filled with "+fillNum+" holes of variant "+variant);
         }
     }
     

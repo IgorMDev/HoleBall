@@ -16,4 +16,5 @@ export default class Level extends cc.Component {
 
     move(dy: number){}
     reset(){}
+    clear(){}
 }

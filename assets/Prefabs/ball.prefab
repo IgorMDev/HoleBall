@@ -133,7 +133,7 @@
     },
     "_angularVelocity": 0,
     "_fixedRotation": false,
-    "enabledContactListener": false,
+    "enabledContactListener": true,
     "bullet": false,
     "awakeOnLoad": false,
     "_id": ""
@@ -149,7 +149,7 @@
     "tag": 0,
     "_density": 1,
     "_sensor": false,
-    "_friction": 0.2,
+    "_friction": 0.3,
     "_restitution": 0,
     "body": null,
     "_offset": {
@@ -161,25 +161,6 @@
     "_id": ""
   },
   {
-    "__type__": "cc.Animation",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_defaultClip": {
-      "__uuid__": "c375b381-d1f9-4de7-976e-4da66ec4c587"
-    },
-    "_clips": [
-      {
-        "__uuid__": "c375b381-d1f9-4de7-976e-4da66ec4c587"
-      }
-    ],
-    "playOnLoad": true,
-    "_id": ""
-  },
-  {
     "__type__": "877a5z2v4hEG708+x7JqKrj",
     "_name": "",
     "_objFlags": 0,
@@ -187,6 +168,23 @@
       "__id__": 1
     },
     "_enabled": true,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CircleCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 0,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_radius": 24,
     "_id": ""
   },
   {

@@ -6,7 +6,6 @@ const {ccclass, property} = cc._decorator;
 export default class BallSpawner extends cc.Component {
     @property(cc.Prefab)
     ballPrefab: cc.Prefab = null;
-
     ball: Ball = null;
     spawned: (b: Ball) => void;
     onLoad () {

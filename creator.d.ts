@@ -2951,12 +2951,12 @@ declare namespace cc {
 		@param action action 
 		*/
 		reverseTime(action?: Action|Tween): Tween;		
-		/**
-		
-		@param target the target to animate 
-		*/
-		tween(target?: any): Tween;	
 	}	
+	/**
+	
+	@param target the target to animate 
+	*/
+	export function tween(target?: any): Tween;
 	/** !#en cc.WebView is a component for display web pages in the game. Because different platforms have different authorization, API and control methods for WebView component. And have not yet formed a unified standard, only Web, iOS, and Android platforms are currently supported.
 	!#zh WebView 组件，用于在游戏中显示网页。由于不同平台对于 WebView 组件的授权、API、控制方式都不同，还没有形成统一的标准，所以目前只支持 Web、iOS 和 Android 平台。 */
 	export class WebView extends Component {		
@@ -13609,7 +13609,7 @@ declare namespace cc {
 		!#zh
 		获取碰撞体的世界坐标系下的包围盒 
 		*/
-		getAABB(): Rect;	
+		getAABB(): void;	
 	}	
 	/** undefined */
 	export class PhysicsPolygonCollider extends PhysicsCollider implements Collider.Polygon {		

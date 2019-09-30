@@ -25,10 +25,13 @@
       },
       {
         "__id__": 3
+      },
+      {
+        "__id__": 4
       }
     ],
     "_prefab": {
-      "__id__": 4
+      "__id__": 5
     },
     "_opacity": 255,
     "_color": {
@@ -114,28 +117,30 @@
     "_enabled": true,
     "spawnProbability": 1,
     "maxPercentage": 1,
-    "sizes": [
-      {
-        "__type__": "cc.Vec2",
-        "x": 134,
-        "y": 134
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 160,
-        "y": 160
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 176,
-        "y": 176
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 192,
-        "y": 192
-      }
+    "border": 16,
+    "radiuses": [
+      72,
+      80,
+      88,
+      96
     ],
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CircleCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 0,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_radius": 80,
     "_id": ""
   },
   {

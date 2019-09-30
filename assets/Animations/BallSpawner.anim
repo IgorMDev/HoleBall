@@ -3,7 +3,7 @@
   "_name": "BallSpawner",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 1.6666666666666667,
+  "_duration": 1.8333333333333333,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -19,7 +19,7 @@
                 "x": 0,
                 "y": 0
               },
-              "curve": "cubicIn"
+              "curve": "quadOut"
             },
             {
               "frame": 0.8333333333333334,
@@ -35,10 +35,11 @@
                 "__type__": "cc.Vec2",
                 "x": 1,
                 "y": 1
-              }
+              },
+              "curve": "quadIn"
             },
             {
-              "frame": 1.6666666666666667,
+              "frame": 1.8333333333333333,
               "value": {
                 "__type__": "cc.Vec2",
                 "x": 0,

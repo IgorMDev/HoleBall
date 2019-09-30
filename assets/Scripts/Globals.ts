@@ -13,6 +13,3 @@ export default class Global extends cc.Component {
 
     // update (dt) {}
 }
-declare global{
-    
-} 
