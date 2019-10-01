@@ -4,7 +4,9 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Ball extends cc.Component {
-
+    @property(cc.Prefab)
+    destroyParticle: cc.Prefab = null;
+    
     rb:cc.RigidBody = null;
     spawnTween: cc.Tween = null;
     destroyTween: cc.Tween = null;
@@ -41,19 +43,26 @@ export default class Ball extends cc.Component {
         console.log("-------------Ball destroyed");
         
     }
-    onCollisionEnter(other: cc.Collider | cc.CircleCollider, self: cc.Collider){
-        
-        if(this.isReady && other.node.group === "hole"){
-            this.rb.active = false;
-            //this.node.getComponent(cc.PhysicsCircleCollider).enabled = false;
-            self.node.parent = other.node;
-            
-            cc.tween(self.node).to(0.5,{
-                position: cc.v2(0, 0)
-            },null).call(()=>{this.onHoleCatch()}).start();
-            
-            console.log("hole collision enter with "+other.name);
+    onCollisionEnter(other: cc.Collider, self: cc.Collider){
+        if(this.isReady){
+            if(other.node.group === "hole"){
+                this.rb.active = false;
+                //this.node.getComponent(cc.PhysicsCircleCollider).enabled = false;
+                self.node.parent = other.node;
+                
+                cc.tween(self.node).to(0.5,{
+                    position: cc.v2(0, 0)
+                },null).call(()=>{this.onHoleCatch()}).start();
+                
+                console.log("hole collision enter with "+other.name);
+            }else if(other.node.name === "Ground"){
+                let prt = cc.instantiate(this.destroyParticle);
+                this.node.destroy();
+                prt.position = this.node.position;
+                prt.setParent(this.node.parent);
+            }
         }
+
     }
     onBeginContact(contact:cc.PhysicsContact, self: cc.PhysicsCollider, other: cc.PhysicsCollider){
         if(other.node.group === "platform"){

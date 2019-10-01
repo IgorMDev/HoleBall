@@ -168,6 +168,9 @@
       "__id__": 1
     },
     "_enabled": true,
+    "destroyParticle": {
+      "__uuid__": "dba7557b-30ba-4b10-9549-71313cdc1e62"
+    },
     "_id": ""
   },
   {
@@ -184,7 +187,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 24,
+    "_radius": 16,
     "_id": ""
   },
   {

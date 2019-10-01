@@ -2,6 +2,8 @@ import BallSpawner from "./BallSpawner";
 import Ball from "./Ball";
 import PlatformBlock from "./Block";
 import Level from "./Level";
+import Game from "./Game";
+import InGameUI from "./UI/InGameUI";
 
 const {ccclass, property, executionOrder, disallowMultiple} = cc._decorator;
 
@@ -28,18 +30,20 @@ export default class Arena extends cc.Component {
     objects: cc.Node = null;
     @property(cc.Node)
     touchArea: cc.Node = null;
-    @property(cc.Label)
-    scoreLabel: cc.Label = null;
+    @property(InGameUI)
+    inGameUI: InGameUI = null;
+
+    score = 0;
     ball: Ball = null;
     rotationAxis = 0;
     moveAxis = 0;
     touchVec: cc.Vec2 = cc.Vec2.ZERO;
     isReady = false;
+    //saveData = Game.instance.saveData;
     onLoad () {
         const pm = cc.director.getPhysicsManager();
         pm.enabled = true;
         pm.gravity = cc.v2(0, -10);
-        
         const colman = cc.director.getCollisionManager();
         colman.enabled = true;
         //colman.enabledDebugDraw = true;
@@ -63,8 +67,10 @@ export default class Arena extends cc.Component {
 
             }
             if(this.moveAxis != 0){
-                //this.platform.moveBy(this.moveAxis*dt);
-                this.level.move(-this.moveAxis*dt);
+                this.level.move(this.moveAxis*dt);
+                if(this.score != this.level.scoreMeters){
+                    this.inGameUI.setScore(this.score = this.level.scoreMeters);
+                }
                 
             }
             if(this.touchVec.mag() > 0){
@@ -80,11 +86,14 @@ export default class Arena extends cc.Component {
         this.level.node.active = true;
         this.objects.active = true;
         this.isReady = false;
+        this.score = 0;
+        this.inGameUI.node.active = false;
         this.ballSpawner.spawn();
     }
     readyGame(){
         if(!this.isReady){
             this.level.reset();
+            this.inGameUI.node.active = true;
             this.isReady = true;
         }
     }
@@ -92,6 +101,9 @@ export default class Arena extends cc.Component {
         this.level.node.active = false;
         this.objects.active = false;
         this.startGame();
+    }
+    endGame(){
+
     }
     ballSpawned = (b: Ball)=>{
         this.ball = b;

@@ -119,10 +119,10 @@
     "maxPercentage": 1,
     "border": 16,
     "radiuses": [
+      64,
       72,
       80,
-      88,
-      96
+      88
     ],
     "_id": ""
   },

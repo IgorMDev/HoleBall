@@ -32,7 +32,7 @@ export default class EndlessLevel extends Level {
         
         for(let field of this.holeFields){
             field.y = field.y + dy*this.speed;
-            if(dy < 0 && field.y < this.bottomLimit){
+            if(dy > 0 && field.y < this.bottomLimit){
                 field.y = field.y + this.node.height*this.holeFields.length;
                 field.getComponent(HoleField).resetR();
                 console.log("treshhold down");
