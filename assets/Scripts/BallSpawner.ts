@@ -1,4 +1,5 @@
 import Ball from "./Ball";
+import Level from "./Level";
 
 const {ccclass, property} = cc._decorator;
 
@@ -6,28 +7,18 @@ const {ccclass, property} = cc._decorator;
 export default class BallSpawner extends cc.Component {
     @property(cc.Prefab)
     ballPrefab: cc.Prefab = null;
-    ball: Ball = null;
-    spawned: (b: Ball) => void;
-    onLoad () {
-
-    }
-    start () {
-
-    }
-
-    // update (dt) {}
-    spawn(){
-        if(this.ball){
-            this.ball.node.destroy();
-        }
-        this.getComponent(cc.Animation).play();
-    }
-    spawnBall(){
-        this.ball = cc.instantiate(this.ballPrefab).getComponent(Ball);
-        this.ball.node.parent = this.node.parent;
-        this.ball.node.setPosition(this.node.position);
+    ballSpawned: (b: cc.Node) => void;
+    onLoad(){
         
-        if(this.spawned)
-            this.spawned(this.ball);
+    }
+    spawn(callback: (b: cc.Node) => void){
+        this.getComponent(cc.Animation).play();
+        this.ballSpawned = callback;
+    }
+    onBallSpawn(){
+        var ball = cc.instantiate(this.ballPrefab);
+        ball.parent = this.node.parent;
+        ball.setPosition(this.node.position);
+        this.ballSpawned(ball);
     }
 }

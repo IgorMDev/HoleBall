@@ -32,6 +32,7 @@ export default class HoleField extends cc.Component {
     rect: cc.Rect = null;
     startTime = 0;
     done = false;
+    clearDone = true;
     onLoad() {
         this.rect = this.rectNode.getBoundingBox();
         this.rows = Math.ceil(this.rect.height / this.cellSize);
@@ -50,22 +51,29 @@ export default class HoleField extends cc.Component {
         this.fillHolesPool(this.numOfVariants);
     }
     start() {
-        //this.reset(cc.v2(this.rect.center.x, this.rect.center.y));
         
-    }
-    resetR(){
-        this.reset(cc.v2(this.rect.center.x, this.rect.center.y));
     }
     clear(){
         if(this.cellsMap.size){
             for(let [,cn] of this.cellsMap){
-                cn.parent = null;
+                cn.removeFromParent(false);
             }
             this.cellsMap.clear();
+            this.clearDone = true;
         }
-        
     }
-    reset(p: cc.Vec2){
+    setClear(){
+        if(cc.Camera.main.containsNode(this.node)){
+            this.clearDone = false;
+            this.startTime = Date.now();
+            console.log("_____field cleared by anim " +this.node.name);
+            
+        }else{
+            this.clear();
+            console.log("_____field cleared by func "+this.node.name);
+        }
+    }
+    reset(){
         this.numOfHoles = 0;
         this.clear();
         this.freeCells = [...this.gridPoints.keys()];
@@ -73,19 +81,37 @@ export default class HoleField extends cc.Component {
             this.holesPool.push(...this.activeHoles);
             this.activeHoles = [];
         }
-        
         //console.log("rect "+this.rect);
         this.startTime = Date.now();
         this.done = false;
         //console.log("---------reset");
-        
         //this.spawnSample();
     }
     update(dt){
         this.holeEmitter();
+        this.cleaner();
+    }
+    cleaner(){
+        if(!this.clearDone && this.done){
+           if(this.cellsMap.size){
+                let r = Math.floor(Math.random()*this.cellsMap.size);
+                let key = [...this.cellsMap.keys()][r];
+                let cell = this.cellsMap.get(key);
+                if(cell){
+                    cell.removeFromParent(false);
+                    this.cellsMap.delete(key);
+                }
+                let estTime = Date.now() - this.startTime;
+                if(this.clearDone = estTime > 2000){
+                    this.clear();
+                }
+            }else{
+                this.clearDone = true;
+            }
+        }
     }
     holeEmitter(){
-        if(!this.done){
+        if(!this.done && this.clearDone){
             if(this.numOfHoles <= this.holesLimit && this.freeCells.length > 0){
                 let hole = this.getHoleSample();
                 if(hole){
@@ -93,14 +119,11 @@ export default class HoleField extends cc.Component {
                         this.spawnSample(hole);
                     }
                 }
+                let estTime = Date.now() - this.startTime;
+                this.done = estTime > 2000;
+            }else{
+                this.done = true;
             }
-            let estTime = Date.now() - this.startTime;
-            this.done = estTime > 2000;
-            /* for(let entry of this.cellsMap.entries()){
-                console.log("entry "+entry);
-                
-            } */
-            
         }
     }
     spawnSample(h: cc.Node){
@@ -124,8 +147,6 @@ export default class HoleField extends cc.Component {
                     let bb1 = {position: h.position, radius: Math.max(h.width, h.height)/2},
                     bb2 = {position: p.position, radius: Math.max(p.width, p.height)/2};
                     if(cc.Intersection.circleCircle(bb1, bb2)) {
-                        //console.log("*******intersects");
-                        
                         return true;
                     }
                 }

@@ -16,9 +16,14 @@ export default class MathUtils{
     }
     static moveTowards(from:number, to:number, maxDelta:number): number{
         let d = to - from;
-        if(maxDelta > d){
-            maxDelta = d;
+        let ad = Math.abs(d);
+        if(ad <= Number.EPSILON){
+            return to;
+        }
+        if(maxDelta > ad){
+            maxDelta = ad;
         }
         return from + maxDelta*Math.sign(d);
     }
+
 }

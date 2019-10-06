@@ -1,4 +1,5 @@
 import Arena from "./Arena";
+import Level from "./Level";
 
 const {ccclass, property} = cc._decorator;
 
@@ -6,40 +7,44 @@ const {ccclass, property} = cc._decorator;
 export default class Ball extends cc.Component {
     @property(cc.Prefab)
     destroyParticle: cc.Prefab = null;
-    
+
     rb:cc.RigidBody = null;
     spawnTween: cc.Tween = null;
     destroyTween: cc.Tween = null;
     isReady = false;
+    level: Level = null;
     onLoad () {
         this.rb = this.getComponent(cc.RigidBody);
         this.spawnTween = cc.tween(this.node).set({scale: 0}).to(0.5, {scale: 1}, null).call(()=>{this.onSpawned()});
-        this.destroyTween = cc.tween(this.node).to(0.5, {scale: 0}, null).delay(1).call(()=>{this.node.destroy()});
+        this.destroyTween = cc.tween(this.node).to(0.5, {scale: 0}, null).delay(0.2).call(()=>{this.onRemoved()});
         
     }
     start () {
+        this.node.scaleX = 0;
         this.spawn();
     }
-    // update (dt) {}
-
     spawn(){
         this.spawnTween.start();
         this.isReady = false;
+    }
+    remove(){
+        this.isReady = false;
+        this.rb.destroy();
+        this.destroyTween.start();
+        
     }
     onSpawned(){
         console.log("--------------ball Spawned");
         this.rb.awake = true;
         this.rb.active = true;
     }
-    onHoleCatch(){
-        this.isReady = false;
-        this.rb.destroy();
-        this.destroyTween.start();
-        
+    onRemoved(){
+        this.level.ballRemoved(this);
+        this.node.destroy()
     }
     onDestroy(){
         
-        Arena.instance.ballDestroyed(this);
+        
         console.log("-------------Ball destroyed");
         
     }
@@ -47,17 +52,15 @@ export default class Ball extends cc.Component {
         if(this.isReady){
             if(other.node.group === "hole"){
                 this.rb.active = false;
-                //this.node.getComponent(cc.PhysicsCircleCollider).enabled = false;
                 self.node.parent = other.node;
-                
                 cc.tween(self.node).to(0.5,{
                     position: cc.v2(0, 0)
-                },null).call(()=>{this.onHoleCatch()}).start();
+                },null).call(()=>{this.remove()}).start();
                 
                 console.log("hole collision enter with "+other.name);
             }else if(other.node.name === "Ground"){
                 let prt = cc.instantiate(this.destroyParticle);
-                this.node.destroy();
+                this.remove();
                 prt.position = this.node.position;
                 prt.setParent(this.node.parent);
             }
@@ -67,7 +70,7 @@ export default class Ball extends cc.Component {
     onBeginContact(contact:cc.PhysicsContact, self: cc.PhysicsCollider, other: cc.PhysicsCollider){
         if(other.node.group === "platform"){
             this.isReady = true;
-            Arena.instance.readyGame();
+            this.level.ballReady();
         }
         
     }

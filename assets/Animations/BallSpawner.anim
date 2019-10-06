@@ -54,7 +54,7 @@
   "events": [
     {
       "frame": 0.8333333333333334,
-      "func": "spawnBall",
+      "func": "onBallSpawn",
       "params": []
     }
   ]
