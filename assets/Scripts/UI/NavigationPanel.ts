@@ -8,6 +8,8 @@ export default class NavigationPanel extends cc.Component {
     @property
     isOpen: boolean = false;
     @property(cc.Component.EventHandler)
+    onEscape: cc.Component.EventHandler[] = [];
+    @property(cc.Component.EventHandler)
     openedEvent: cc.Component.EventHandler[] = [];
     @property(cc.Component.EventHandler)
     closedEvent: cc.Component.EventHandler[] = [];
@@ -34,7 +36,7 @@ export default class NavigationPanel extends cc.Component {
         this.open();
     }
     openPrevious(){
-        if(NavigationPanel.focusedPanel === this && this.prevPanel){
+        if(this.prevPanel){
             this.close();
             this.prevPanel.open();
             this.prevPanel = null;
@@ -52,11 +54,12 @@ export default class NavigationPanel extends cc.Component {
         this.show();
         this.onOpen();
     }
-    private onOpen(){
+    
+    onOpen(){
         
         this.openedEvent.forEach(val=>val.emit(null));
     }
-    private onClose(){
+    onClose(){
         
         this.closedEvent.forEach(val=>val.emit(null));
     }
@@ -65,7 +68,11 @@ export default class NavigationPanel extends cc.Component {
             case cc.macro.KEY.back:
             case cc.macro.KEY.backspace:
             case cc.macro.KEY.escape:
-                NavigationPanel.focusedPanel.openPrevious();
+                if(NavigationPanel.focusedPanel.onEscape.length){
+                    NavigationPanel.focusedPanel.onEscape.forEach(val=>val.emit(null));
+                }else{
+                    NavigationPanel.focusedPanel.openPrevious();
+                }
             break;
         }
     }

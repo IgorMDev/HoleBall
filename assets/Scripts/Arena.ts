@@ -6,6 +6,7 @@ import Game from "./Game";
 import InGameUI from "./UI/InGameUI";
 import Accelerator from "./Accelerator";
 import KeyboardInput from "./KeyboardInput";
+import Gameplay from "./Gameplay";
 
 const {ccclass, property, executionOrder, disallowMultiple} = cc._decorator;
 
@@ -17,10 +18,6 @@ export default class Arena extends cc.Component{
     static get instance(){
         return Arena._instance;
     }
-    constructor(){
-        super();
-        return Arena._instance || (Arena._instance = this);
-    }
 
     @property(Level)
     level: Level = null;
@@ -28,6 +25,10 @@ export default class Arena extends cc.Component{
     touchArea: cc.Node = null;
     @property(InGameUI)
     inGameUI: InGameUI = null;
+    @property(cc.Component.EventHandler)
+    onGameStart: cc.Component.EventHandler[] = [];
+    @property(cc.Component.EventHandler)
+    onGameEnd: cc.Component.EventHandler[] = [];
     score = 0;
     touchVec: cc.Vec2 = cc.Vec2.ZERO;
     isReady = false;
@@ -42,14 +43,21 @@ export default class Arena extends cc.Component{
         colman.enabled = true;
         //colman.enabledDebugDraw = true;
         //colman.enabledDrawBoundingBox = true;
-
+        this.level.arena = this;
         this.touchArea.on('touchstart', this.touchStart, this.touchArea);
         this.touchArea.on('touchend', this.touchEnd, this.touchArea);
         
     }
-
-    start () {
+    onEnable(){
+        
+        if(Arena._instance){
+            Arena._instance.endGame();
+        }
+        Arena._instance = this;
         this.startGame();
+    }
+    start () {
+        
     }
     
     update(dt) {
@@ -63,14 +71,16 @@ export default class Arena extends cc.Component{
         }
         
     }
-
+    enable(){
+        this.node.active = true;
+    }
     startGame(){
-        
+        Gameplay.instance.gameStart();
         this.isReady = this.isRun = false;
         this.score = 0;
         this.inGameUI.node.active = false;
         this.level.reset();
-        
+        this.onGameStart.forEach(val=>val.emit(null));
     }
     readyGame(){
         if(!this.isReady){
@@ -86,14 +96,27 @@ export default class Arena extends cc.Component{
             this.isRun = true;
         }
     }
-    restartGame(){
+    restart(){
         
         this.startGame();
     }
-    endGame(){
+    finishGame(){
         this.isReady = this.isRun = false;
+        this.level.finish();
+    }
+    endGame(){
+        Gameplay.instance.gameEnd();
+        
 
         this.level.end();
+        this.onGameEnd.forEach(val=>val.emit(null));
+        
+    }
+    disable(){
+        this.node.active = false;
+    }
+    onDisable(){
+
     }
     touchStart = (event: cc.Event.EventTouch) => {
         let loc = event.getLocation();

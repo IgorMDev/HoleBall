@@ -27,7 +27,12 @@ export default class NavigationBtn extends cc.Component {
         }
         
     }
-    
+    hide(){
+        this.node.active = false;
+    }
+    show(){
+        this.node.active = true;
+    }
     moveUp(){
         this.setFocus(this.up);
     }

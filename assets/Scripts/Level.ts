@@ -5,6 +5,7 @@ import Arena from "./Arena";
 import Mathu from "./MathModule";
 import Accelerator from "./Accelerator";
 import KeyboardInput from "./KeyboardInput";
+import Gameplay from "./Gameplay";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -29,6 +30,7 @@ export default class Level extends cc.Component {
     moveAcc: Accelerator = null;
     rotAcc: Accelerator = null;
     actualSpeed = 0;
+    arena: Arena = null;
     ball: Ball = null;
     platformY = 0;
     groundY = 0;
@@ -65,27 +67,31 @@ export default class Level extends cc.Component {
     }
     finish(){
         this.platform.remove();
-        Arena.instance.endGame();
+        
     }
     end(){
 
     }
     update(dt) {
-        if(Arena.instance.isReady){
+        if(this.arena.isReady && !Gameplay.paused){
             let moveAxis = KeyboardInput.getAxis(cc.macro.KEY.up, cc.macro.KEY.down),
                 rotAxis = KeyboardInput.getAxis(cc.macro.KEY.left, cc.macro.KEY.right);
-            let dy = this.moveAcc.to(moveAxis, dt);
-            let dr = this.rotAcc.to(rotAxis, dt);
-            if(dr !== 0){
-                this.tiltBy(dr*dt);
+            if(moveAxis !== 0){
+                if(!this.arena.isRun) this.arena.runGame();
             }
-            if(dy !== 0){
-                if(!Arena.instance.isRun) Arena.instance.runGame();
-                this.moveBy(dy*dt);
-                this.actualSpeed = dy*this.speed;
-            }
-            this.platform.node.y = this.platformY + this.platformAcc.to(moveAxis, dt)*this.platformDelta;
-            if(Arena.instance.isRun){
+            if(this.arena.isRun){
+                    
+                let dy = this.moveAcc.to(moveAxis, dt);
+                let dr = this.rotAcc.to(rotAxis, dt);
+                if(dr !== 0){
+                    this.tiltBy(dr*dt);
+                }
+                if(dy !== 0){
+                    
+                    this.moveBy(dy*dt);
+                    this.actualSpeed = dy*this.speed;
+                }
+                this.platform.node.y = this.platformY + this.platformAcc.to(moveAxis, dt)*this.platformDelta;
                 this.ground.y += (this.groundSpeed-this.actualSpeed)*dt;
                 this.ground.y = Mathu.clamp(this.ground.y, -this.node.height/2, 0);
             }
@@ -106,7 +112,7 @@ export default class Level extends cc.Component {
         this.platform.tiltBy(da);
     }
     ballReady(){
-        Arena.instance.readyGame();
+        this.arena.readyGame();
     }
     ballSpawned(b: Ball){
         if(this.ball){
@@ -117,6 +123,6 @@ export default class Level extends cc.Component {
     }
     ballRemoved(b: Ball){
         this.ball = null;
-        this.finish();
+        this.arena.finishGame();
     }
 }
