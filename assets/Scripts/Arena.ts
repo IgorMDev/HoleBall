@@ -3,10 +3,10 @@ import Ball from "./Ball";
 import PlatformBlock from "./Block";
 import Level from "./Level";
 import Game from "./Game";
-import InGameUI from "./UI/InGameUI";
 import Accelerator from "./Accelerator";
 import KeyboardInput from "./KeyboardInput";
 import Gameplay from "./Gameplay";
+import ArenaUI from "./UI/ArenaUI";
 
 const {ccclass, property, executionOrder, disallowMultiple} = cc._decorator;
 
@@ -23,8 +23,8 @@ export default class Arena extends cc.Component{
     level: Level = null;
     @property(cc.Node)
     touchArea: cc.Node = null;
-    @property(InGameUI)
-    inGameUI: InGameUI = null;
+    @property(ArenaUI)
+    arenaUI: ArenaUI = null;
     @property(cc.Component.EventHandler)
     onGameStart: cc.Component.EventHandler[] = [];
     @property(cc.Component.EventHandler)
@@ -63,11 +63,10 @@ export default class Arena extends cc.Component{
     update(dt) {
         if(this.isReady){
             if(this.isRun){
-                if(this.score != this.level.scoreMeters){
-                    this.inGameUI.setScore(this.score = this.level.scoreMeters);
+                if(this.score !== this.level.scoreMeters){
+                    this.arenaUI.setScore(this.score = this.level.scoreMeters);
                 }
             }
-            
         }
         
     }
@@ -78,15 +77,16 @@ export default class Arena extends cc.Component{
         Gameplay.instance.gameStart();
         this.isReady = this.isRun = false;
         this.score = 0;
-        this.inGameUI.node.active = false;
         this.level.reset();
+        this.arenaUI.reset();
+        
         this.onGameStart.forEach(val=>val.emit(null));
     }
     readyGame(){
         if(!this.isReady){
-            
-            this.inGameUI.node.active = true;
             this.level.ready();
+            this.arenaUI.ready();
+            
             this.isReady = true;
         }
     }
@@ -103,11 +103,12 @@ export default class Arena extends cc.Component{
     finishGame(){
         this.isReady = this.isRun = false;
         this.level.finish();
+
+        this.arenaUI.summary(this.score);
     }
     endGame(){
         Gameplay.instance.gameEnd();
         
-
         this.level.end();
         this.onGameEnd.forEach(val=>val.emit(null));
         

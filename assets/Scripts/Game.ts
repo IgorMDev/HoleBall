@@ -14,7 +14,7 @@ export default class Game extends cc.Component {
         super();
         return Game._instance || (Game._instance = this);
     }
-    saveData = {
+    endlessData: endlessdata = {
         lastScore: 0,
         bestScore: 0
     }
@@ -26,7 +26,16 @@ export default class Game extends cc.Component {
 
     writeSaveData(){
         //Object.assign(this.saveData, JSON.parse(cc.sys.localStorage.getItem('saveData')));
-        console.log("saveData "+this.saveData);
+        console.log("endlessData "+this.endlessData);
     }
 }
-
+declare global{
+    type gamedata = {
+        sound: boolean,
+        music: boolean
+    }
+    type endlessdata = {
+        lastScore: number,
+        bestScore: number
+    }
+}

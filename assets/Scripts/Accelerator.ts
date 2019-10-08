@@ -28,7 +28,6 @@ export default class Accelerator{
     setEasing(eas: string | Function){
         if(typeof eas === 'string'){
             let e = cc.easing[eas];
-            console.log("easing "+e);
             if(e){
                 this.easing = e;
             }

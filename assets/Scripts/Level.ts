@@ -57,7 +57,8 @@ export default class Level extends cc.Component {
         this.scoreMeters = this.metersCounter = 0;
         this.ballSpawner.spawn((bn)=>{this.ballSpawned(bn.getComponent(Ball))});
         this.platform.spawn();
-        this.ground.y = this.groundY;
+        cc.tween(this.ground).set({y: -this.node.height/2}).to(0.5,{y: this.groundY},null).start();
+        //this.ground.y = this.groundY;
     }
     ready(){
 
@@ -100,8 +101,11 @@ export default class Level extends cc.Component {
     }
     moveBy(dy: number){
         if(dy !== 0){
-            this.metersCounter += dy*Math.abs(this.speed);
-            if(this.metersCounter >= this.meterScale){
+            if(dy < 0 && this.metersCounter > 0 || dy > 0 && this.metersCounter < 0){
+                this.metersCounter = 0;
+            }
+            this.metersCounter += dy*this.speed;
+            if(Math.abs(this.metersCounter) >= this.meterScale){
                 this.scoreMeters += Math.floor(this.metersCounter/this.meterScale);
                 this.metersCounter %= this.meterScale;
             }
