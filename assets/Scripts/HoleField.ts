@@ -49,9 +49,9 @@ export default class HoleField extends cc.Component {
         }
         this.holesLimit = this.rows*this.columns*this.maxFillPercentage;
         this.fillHolesPool(this.numOfVariants);
+        
     }
     start() {
-        
     }
     clear(){
         if(this.cellsMap.size){
