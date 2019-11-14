@@ -32,7 +32,7 @@ export default class Arena extends cc.Component{
     score = 0;
     touchVec: cc.Vec2 = cc.Vec2.ZERO;
     isReady = false;
-    isRun = false;
+    //isRun = false;
     //saveData = Game.instance.saveData;
     onLoad () {
         
@@ -62,10 +62,8 @@ export default class Arena extends cc.Component{
     
     update(dt) {
         if(this.isReady){
-            if(this.isRun){
-                if(this.score !== this.level.scoreMeters){
-                    this.arenaUI.setScore(this.score = this.level.scoreMeters);
-                }
+            if(this.score !== this.level.scoreMeters){
+                this.arenaUI.setScore(this.score = this.level.scoreMeters);
             }
         }
         
@@ -75,7 +73,7 @@ export default class Arena extends cc.Component{
     }
     startGame(){
         Gameplay.instance.gameStart();
-        this.isReady = this.isRun = false;
+        this.isReady = false;
         this.score = 0;
         this.level.reset();
         this.arenaUI.reset();
@@ -90,18 +88,18 @@ export default class Arena extends cc.Component{
             this.isReady = true;
         }
     }
-    runGame(){
-        if(!this.isRun){
-            this.level.run();
-            this.isRun = true;
-        }
-    }
+    // runGame(){
+    //     if(!this.isRun){
+    //         this.level.run();
+    //         this.isRun = true;
+    //     }
+    // }
     restart(){
         
         this.startGame();
     }
     finishGame(){
-        this.isReady = this.isRun = false;
+        this.isReady = false;
         this.level.finish();
 
         this.arenaUI.summary(this.score);

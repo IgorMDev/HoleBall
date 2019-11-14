@@ -1,3 +1,4 @@
+import Ball from "./Ball";
 
 const {ccclass, property} = cc._decorator;
 
@@ -11,9 +12,12 @@ export default class Hole extends cc.Component {
     border = 0;
     @property({type: cc.Float})
     radiuses: number[] = [];
-    
+    @property(cc.Node)
+    mask: cc.Node = null;
+
+    ccol: cc.CircleCollider = null;
     onLoad () {
-        
+        this.ccol = this.getComponent(cc.CircleCollider);
     }
     start () {
 
@@ -27,6 +31,17 @@ export default class Hole extends cc.Component {
     setRandSize(){
         let r = this.radiuses[Math.floor(Math.random()*this.radiuses.length)];
         this.setSize(r);
+    }
+    captureBall(b: Ball){
+        b.node.setParent(this.node);
+        let p = b.node.position.normalizeSelf().mulSelf(this.ccol.radius - b.radius);
+        b.rb.active = false;
+        cc.tween(b.node).to(0.4,{
+            position: p
+        },{easing:'quadIn'}).call(()=>{b.node.setParent(this.mask)})
+        .by(0.5,{
+            position: cc.v2(0, -this.ccol.radius*2)
+        },null).call(()=>{b.remove()}).start();
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider){
         

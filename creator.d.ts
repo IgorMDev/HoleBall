@@ -2851,7 +2851,7 @@ declare namespace cc {
 		@param props {scale: 2, position: cc.v3(100, 100, 100)}
 		@param opts opts 
 		*/
-		to(duration: number, props: any, opts: {progress: Function; easing: Function|string; }): Tween;		
+		to(duration: number, props: any, opts: {progress?: Function; easing?: Function|string; }): Tween;		
 		/**
 		!#en
 		Add an action which calculate with relative value
@@ -2861,7 +2861,7 @@ declare namespace cc {
 		@param props {scale: 2, position: cc.v3(100, 100, 100)}
 		@param opts opts 
 		*/
-		by(duration: number, props: any, opts: {progress: Function; easing: Function|string; }): Tween;		
+		by(duration: number, props: any, opts: {progress?: Function; easing?: Function|string; }): Tween;		
 		/**
 		!#en
 		Directly set target properties

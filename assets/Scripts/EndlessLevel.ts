@@ -25,13 +25,13 @@ export default class EndlessLevel extends Level {
         super.start();
     }
     reset(){
-        
+        super.reset();
         for(let i in this.holeFields){
             this.holeFields[i].clear();
             this.holeFields[i].node.y = this.startPosY+this.node.height*parseInt(i);
             
         }
-        super.reset();
+        
     }
     ready(){
         super.ready();
@@ -63,16 +63,6 @@ export default class EndlessLevel extends Level {
                 console.log("treshhold down");
             }
         }
-        if(dy > 0){
-
-        }
-            /* else if(dy > 0){
-            for(let field of this.holeFields){
-                if(field.y < this.startPosY + this.node.height * Math.floor(field.y/this.node.height)){
-                    field.y = field.y + dy*this.speed;
-                }
-            }
-        } */
         
     }
     onLevelUp(){

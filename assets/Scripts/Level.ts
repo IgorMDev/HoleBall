@@ -37,6 +37,8 @@ export default class Level extends cc.Component {
     groundSpeed = 0;
     scoreMeters = 0;
     metersCounter = 0;
+    isReady = false;
+    isRun = false;
     onLoad () {
         //this.grounUp = cc.tween(this.ground).by(1, {y: })
         this.groundSpeed = 2*this.speed/3;
@@ -45,7 +47,7 @@ export default class Level extends cc.Component {
         this.platformAcc = new Accelerator('smooth', false);
         this.groundAcc = new Accelerator('quadOut', false);
         this.moveAcc = new Accelerator();
-        this.rotAcc = new Accelerator('cubicOut');
+        this.rotAcc = new Accelerator('quintOut');
     }
     start () {
         
@@ -54,47 +56,53 @@ export default class Level extends cc.Component {
     // update (dt) {}
 
     reset(){
+        this.isReady = this.isRun = false;
         this.scoreMeters = this.metersCounter = 0;
+        if(this.ball){
+            this.ball.node.destroy();
+            this.ball = null;
+        }
         this.ballSpawner.spawn((bn)=>{this.ballSpawned(bn.getComponent(Ball))});
         this.platform.spawn();
         cc.tween(this.ground).set({y: -this.node.height/2}).to(0.5,{y: this.groundY},null).start();
         //this.ground.y = this.groundY;
     }
     ready(){
-
+        this.isReady = true;
     }
     run(){
-
+        this.isRun = true;
     }
     finish(){
+        this.isReady = this.isRun = false;
         this.platform.remove();
-        
+        cc.tween(this.ground).to(0.5,{y: -this.node.height/2},null).start();
     }
     end(){
 
     }
     update(dt) {
-        if(this.arena.isReady && !Gameplay.paused){
+        if(this.isReady && !Gameplay.paused){
             let moveAxis = KeyboardInput.getAxis(cc.macro.KEY.up, cc.macro.KEY.down),
                 rotAxis = KeyboardInput.getAxis(cc.macro.KEY.left, cc.macro.KEY.right);
             if(moveAxis !== 0){
-                if(!this.arena.isRun) this.arena.runGame();
+                if(!this.isRun) this.run();
             }
-            if(this.arena.isRun){
+            let dy = this.moveAcc.to(moveAxis, dt);
+            let dr = this.rotAcc.to(rotAxis, dt);
+            if(dr !== 0){
+                this.tiltBy(dr*dt);
+            }
+            if(dy !== 0){
+                
+                this.moveBy(dy*dt);
+                this.actualSpeed = dy*this.speed;
+            }
+            if(this.isRun){
                     
-                let dy = this.moveAcc.to(moveAxis, dt);
-                let dr = this.rotAcc.to(rotAxis, dt);
-                if(dr !== 0){
-                    this.tiltBy(dr*dt);
-                }
-                if(dy !== 0){
-                    
-                    this.moveBy(dy*dt);
-                    this.actualSpeed = dy*this.speed;
-                }
                 this.platform.node.y = this.platformY + this.platformAcc.to(moveAxis, dt)*this.platformDelta;
-                this.ground.y += (this.groundSpeed-this.actualSpeed)*dt;
-                this.ground.y = Mathu.clamp(this.ground.y, -this.node.height/2, 0);
+                // this.ground.y += (this.groundSpeed-this.actualSpeed)*dt;
+                // this.ground.y = Mathu.clamp(this.ground.y, -this.node.height/2, 0);
             }
         }
         
@@ -115,8 +123,9 @@ export default class Level extends cc.Component {
     tiltBy(da: number){
         this.platform.tiltBy(da);
     }
-    ballReady(){
-        this.arena.readyGame();
+    ballReady(b = true){
+        if(b) this.arena.readyGame();
+        else this.isReady = false;
     }
     ballSpawned(b: Ball){
         if(this.ball){
