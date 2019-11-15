@@ -25,6 +25,7 @@ export default class Accelerator{
         this.y = this.easing(Math.abs(this.x))*p;
         return this.y;
     }
+    
     setEasing(eas: string | Function){
         if(typeof eas === 'string'){
             let e = cc.easing[eas];

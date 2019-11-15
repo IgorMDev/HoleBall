@@ -55,6 +55,16 @@ export default class EndlessLevel extends Level {
     }
     moveBy(dy: number){
         super.moveBy(dy);
+        if(dy !== 0 && this.ball.isReady){
+            if(dy < 0 && this.scoreCounter > 0 || dy > 0 && this.scoreCounter < 0){
+                this.scoreCounter = 0;
+            }
+            this.scoreCounter += dy*this.speed;
+            if(Math.abs(this.scoreCounter) >= this.meterScale){
+                this.score += Math.floor(this.scoreCounter/this.meterScale);
+                this.scoreCounter %= this.meterScale;
+            }
+        }
         for(let field of this.holeFields){
             field.node.y += dy*-this.speed;
             if(dy > 0 && field.node.y < this.bottomLimit){

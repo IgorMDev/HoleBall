@@ -29,13 +29,15 @@ export default class Arena extends cc.Component{
     onGameStart: cc.Component.EventHandler[] = [];
     @property(cc.Component.EventHandler)
     onGameEnd: cc.Component.EventHandler[] = [];
-    score = 0;
     touchVec: cc.Vec2 = cc.Vec2.ZERO;
     isReady = false;
     //isRun = false;
     //saveData = Game.instance.saveData;
     onLoad () {
-        
+        if(Arena._instance && Arena._instance !== this){
+            Arena._instance.destroy();
+        }
+        Arena._instance = this;
         const pm = cc.director.getPhysicsManager();
         pm.enabled = true;
         pm.gravity = cc.v2(0, -10);
@@ -43,42 +45,61 @@ export default class Arena extends cc.Component{
         colman.enabled = true;
         //colman.enabledDebugDraw = true;
         //colman.enabledDrawBoundingBox = true;
-        this.level.arena = this;
+        cc.log("@@@ arena loaded");
+    
         this.touchArea.on('touchstart', this.touchStart, this.touchArea);
         this.touchArea.on('touchend', this.touchEnd, this.touchArea);
         
     }
     onEnable(){
-        
-        if(Arena._instance){
-            Arena._instance.endGame();
-        }
-        Arena._instance = this;
+        this.level.arena = this;
+        this.arenaUI.configureLevelUI(this.level);
         this.startGame();
+    }
+    enable(){
+        
+        
+        if(this.node.active){
+            this.onEnable();
+        }else{
+            this.node.active = true;
+        }
     }
     start () {
         
     }
     
-    update(dt) {
-        if(this.isReady){
-            if(this.score !== this.level.scoreMeters){
-                this.arenaUI.setScore(this.score = this.level.scoreMeters);
-            }
-        }
-        
+    loadLevelHandler(s, data){
+        cc.log("%%%%%% sender "+ typeof s);
+        cc.log("%%%%%% data "+data);
+        this.loadLevel(data);
     }
-    enable(){
-        this.node.active = true;
+    loadLevel(lname?: String){
+        if(lname && this.level && this.level.name !== lname){
+            cc.loader.loadRes('levels/'+lname, (err, prefab)=>{
+                if(err){
+                    cc.error(err.message || err)
+                    return;
+                }
+                let ln = cc.instantiate<cc.Node>(prefab);
+                if(ln){
+                    ln.setParent(this.level.node.parent);
+                    this.level.node.destroy();
+                    this.level = ln.getComponent(Level);
+                    this.enable();
+                }
+            })
+        }else if(this.level){
+            this.enable();
+        }
     }
     startGame(){
         Gameplay.instance.gameStart();
         this.isReady = false;
-        this.score = 0;
         this.level.reset();
         this.arenaUI.reset();
         
-        this.onGameStart.forEach(val=>val.emit(null));
+        //this.onGameStart.forEach(val=>val.emit(null));
     }
     readyGame(){
         if(!this.isReady){
@@ -102,17 +123,21 @@ export default class Arena extends cc.Component{
         this.isReady = false;
         this.level.finish();
 
-        this.arenaUI.summary(this.score);
+        this.arenaUI.summary();
     }
     endGame(){
         Gameplay.instance.gameEnd();
         
         this.level.end();
-        this.onGameEnd.forEach(val=>val.emit(null));
+        //this.onGameEnd.forEach(val=>val.emit(null));
         
     }
     disable(){
-        this.node.active = false;
+        if(!this.node.active){
+            this.onDisable();
+        }else{
+            this.node.active = false;
+        }
     }
     onDisable(){
 

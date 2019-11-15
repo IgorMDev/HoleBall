@@ -1,5 +1,6 @@
 import Game from "../Game";
 import NavigationPanel from "./NavigationPanel";
+import Level from "../Level";
 
 const {ccclass, property} = cc._decorator;
 
@@ -14,33 +15,47 @@ export default class ArenaUI extends cc.Component {
     scoreLabel: cc.Label = null;
     @property(cc.Label)
     bestScoreLabel: cc.Label = null;
-    saveData: endlessdata = null;
+    level: Level = null;
+    sd:leveldata = null;
+    score = 0;
+    units: string = '';
     onLoad () {
-        this.saveData = Game.instance.endlessData;
+        
     }
-    start () {
-
+    lateUpdate(){
+        if(this.level.isRun){
+            if(this.score !== this.level.score){
+                this.setScore(this.score = this.level.score);
+            }
+        }
+    }
+    configureLevelUI(l: Level){
+        this.level = l;
+        this.sd = this.level.saveData;
+        cc.log("conf ui level sd "+JSON.stringify(this.sd));
+            if(this.level.type === 'distance'){
+                this.units = 'm';
+            }else if(this.level.type === 'time'){
+                this.units = 's';
+            }
     }
     reset(){
         this.scorePanel.active = false;
+        
         this.setScore(0);
-        this.setBestScore(this.saveData.bestScore);
     }
     ready(){
         this.scorePanel.active = true;
     }
-    summary(score: number){
+    summary(){
         this.summaryPanel.getComponent(NavigationPanel).openNext();
-        
-        if(this.saveData.bestScore < score){
-            this.saveData.bestScore = score;
-            this.setBestScore(this.saveData.bestScore);
-        }
+        this.scoreLabel.string = this.sd.lastScore +''+ this.units;
+        this.setBestScore(this.sd.bestScore);
     }
     setScore(sc: number){
-        this.scoreLabel.string = sc + "m";
+        this.scoreLabel.string = sc+'';
     }
     setBestScore(sc: number){
-        this.bestScoreLabel.string = sc + "m";
+        this.bestScoreLabel.string = sc + this.units;
     }
 }

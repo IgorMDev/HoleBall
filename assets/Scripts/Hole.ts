@@ -36,12 +36,15 @@ export default class Hole extends cc.Component {
         b.node.setParent(this.node);
         let p = b.node.position.normalizeSelf().mulSelf(this.ccol.radius - b.radius);
         b.rb.active = false;
-        cc.tween(b.node).to(0.4,{
+        cc.tween(b.node).to(0.3,{
             position: p
-        },{easing:'quadIn'}).call(()=>{b.node.setParent(this.mask)})
-        .by(0.5,{
+        },{easing:'quadIn'}).call(()=>{
+            b.node.setParent(this.mask);
+            b.remove();
+        })
+        .by(0.3,{
             position: cc.v2(0, -this.ccol.radius*2)
-        },null).call(()=>{b.remove()}).start();
+        },null).start();
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider){
         

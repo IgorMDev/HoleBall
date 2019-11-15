@@ -37,7 +37,7 @@ export default class Ball extends cc.Component {
         this.isReady = false;
         this.rb.destroy();
         this.destroyTween.start();
-        this.level.ballReady(false);
+        //this.level.ballReady(false);
     }
     onSpawned(){
         console.log("--------------ball Spawned");

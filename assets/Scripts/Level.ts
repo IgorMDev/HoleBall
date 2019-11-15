@@ -6,17 +6,20 @@ import Mathu from "./MathModule";
 import Accelerator from "./Accelerator";
 import KeyboardInput from "./KeyboardInput";
 import Gameplay from "./Gameplay";
+import Game from "./Game";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Level extends cc.Component {
+    
     @property
     speed = 0;
     @property
     meterScale = 10;
     @property
     platformDelta = 100;
-    
+    @property(cc.String)
+    type: string = 'distance';
     @property(BallSpawner)
     ballSpawner: BallSpawner = null;
 
@@ -32,17 +35,23 @@ export default class Level extends cc.Component {
     actualSpeed = 0;
     arena: Arena = null;
     ball: Ball = null;
-    platformY = 0;
     groundY = 0;
     groundSpeed = 0;
-    scoreMeters = 0;
-    metersCounter = 0;
+    score = 0;
+    scoreCounter = 0;
     isReady = false;
     isRun = false;
+    saveData: leveldata = null;
     onLoad () {
         //this.grounUp = cc.tween(this.ground).by(1, {y: })
-        this.groundSpeed = 2*this.speed/3;
-        this.platformY = this.platform.node.y;
+        this.saveData = Game.instance.levelsData[this.node.name];
+        if(!this.saveData){
+            this.saveData = Game.instance.levelsData[this.node.name] = {
+                lastScore: 0, bestScore: 0
+            };
+        }
+        cc.log(this.node.name+" save data "+JSON.stringify(this.saveData));
+        this.groundSpeed = 2*this.speed/3.5;
         this.groundY = this.ground.y;
         this.platformAcc = new Accelerator('smooth', false);
         this.groundAcc = new Accelerator('quadOut', false);
@@ -51,13 +60,14 @@ export default class Level extends cc.Component {
     }
     start () {
         
+        
     }
 
     // update (dt) {}
 
     reset(){
         this.isReady = this.isRun = false;
-        this.scoreMeters = this.metersCounter = 0;
+        this.score = this.scoreCounter = 0;
         if(this.ball){
             this.ball.node.destroy();
             this.ball = null;
@@ -77,19 +87,31 @@ export default class Level extends cc.Component {
         this.isReady = this.isRun = false;
         this.platform.remove();
         cc.tween(this.ground).to(0.5,{y: -this.node.height/2},null).start();
+        this.saveData.lastScore = this.score;
+        if(this.checkBestScore())
+            this.saveData.bestScore = this.score;
     }
     end(){
-
+        
+    }
+    checkBestScore(){
+        return this.score > this.saveData.bestScore;
     }
     update(dt) {
         if(this.isReady && !Gameplay.paused){
             let moveAxis = KeyboardInput.getAxis(cc.macro.KEY.up, cc.macro.KEY.down),
                 rotAxis = KeyboardInput.getAxis(cc.macro.KEY.left, cc.macro.KEY.right);
-            if(moveAxis !== 0){
-                if(!this.isRun) this.run();
-            }
+            
             let dy = this.moveAcc.to(moveAxis, dt);
             let dr = this.rotAcc.to(rotAxis, dt);
+            if(!this.isRun){
+                if(moveAxis !== 0){
+                    this.run();
+                }
+                this.moveAcc.to(0, 1);
+                this.rotAcc.to(0, 1);
+                this.platformAcc.to(0, 1);
+            }
             if(dr !== 0){
                 this.tiltBy(dr*dt);
             }
@@ -100,24 +122,16 @@ export default class Level extends cc.Component {
             }
             if(this.isRun){
                     
-                this.platform.node.y = this.platformY + this.platformAcc.to(moveAxis, dt)*this.platformDelta;
+                this.platform.node.y = this.platform.startY + this.platformAcc.to(moveAxis, dt)*this.platformDelta;
                 // this.ground.y += (this.groundSpeed-this.actualSpeed)*dt;
                 // this.ground.y = Mathu.clamp(this.ground.y, -this.node.height/2, 0);
             }
+            
         }
         
     }
     moveBy(dy: number){
-        if(dy !== 0){
-            if(dy < 0 && this.metersCounter > 0 || dy > 0 && this.metersCounter < 0){
-                this.metersCounter = 0;
-            }
-            this.metersCounter += dy*this.speed;
-            if(Math.abs(this.metersCounter) >= this.meterScale){
-                this.scoreMeters += Math.floor(this.metersCounter/this.meterScale);
-                this.metersCounter %= this.meterScale;
-            }
-        }
+        
         
     }
     tiltBy(da: number){

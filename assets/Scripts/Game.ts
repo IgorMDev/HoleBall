@@ -14,11 +14,8 @@ export default class Game extends cc.Component {
         super();
         return Game._instance || (Game._instance = this);
     }
-    endlessData: endlessdata = {
-        lastScore: 0,
-        bestScore: 0
-    }
-
+    
+    levelsData: levelsdata = {}
     
     loadSaveData(){
 
@@ -26,7 +23,7 @@ export default class Game extends cc.Component {
 
     writeSaveData(){
         //Object.assign(this.saveData, JSON.parse(cc.sys.localStorage.getItem('saveData')));
-        console.log("endlessData "+this.endlessData);
+        console.log("endlessData "+this.levelsData);
     }
 }
 declare global{
@@ -34,8 +31,12 @@ declare global{
         sound: boolean,
         music: boolean
     }
-    type endlessdata = {
+    type levelsdata = {
+        [key: string]: leveldata
+    }
+    type leveldata = {
         lastScore: number,
         bestScore: number
     }
+    
 }
