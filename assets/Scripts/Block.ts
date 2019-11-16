@@ -1,5 +1,6 @@
 import Mathu from "./MathModule";
-const {ccclass, property} = cc._decorator;
+import Accelerator from "./Accelerator";
+const {ccclass, property,requireComponent} = cc._decorator;
 
 @ccclass
 export default class PlatformBlock extends cc.Component {
@@ -7,7 +8,15 @@ export default class PlatformBlock extends cc.Component {
     rotationSpeed: number = 0;
     @property({min: 0,max: 45})
     rotaionConstraint: number = 0;
+    @property
+    moveDelta: number = 0;
+    @property(cc.String)
+    moveEasing: string = '';
+    @property(cc.String)
+    rotEasing: string = '';
 
+    moveAcc: Accelerator = null;
+    rotAcc: Accelerator = null;
     rb: cc.RigidBody = null;
     spawnTween: cc.Tween = null;
     removeTween: cc.Tween = null;
@@ -17,6 +26,10 @@ export default class PlatformBlock extends cc.Component {
         this.spawnTween = cc.tween(this.node).set({scaleX: 0}).to(0.5,{scaleX: 1},null);
         this.removeTween = cc.tween(this.node).to(0.5, {scaleX: 0}, null);
         this.startY = this.node.y;
+        this.moveAcc = this.addComponent(Accelerator);
+        this.rotAcc = this.addComponent(Accelerator);
+        this.moveAcc.setEasing(this.moveEasing);
+        this.rotAcc.setEasing(this.rotEasing);
     }
     onEnable(){
         
@@ -38,7 +51,10 @@ export default class PlatformBlock extends cc.Component {
         this.node.angle = 0;
         this.node.y = this.startY;
     }
-    tiltBy(a){
-        this.node.angle = Mathu.clamp(this.node.angle + a*this.rotationSpeed, -this.rotaionConstraint, this.rotaionConstraint);
+    moveBy(dy){
+        this.node.y = this.startY + this.moveAcc.to(dy)*this.moveDelta;
+    }
+    tiltBy(da){
+        this.node.angle = Mathu.clamp(this.node.angle + this.rotAcc.to(da)*this.rotationSpeed, -this.rotaionConstraint, this.rotaionConstraint);
     }
 }

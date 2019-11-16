@@ -31,13 +31,13 @@ export default class ArenaUI extends cc.Component {
     }
     configureLevelUI(l: Level){
         this.level = l;
-        this.sd = this.level.saveData;
-        cc.log("conf ui level sd "+JSON.stringify(this.sd));
+        this.sd = this.level.sd;
+        /* cc.log("conf ui level sd "+JSON.stringify(this.sd));
             if(this.level.type === 'distance'){
                 this.units = 'm';
             }else if(this.level.type === 'time'){
                 this.units = 's';
-            }
+            } */
     }
     reset(){
         this.scorePanel.active = false;

@@ -14,7 +14,7 @@ export default class Game extends cc.Component {
         super();
         return Game._instance || (Game._instance = this);
     }
-    
+    progressData = {};
     levelsData: levelsdata = {}
     
     loadSaveData(){

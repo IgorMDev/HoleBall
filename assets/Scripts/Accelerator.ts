@@ -1,18 +1,28 @@
 
 import Mathu from "./MathModule";
 
-export default class Accelerator{
+const {ccclass, property,requireComponent} = cc._decorator;
+@ccclass
+export default class Accelerator extends cc.Component{
+    @property
     isFlipping = true;
-    easing: Function = (k:number)=>k;
+    @property
+    isDumping = true;
+    @property(cc.String)
+    easing: string = '';
+    easeFunc: Function = (k:number)=>k;
     y = 0;
     x = 0;
-    constructor(eas?: string | Function, flip = true){
-        if(eas){
-            this.setEasing(eas);
-        }
-        this.isFlipping = flip;
+    onLoad(){
+        this.setEasing(this.easing);
     }
-    to(p: number, dt: number){
+    lateUpdate(){
+        if(this.isDumping && this.x > Number.EPSILON){
+            this.to(0,1);
+        }
+    }
+    to(p: number, dt?: number){
+        if(!dt){dt = cc.director.getDeltaTime();}
         let sign = Math.sign(p);
         let np = dt * p;
         if((this.x<0 && np>this.x) || (this.x>0 && np<this.x)){
@@ -22,18 +32,17 @@ export default class Accelerator{
             this.x = 0;
         }
         this.x = Mathu.moveTowards(this.x, sign, dt);
-        this.y = this.easing(Math.abs(this.x))*p;
+        this.y = this.easeFunc(Math.abs(this.x))*p;
         return this.y;
     }
     
     setEasing(eas: string | Function){
         if(typeof eas === 'string'){
-            let e = cc.easing[eas];
-            if(e){
-                this.easing = e;
+            if(eas !== ''){
+                this.easeFunc = cc.easing[eas] || this.easeFunc;
             }
         }else{
-            this.easing = eas;
+            this.easeFunc = eas;
         }
     }
 }

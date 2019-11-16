@@ -31,7 +31,7 @@ export default class Gameplay extends cc.Component {
         Gameplay.paused = false;
     }
     restartGame(){
-        Arena.instance.restart()
+        Arena.instance.restartGame()
     }
     exitGame(){
         //Arena.instance.disable();
