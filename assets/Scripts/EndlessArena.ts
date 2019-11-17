@@ -25,16 +25,13 @@ export default class EndlessArena extends Arena{
     scoreLabel: cc.Label = null;
     @property(cc.Label)
     bestScoreLabel: cc.Label = null;
-    score = 0;
     onLoad () {
         super.onLoad();
     }
 
     lateUpdate(){
         if(this.level.isRun){
-            if(this.score !== this.level.score){
-                this.setScoreLabel(this.score = this.level.score);
-            }
+            this.setScoreLabel(this.level.score);
         }
     }
     startGame(){
@@ -54,14 +51,14 @@ export default class EndlessArena extends Arena{
     */
     resetUI(){
         this.scorePanel.active = false;
-        this.setScoreLabel(this.score = 0);
+        this.setScoreLabel(this.level.score);
     }
     readyUI(){
         this.scorePanel.active = true;
     }
     showSummaryUI(){
         this.summaryPanel.getComponent(NavigationPanel).openNext();
-        this.scoreLabel.string = this.level.sd.lastScore +'m';
+        this.scoreLabel.string = this.level.sd.score +'m';
         this.setBestScoreLabel(this.level.sd.bestScore);
     }
     setScoreLabel(sc: number){

@@ -36,6 +36,8 @@ export default abstract class Arena extends cc.Component{
         if(!Arena.instance){
             Arena.setup();
         }
+        this.level.arena = this;
+        this.readSaveData();
         cc.log("@@@ arena loaded");
     
     }
@@ -44,8 +46,8 @@ export default abstract class Arena extends cc.Component{
             Arena._instance.disable();
         }
         Arena._instance = this;
-
         this.level.arena = this;
+        
         this.startGame();
     }
     enable(){
@@ -123,10 +125,15 @@ export default abstract class Arena extends cc.Component{
         }
     }
     onDisable(){
-
+        //this.writeSaveData();
     }
     readSaveData(){
-        this.sd = Game.instance.progressData[this.node.name] || {};
+        this.sd = Game.instance.progressData[this.node.name];
+        if(!this.sd){
+            Game.instance.progressData[this.node.name] = this.sd = {
+
+            };
+        }
     }
     writeSaveData(){
         Game.instance.progressData[this.node.name] = this.sd;

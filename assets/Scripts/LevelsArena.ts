@@ -8,6 +8,7 @@ import KeyboardInput from "./KeyboardInput";
 import Gameplay from "./Gameplay";
 import ArenaUI from "./UI/ArenaUI";
 import Arena from "./Arena";
+import NavigationPanel from "./UI/NavigationPanel";
 
 const {ccclass, property, executionOrder, disallowMultiple} = cc._decorator;
 
@@ -16,16 +17,55 @@ const {ccclass, property, executionOrder, disallowMultiple} = cc._decorator;
 @disallowMultiple
 export default class LevelsArena extends Arena{
     
-    touchVec: cc.Vec2 = cc.Vec2.ZERO;
-    isReady = false;
-    //isRun = false;
-    //saveData = Game.instance.saveData;
+    @property(cc.Node)
+    scorePanel: cc.Node = null;
+    @property(cc.Node)
+    summaryPanel: cc.Node = null;
+    @property(cc.Label)
+    scoreLabel: cc.Label = null;
+    @property(cc.Label)
+    bestScoreLabel: cc.Label = null;
     onLoad () {
-        
-        
+        super.onLoad();
     }
-    start () {
-        
+
+    lateUpdate(){
+        if(this.level.isRun){
+            this.setScoreLabel(this.level.score);
+        }
+    }
+    startGame(){
+        super.startGame();
+        this.resetUI();
+    }
+    readyGame(){
+        super.readyGame();
+        this.readyUI();
+    }
+    finishGame(){
+        super.finishGame();
+        this.showSummaryUI();
+    }
+    /*
+    **********--- UI ---*************
+    */
+    resetUI(){
+        this.scorePanel.active = false;
+        this.setScoreLabel(this.level.score);
+    }
+    readyUI(){
+        this.scorePanel.active = true;
+    }
+    showSummaryUI(){
+        this.summaryPanel.getComponent(NavigationPanel).openNext();
+        this.scoreLabel.string = this.level.sd.score +'m';
+        this.setBestScoreLabel(this.level.sd.bestScore);
+    }
+    setScoreLabel(sc: number){
+        this.scoreLabel.string = sc+'';
+    }
+    setBestScoreLabel(sc: number){
+        this.bestScoreLabel.string = sc + 'm';
     }
     
 }

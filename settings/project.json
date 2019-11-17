@@ -37,9 +37,13 @@
   "design-resolution-height": 2560,
   "design-resolution-width": 1440,
   "excluded-modules": [
-    "TiledMap",
+    "DragonBones",
+    "Mesh",
     "Spine Skeleton",
-    "DragonBones"
+    "TiledMap",
+    "VideoPlayer",
+    "3D",
+    "3D Primitive"
   ],
   "facebook": {
     "appID": "",
@@ -67,5 +71,6 @@
     "width": 720
   },
   "use-customize-simulator": true,
-  "use-project-simulator-setting": true
+  "use-project-simulator-setting": true,
+  "start-scene": "current"
 }

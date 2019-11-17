@@ -35,7 +35,7 @@ declare global{
         [key: string]: leveldata
     }
     type leveldata = {
-        lastScore: number,
+        score: number,
         bestScore: number
     }
     

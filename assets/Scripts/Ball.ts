@@ -57,6 +57,7 @@ export default class Ball extends cc.Component {
             if(other.node.group === "hole"){
                 other.getComponent(Hole).captureBall(this);
                 this.isReady = false;
+                this.level.isRun = false;
                 console.log("hole collision enter with "+other.name);
             }
         }
