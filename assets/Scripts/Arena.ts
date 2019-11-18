@@ -92,9 +92,9 @@ export default abstract class Arena extends cc.Component{
         }
     }
     startGame(){
-        Gameplay.instance.gameStart();
         this.isReady = false;
         this.level.reset();
+        Gameplay.instance.gameStart();
     }
     readyGame(){
         if(!this.isReady){
@@ -106,6 +106,7 @@ export default abstract class Arena extends cc.Component{
     restartGame(){
         
         this.startGame();
+        //Gameplay.instance.gameRestart();
     }
     finishGame(){
         this.isReady = false;
@@ -113,9 +114,10 @@ export default abstract class Arena extends cc.Component{
 
     }
     endGame(){
-        Gameplay.instance.gameEnd();
         
         this.level.end();
+
+        Gameplay.instance.gameEnd();
     }
     disable(){
         if(!this.node.active){
@@ -125,6 +127,7 @@ export default abstract class Arena extends cc.Component{
         }
     }
     onDisable(){
+        this.endGame();
         //this.writeSaveData();
     }
     readSaveData(){

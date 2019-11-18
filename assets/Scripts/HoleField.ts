@@ -10,19 +10,24 @@ export default class HoleField extends cc.Component {
     
     holesPool: cc.Node[] = [];
     activeHoles: cc.Node[] = [];
-    done = false;
+    done = true;
     clearDone = true;
     onLoad() {
-        this.holesPool = [...this.rectNode.children];
+        this.activeHoles = [...this.rectNode.children];
+        cc.log('copy children, count '+this.holesPool.length);
     }
     start(){
         this.clear();
     }
     clear(){
-        for(let n of this.holesPool){
-            n.active = false;
+        if(this.activeHoles.length){
+            for(let n of this.activeHoles){
+                n.active = false;
+            }
+            this.holesPool = this.activeHoles.splice(0);
+            this.clearDone = true;
+            console.log("_____field cleared " +this.node.name);
         }
-        this.clearDone = true;
     }
     setClear(){
         if(cc.Camera.main.containsNode(this.node)){
@@ -38,7 +43,7 @@ export default class HoleField extends cc.Component {
         this.clear();
         this.done = false;
     }
-    update(dt){
+    update(){
         this.holeEmitter();
         this.holeCleaner();
     }
@@ -46,8 +51,8 @@ export default class HoleField extends cc.Component {
         if(!this.clearDone && this.done){
             if(this.activeHoles.length){
                 let r = Math.floor(Math.random()*this.activeHoles.length);
-                let hn = this.activeHoles[r];
-                hn.active = false;
+                let hn = this.activeHoles.splice(r,1)[0];
+                hn.emit('remove');
                 this.holesPool.push(hn);
             }else{
                 this.clearDone = true;
@@ -58,8 +63,8 @@ export default class HoleField extends cc.Component {
         if(!this.done && this.clearDone){
             if(this.holesPool.length){
                 let r = Math.floor(Math.random()*this.holesPool.length);
-                let hn = this.holesPool[r];
-                hn.active = true;
+                let hn = this.holesPool.splice(r,1)[0];
+                hn.emit('spawn', ()=>{hn.active = true;});
                 this.activeHoles.push(hn);
             }else{
                 this.done = true;

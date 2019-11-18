@@ -46,25 +46,34 @@ export default class LevelsArena extends Arena{
         super.finishGame();
         this.showSummaryUI();
     }
+    endGame(){
+        super.endGame();
+        this.closeUI();
+    }
     /*
     **********--- UI ---*************
     */
-    resetUI(){
+    private resetUI(){
         this.scorePanel.active = false;
+        this.summaryPanel.getComponent(NavigationPanel).openPrevious();
         this.setScoreLabel(this.level.score);
     }
-    readyUI(){
+    private readyUI(){
         this.scorePanel.active = true;
     }
-    showSummaryUI(){
+    private showSummaryUI(){
         this.summaryPanel.getComponent(NavigationPanel).openNext();
         this.scoreLabel.string = this.level.sd.score +'m';
         this.setBestScoreLabel(this.level.sd.bestScore);
     }
-    setScoreLabel(sc: number){
+    private closeUI(){
+        this.scorePanel.active = false;
+        this.summaryPanel.getComponent(NavigationPanel).close();
+    }
+    private setScoreLabel(sc: number){
         this.scoreLabel.string = sc+'';
     }
-    setBestScoreLabel(sc: number){
+    private setBestScoreLabel(sc: number){
         this.bestScoreLabel.string = sc + 'm';
     }
     

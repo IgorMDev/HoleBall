@@ -22,7 +22,8 @@ export default class Gameplay extends cc.Component {
     @property(cc.Component.EventHandler)
     gameEndEvents: cc.Component.EventHandler[] = [];
     startGame(){
-        Arena.instance.startGame();
+        Arena.instance.enable();
+        this.gameStart();
     }
     pauseGame(){
         Gameplay.paused = true;
@@ -34,13 +35,15 @@ export default class Gameplay extends cc.Component {
         Arena.instance.restartGame()
     }
     exitGame(){
-        //Arena.instance.disable();
+        Arena.instance.disable();
+        this.gameEnd();
     }
     gameStart(){
         Gameplay.paused = false;
         this.gameStartEvents.forEach(val=>val.emit(null));
     }
     gameEnd(){
+        Gameplay.paused = true;
         this.gameEndEvents.forEach(val=>val.emit(null));
     }
 }

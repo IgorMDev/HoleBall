@@ -1,4 +1,4 @@
-import Ball from "./Ball";
+
 import Hole from "./Hole";
 
 const {ccclass, property, requireComponent} = cc._decorator;
@@ -18,8 +18,9 @@ export default class RandomHole extends cc.Component {
         this.ccol = this.getComponent(cc.CircleCollider);
     }
     setSize(r: number){
-        this.node.width = this.node.height = (r+this.border)*2;
-        this.getComponent(cc.CircleCollider).radius = r;
+        let nr = (r+this.border)*2;
+        this.node.setScale(this.node.width/nr, this.node.height/nr);
+        //this.getComponent(cc.CircleCollider).radius = r;
     }
     setRandSize(){
         let r = this.radiuses[Math.floor(Math.random()*this.radiuses.length)];

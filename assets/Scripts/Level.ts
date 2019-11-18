@@ -77,10 +77,13 @@ export default abstract class Level extends cc.Component {
         this.platform.remove();
     }
     end(){
-        this.writeSaveData();
+        
     }
     update(dt) {
         
+    }
+    onDestroy(){
+        this.writeSaveData();
     }
     moveBy(dy: number){
         if(dy !== 0){

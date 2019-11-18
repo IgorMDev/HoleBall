@@ -68,11 +68,13 @@ export default class NavigationPanel extends cc.Component {
             case cc.macro.KEY.back:
             case cc.macro.KEY.backspace:
             case cc.macro.KEY.escape:
+            if(NavigationPanel.focusedPanel.isOpen){
                 if(NavigationPanel.focusedPanel.onEscape.length){
                     NavigationPanel.focusedPanel.onEscape.forEach(val=>val.emit(null));
                 }else{
                     NavigationPanel.focusedPanel.openPrevious();
                 }
+            }
             break;
         }
     }

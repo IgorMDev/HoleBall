@@ -46,25 +46,35 @@ export default class EndlessArena extends Arena{
         super.finishGame();
         this.showSummaryUI();
     }
+    endGame(){
+        this.closeUI();
+        super.endGame();
+    }
     /*
     **********--- UI ---*************
     */
-    resetUI(){
+   private resetUI(){
         this.scorePanel.active = false;
+        this.summaryPanel.getComponent(NavigationPanel).openPrevious();
         this.setScoreLabel(this.level.score);
     }
-    readyUI(){
+    private readyUI(){
         this.scorePanel.active = true;
     }
-    showSummaryUI(){
+    private showSummaryUI(){
         this.summaryPanel.getComponent(NavigationPanel).openNext();
         this.scoreLabel.string = this.level.sd.score +'m';
         this.setBestScoreLabel(this.level.sd.bestScore);
     }
-    setScoreLabel(sc: number){
+    private closeUI(){
+        
+        this.summaryPanel.getComponent(NavigationPanel).close();
+        this.scorePanel.active = false;
+    }
+    private setScoreLabel(sc: number){
         this.scoreLabel.string = sc+'';
     }
-    setBestScoreLabel(sc: number){
+    private setBestScoreLabel(sc: number){
         this.bestScoreLabel.string = sc + 'm';
     }
 }

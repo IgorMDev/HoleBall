@@ -1,0 +1,43 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "TargetHole",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 4.8,
+  "sample": 25,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "paths": {
+      "rpattern1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 4.8,
+              "value": -360
+            }
+          ]
+        }
+      },
+      "rpattern2Mask/rpattern2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 18
+            },
+            {
+              "frame": 4.8,
+              "value": 378
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

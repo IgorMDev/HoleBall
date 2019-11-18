@@ -54,6 +54,9 @@ export default class RandomHoleField extends HoleField {
         this.fillHolesPool(this.numOfVariants);
         
     }
+    start(){
+
+    }
     clear(){
         if(this.cellsMap.size){
             for(let [,cn] of this.cellsMap){
@@ -93,9 +96,9 @@ export default class RandomHoleField extends HoleField {
            if(this.cellsMap.size){
                 let r = Math.floor(Math.random()*this.cellsMap.size);
                 let key = [...this.cellsMap.keys()][r];
-                let cell = this.cellsMap.get(key);
-                if(cell){
-                    cell.removeFromParent(false);
+                let cellNode = this.cellsMap.get(key);
+                if(cellNode){
+                    cellNode.emit('remove', ()=>{cellNode.removeFromParent(false);})
                     this.cellsMap.delete(key);
                 }
                 let estTime = Date.now() - this.startTime;
@@ -124,7 +127,8 @@ export default class RandomHoleField extends HoleField {
         }
     }
     spawnSample(h: cc.Node){
-        h.parent = this.node;
+        h.setParent(this.rectNode);
+        h.emit('spawn');
         let cell = this.freeCells.splice(this.freeCellIndex, 1)[0];
         this.cellsMap.set(cell[0]+''+cell[1], h);
         this.holesPool.splice(this.holeSampleIndex, 1);
