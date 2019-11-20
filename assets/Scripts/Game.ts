@@ -15,7 +15,10 @@ export default class Game extends cc.Component {
         return Game._instance || (Game._instance = this);
     }
     progressData = {};
-    levelsData: levelsdata = {}
+    settings: gamedata = {
+        sound: true, music: true,
+        controls: ControlType.Touch
+    }
     
     loadSaveData(){
 
@@ -23,13 +26,18 @@ export default class Game extends cc.Component {
 
     writeSaveData(){
         //Object.assign(this.saveData, JSON.parse(cc.sys.localStorage.getItem('saveData')));
-        console.log("endlessData "+this.levelsData);
     }
 }
+enum ControlType{
+    Keyboard, Touch, Tilt
+}
+window['ControlType'] = ControlType;
+
 declare global{
     type gamedata = {
         sound: boolean,
-        music: boolean
+        music: boolean,
+        controls: ControlType
     }
     type levelsdata = {
         [key: string]: leveldata
@@ -38,5 +46,7 @@ declare global{
         score: number,
         bestScore: number
     }
-    
+    enum ControlType{
+        Keyboard, Touch, Tilt
+    }
 }

@@ -102,6 +102,9 @@ export default abstract class Level extends cc.Component {
             this.platform.tiltBy(da);
         }
     }
+    tiltTo(a: number){
+        this.platform.tiltTo(a);
+    }
     moveWatchersBy(dy: number){
         for(let n of this.moveWatchers){
             n.y += dy*this.speed*this.moveDir;

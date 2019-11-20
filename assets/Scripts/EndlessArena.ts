@@ -55,7 +55,6 @@ export default class EndlessArena extends Arena{
     */
    private resetUI(){
         this.scorePanel.active = false;
-        this.summaryPanel.getComponent(NavigationPanel).openPrevious();
         this.setScoreLabel(this.level.score);
     }
     private readyUI(){

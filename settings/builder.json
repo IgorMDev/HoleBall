@@ -2,6 +2,7 @@
   "android-instant": {
     "REMOTE_SERVER_ROOT": "",
     "host": "",
+    "packageName": "com.leapp.holeball",
     "pathPattern": "",
     "recordPath": "",
     "scheme": "https",
@@ -15,7 +16,9 @@
     "subContext": ""
   },
   "encryptJs": false,
-  "excludeScenes": [],
+  "excludeScenes": [
+    "b33f4e1d-59a9-4df6-becd-eefa12ca7716"
+  ],
   "fb-instant-games": {},
   "includeSDKBox": false,
   "inlineSpriteFrames": true,
@@ -46,5 +49,15 @@
     "subContext": ""
   },
   "xxteaKey": "6f9b234d-9a88-4f",
-  "zipCompressJs": true
+  "zipCompressJs": true,
+  "android": {
+    "packageName": "com.leapp.holeball"
+  },
+  "ios": {
+    "packageName": "com.leapp.holeball"
+  },
+  "mac": {
+    "packageName": "com.leapp.holeball"
+  },
+  "win32": {}
 }

@@ -31,7 +31,7 @@ export default class PlatformBlock extends cc.Component {
         this.moveAcc = this.node.addComponent(Accelerator);
         this.rotAcc = this.node.addComponent(Accelerator);
         this.moveAcc.isFlipping = true;
-        this.rotAcc.isFlipping = true;
+        this.rotAcc.isFlipping = false;
         this.moveAcc.setEasing(this.moveEasing);
         this.rotAcc.setEasing(this.rotEasing);
     }
@@ -60,5 +60,8 @@ export default class PlatformBlock extends cc.Component {
     }
     tiltBy(da){
         this.node.angle = Mathu.clamp(this.node.angle + this.rotAcc.by(da)*this.rotationSpeed*cc.director.getDeltaTime(), -this.rotaionConstraint, this.rotaionConstraint);
+    }
+    tiltTo(a){
+        this.node.angle = Mathu.clamp(this.rotaionConstraint * this.rotAcc.by(a*cc.director.getDeltaTime())*this.rotationSpeed*cc.director.getDeltaTime(), -this.rotaionConstraint, this.rotaionConstraint);  
     }
 }
