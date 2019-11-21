@@ -62,6 +62,6 @@ export default class PlatformBlock extends cc.Component {
         this.node.angle = Mathu.clamp(this.node.angle + this.rotAcc.by(da)*this.rotationSpeed*cc.director.getDeltaTime(), -this.rotaionConstraint, this.rotaionConstraint);
     }
     tiltTo(a){
-        this.node.angle = Mathu.clamp(this.rotaionConstraint * this.rotAcc.by(a*cc.director.getDeltaTime())*this.rotationSpeed*cc.director.getDeltaTime(), -this.rotaionConstraint, this.rotaionConstraint);  
+        this.node.angle = Mathu.clamp(Mathu.moveTowards(this.node.angle, this.rotaionConstraint * a,this.rotationSpeed*cc.director.getDeltaTime()) , -this.rotaionConstraint, this.rotaionConstraint);  
     }
 }

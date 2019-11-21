@@ -70,28 +70,28 @@ export default abstract class Arena extends cc.Component{
     update(dt) {
         if(this.isReady && !Gameplay.paused){
             
-            switch(Game.instance.settings.controls){
-                case ControlType.Keyboard:
-                    this.moveAxis = KeyboardInput.getAxis(cc.macro.KEY.up, cc.macro.KEY.down);
-                    this.rotAxis = KeyboardInput.getAxis(cc.macro.KEY.left, cc.macro.KEY.right);
-                    this.level.moveBy(this.moveAxis*dt);
-                    this.level.tiltBy(this.rotAxis*dt);
-                    break;
-                case ControlType.Touch:
-                    if(this.touchAxes.isTouch()){
-                    this.moveAxis = this.touchAxes.isTouch();
-                    this.rotAxis = MathUtils.clamp(-this.touchAxes.getHorizontal(), -1, 1);
-                    this.level.moveBy(this.moveAxis*dt);
-                    this.level.tiltTo(this.rotAxis);
-                    }
-                    break;
-                case ControlType.Tilt:
-                    if(this.tiltAxes.isTouch()){
-                    this.moveAxis = this.tiltAxes.isTouch();
-                    this.rotAxis = MathUtils.clamp(-this.tiltAxes.getHorizontal(), -1, 1);
-                    }
-                    break;
-            }
+            // switch(Game.instance.settings.controls){
+            //     case ControlType.Keyboard:
+            //         this.moveAxis = KeyboardInput.getAxis(cc.macro.KEY.up, cc.macro.KEY.down);
+            //         this.rotAxis = KeyboardInput.getAxis(cc.macro.KEY.left, cc.macro.KEY.right);
+            //         this.level.moveBy(this.moveAxis*dt);
+            //         this.level.tiltBy(this.rotAxis*dt);
+            //         break;
+            //     case ControlType.Touch:
+            //         if(this.touchAxes.isTouch()){
+            //         this.moveAxis = this.touchAxes.isTouch();
+            //         this.rotAxis = MathUtils.clamp(-this.touchAxes.getHorizontal(), -1, 1);
+            //         this.level.moveBy(this.moveAxis*dt);
+            //         this.level.tiltTo(this.rotAxis);
+            //         }
+            //         break;
+            //     case ControlType.Tilt:
+            //         if(this.tiltAxes.isTouch()){
+            //         this.moveAxis = this.tiltAxes.isTouch();
+            //         this.rotAxis = MathUtils.clamp(-this.tiltAxes.getHorizontal(), -1, 1);
+            //         }
+            //         break;
+            // }
         }
     }
     loadLevelHandler(s, data){
