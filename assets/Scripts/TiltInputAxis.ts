@@ -20,6 +20,8 @@ export default class TiltInputAxis extends cc.Component {
         if(!this.arena){
             this.arena = this.getComponent(Arena);
         }
+        this.arena.node.on('resumed', this.onResume, this);
+        this.arena.node.on('paused', this.onPause, this);
         cc.systemEvent.setAccelerometerEnabled(true);
         this.touchArea.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.touchArea.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
@@ -38,6 +40,12 @@ export default class TiltInputAxis extends cc.Component {
         if(this.isActive){
             this.arena.level.moveBy(this.movePoint.y/this.moveUnit*dt);
         }
+    }
+    onResume(){
+
+    }
+    onPause(){
+
     }
     onTouchStart(event: cc.Event.EventTouch){
         if(event.getID() < 1){

@@ -28,10 +28,13 @@
     "_components": [
       {
         "__id__": 14
+      },
+      {
+        "__id__": 15
       }
     ],
     "_prefab": {
-      "__id__": 15
+      "__id__": 16
     },
     "_opacity": 255,
     "_color": {
@@ -318,7 +321,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 340,
+      "width": 400,
       "height": 110
     },
     "_anchorPoint": {
@@ -373,7 +376,7 @@
     "_N$string": "Tilt",
     "_fontSize": 80,
     "_lineHeight": 40,
-    "_enableWrapText": false,
+    "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "95131442-abb9-4947-81aa-11407f374b23"
     },
@@ -382,8 +385,8 @@
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Verdana",
-    "_N$overflow": 1,
+    "_N$fontFamily": "",
+    "_N$overflow": 2,
     "_N$cacheMode": 0,
     "_id": ""
   },
@@ -400,8 +403,8 @@
       "__id__": 6
     },
     "_alignFlags": 45,
-    "_left": 80,
-    "_right": 80,
+    "_left": 50,
+    "_right": 50,
     "_top": 20,
     "_bottom": 20,
     "_verticalCenter": 0,
@@ -523,30 +526,30 @@
     },
     "_N$pressedColor": {
       "__type__": "cc.Color",
-      "r": 200,
-      "g": 200,
-      "b": 200,
+      "r": 148,
+      "g": 148,
+      "b": 148,
       "a": 255
     },
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 200,
-      "g": 200,
-      "b": 200,
+      "r": 148,
+      "g": 148,
+      "b": 148,
       "a": 255
     },
     "_N$hoverColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 192,
+      "g": 192,
+      "b": 192,
       "a": 255
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 192,
+      "g": 192,
+      "b": 192,
       "a": 255
     },
     "_N$disabledColor": {
@@ -577,6 +580,29 @@
     "_N$target": {
       "__id__": 6
     },
+    "_id": ""
+  },
+  {
+    "__type__": "07c7fRC/yxMU7mmXCoc7zKa",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "target": null,
+    "hoverDelta": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "pressedDelta": {
+      "__type__": "cc.Vec2",
+      "x": 10,
+      "y": -20
+    },
+    "duration": 0.1,
+    "easing": "linear",
     "_id": ""
   },
   {

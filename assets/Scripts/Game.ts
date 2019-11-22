@@ -17,7 +17,7 @@ export default class Game extends cc.Component {
     progressData = {};
     settings: gamedata = {
         sound: true, music: true,
-        controls: ControlType.Touch
+        controls: new Set([ControlType.Touch])
     }
     
     loadSaveData(){
@@ -26,6 +26,9 @@ export default class Game extends cc.Component {
 
     writeSaveData(){
         //Object.assign(this.saveData, JSON.parse(cc.sys.localStorage.getItem('saveData')));
+    }
+    exit(){
+        cc.game.end();
     }
 }
 enum ControlType{
@@ -37,7 +40,7 @@ declare global{
     type gamedata = {
         sound: boolean,
         music: boolean,
-        controls: ControlType
+        controls: Set<ControlType>
     }
     type levelsdata = {
         [key: string]: leveldata

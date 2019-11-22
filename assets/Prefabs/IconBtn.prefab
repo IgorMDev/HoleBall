@@ -31,10 +31,13 @@
       },
       {
         "__id__": 14
+      },
+      {
+        "__id__": 15
       }
     ],
     "_prefab": {
-      "__id__": 15
+      "__id__": 16
     },
     "_opacity": 255,
     "_color": {
@@ -492,30 +495,30 @@
     },
     "_N$pressedColor": {
       "__type__": "cc.Color",
-      "r": 200,
-      "g": 200,
-      "b": 200,
+      "r": 149,
+      "g": 149,
+      "b": 149,
       "a": 255
     },
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 200,
-      "g": 200,
-      "b": 200,
+      "r": 149,
+      "g": 149,
+      "b": 149,
       "a": 255
     },
     "_N$hoverColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 193,
+      "g": 193,
+      "b": 193,
       "a": 255
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 193,
+      "g": 193,
+      "b": 193,
       "a": 255
     },
     "_N$disabledColor": {
@@ -573,6 +576,29 @@
     "_isAbsVerticalCenter": true,
     "_originalWidth": 0,
     "_originalHeight": 0,
+    "_id": ""
+  },
+  {
+    "__type__": "07c7fRC/yxMU7mmXCoc7zKa",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "target": null,
+    "hoverDelta": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "pressedDelta": {
+      "__type__": "cc.Vec2",
+      "x": 10,
+      "y": -20
+    },
+    "duration": 0.1,
+    "easing": "linear",
     "_id": ""
   },
   {

@@ -35,7 +35,6 @@ export default class NavigationPanel extends cc.Component {
     show(){
         if(!this.isShow){
             this.node.active = true;
-            NavigationPanel.focusedPanel = this;
             this.isShow = true;
         }
     }
@@ -45,10 +44,12 @@ export default class NavigationPanel extends cc.Component {
         
     }
     openPrevious(){
-        if(this.prevPanel){
-            this.prevPanel.open();
-        }
+        let prev = this.prevPanel;
         this.closeNext(this);
+        if(prev){
+            prev.nextPanel = null;
+            prev.open();
+        }
     }
     close(){
         if(this.prevPanel){
@@ -64,17 +65,21 @@ export default class NavigationPanel extends cc.Component {
                 this.prevPanel = NavigationPanel.focusedPanel;
                 this.prevPanel.nextPanel = this;
             }
+            NavigationPanel.focusedPanel = this;
             this.show();
             this.onOpen();
         }else if(!this.isShow){
+            NavigationPanel.focusedPanel = this;
             this.show();
         }
-        
+        cc.log('opened panel '+this.node.name+'\nprev '+(this.prevPanel ? this.prevPanel.node.name : null))
     }
-    private closeNext(next?: NavigationPanel){
+    closeNext(next?: NavigationPanel){
+        cc.log('closed panel '+this.node.name+'\nprev '+(this.prevPanel? this.prevPanel.node.name : null)+
+        '\nnext '+(this.nextPanel ? this.nextPanel.node.name : null))
         if(!next) next = this;
         if(next.nextPanel){
-            this.closeNext(next.nextPanel);
+            next.nextPanel.closeNext();
         }
         if(next.isOpen){
             this.isOpen = false;
@@ -84,6 +89,7 @@ export default class NavigationPanel extends cc.Component {
         }else if(next.isShow){
             next.hide();
         }
+        
     }
     onOpen(){
         

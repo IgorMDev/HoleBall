@@ -39,6 +39,7 @@
   "excluded-modules": [
     "DragonBones",
     "Mesh",
+    "RichText",
     "Spine Skeleton",
     "TiledMap",
     "VideoPlayer",
@@ -71,6 +72,5 @@
     "width": 720
   },
   "use-customize-simulator": true,
-  "use-project-simulator-setting": true,
-  "start-scene": "current"
+  "use-project-simulator-setting": true
 }

@@ -25,7 +25,6 @@ export default class NavigationBtn extends cc.Component {
             cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, NavigationBtn.onKeyUp);
             this.isFocused = false;
         }
-        
     }
     hide(){
         this.node.active = false;
@@ -66,7 +65,6 @@ export default class NavigationBtn extends cc.Component {
                 break;
                 case cc.Button.Transition.SCALE:
                     this.btn.node.scale *= (Math.floor(this.btn.zoomScale)+this.btn.zoomScale)/2;
-                    
                 break;
                 case cc.Button.Transition.SPRITE:
                     this.btn.target.getComponent(cc.Sprite).spriteFrame = this.btn.hoverSprite;

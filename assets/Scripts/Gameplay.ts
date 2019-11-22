@@ -1,4 +1,5 @@
 import Arena from "./Arena";
+import Game from "./Game";
 
 //import encrypt from "encryptjs";
 
@@ -27,9 +28,11 @@ export default class Gameplay extends cc.Component {
     }
     pauseGame(){
         Gameplay.paused = true;
+        Arena.instance.onPause();
     }
     resumeGame(){
         Gameplay.paused = false;
+        Arena.instance.onResume();
     }
     restartGame(){
         Arena.instance.restartGame()
@@ -45,6 +48,33 @@ export default class Gameplay extends cc.Component {
     gameEnd(){
         Gameplay.paused = true;
         this.gameEndEvents.forEach(val=>val.emit(null));
+    }
+    setKeyboardControlsHandler(s, data){
+        this.setKeyboardControls(data === 'false' ? false : true);
+    }
+    setTouchControlsHandler(s, data){
+        this.setTouchControls(data === 'false' ? false : true);
+    }
+    setTiltControlsHandler(s, data){
+        this.setTiltControls(data === 'false' ? false : true);
+    }
+    setKeyboardControls(yes = true){
+        if(yes) this.addControls(ControlType.Keyboard);
+        else this.removeControls(ControlType.Keyboard);
+    }
+    setTouchControls(yes = true){
+        if(yes) this.addControls(ControlType.Touch);
+        else this.removeControls(ControlType.Touch);
+    }
+    setTiltControls(yes = true){
+        if(yes) this.addControls(ControlType.Tilt);
+        else this.removeControls(ControlType.Tilt);
+    }
+    addControls(c: ControlType){
+        Game.instance.settings.controls.add(c);
+    }
+    removeControls(c: ControlType){
+        Game.instance.settings.controls.delete(c);
     }
 }
 

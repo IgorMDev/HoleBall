@@ -1,13 +1,7 @@
-import BallSpawner from "./BallSpawner";
-import Ball from "./Ball";
-import PlatformBlock from "./Block";
+
 import Level from "./Level";
 import Game from "./Game";
-import KeyboardInput from "./KeyboardInput";
 import Gameplay from "./Gameplay";
-import ArenaUI from "./UI/ArenaUI";
-import TouchInputAxis from "./TouchInputAxis";
-import TiltInputAxis from "./TiltInputAxis";
 import MathUtils from "./MathModule";
 
 const {ccclass, property, executionOrder, disallowMultiple} = cc._decorator;
@@ -34,8 +28,6 @@ export default abstract class Arena extends cc.Component{
     @property(cc.String)
     levelsPath: string = '';
 
-    touchAxes: TouchInputAxis = null;
-    tiltAxes: TiltInputAxis = null;
     moveAxis = 0;
     rotAxis = 0;
     isReady = false;
@@ -46,8 +38,6 @@ export default abstract class Arena extends cc.Component{
         }
         this.level.arena = this;
         this.readSaveData();
-        this.touchAxes = this.getComponent(TouchInputAxis);
-        this.tiltAxes = this.getComponent(TiltInputAxis);
         cc.log("@@@ arena loaded");
     
     }
@@ -67,33 +57,11 @@ export default abstract class Arena extends cc.Component{
             this.node.active = true;
         }
     }
-    update(dt) {
-        if(this.isReady && !Gameplay.paused){
+    // update(dt) {
+    //     if(this.isReady && !Gameplay.paused){
             
-            // switch(Game.instance.settings.controls){
-            //     case ControlType.Keyboard:
-            //         this.moveAxis = KeyboardInput.getAxis(cc.macro.KEY.up, cc.macro.KEY.down);
-            //         this.rotAxis = KeyboardInput.getAxis(cc.macro.KEY.left, cc.macro.KEY.right);
-            //         this.level.moveBy(this.moveAxis*dt);
-            //         this.level.tiltBy(this.rotAxis*dt);
-            //         break;
-            //     case ControlType.Touch:
-            //         if(this.touchAxes.isTouch()){
-            //         this.moveAxis = this.touchAxes.isTouch();
-            //         this.rotAxis = MathUtils.clamp(-this.touchAxes.getHorizontal(), -1, 1);
-            //         this.level.moveBy(this.moveAxis*dt);
-            //         this.level.tiltTo(this.rotAxis);
-            //         }
-            //         break;
-            //     case ControlType.Tilt:
-            //         if(this.tiltAxes.isTouch()){
-            //         this.moveAxis = this.tiltAxes.isTouch();
-            //         this.rotAxis = MathUtils.clamp(-this.tiltAxes.getHorizontal(), -1, 1);
-            //         }
-            //         break;
-            // }
-        }
-    }
+    //     }
+    // }
     loadLevelHandler(s, data){
         cc.log("%%%%%% sender "+ typeof s);
         cc.log("%%%%%% data "+data);
@@ -143,6 +111,7 @@ export default abstract class Arena extends cc.Component{
     endGame(){
         
         this.level.end();
+        //this.writeSaveData();
         this.disable();
         Gameplay.instance.gameEnd();
     }
@@ -154,7 +123,13 @@ export default abstract class Arena extends cc.Component{
         }
     }
     onDisable(){
-        //this.writeSaveData();
+        
+    }
+    onPause(){
+        this.node.emit('paused');
+    }
+    onResume(){
+        this.node.emit('resumed');
     }
     readSaveData(){
         this.sd = Game.instance.progressData[this.node.name];
