@@ -49,32 +49,5 @@ export default class Gameplay extends cc.Component {
         Gameplay.paused = true;
         this.gameEndEvents.forEach(val=>val.emit(null));
     }
-    setKeyboardControlsHandler(s, data){
-        this.setKeyboardControls(data === 'false' ? false : true);
-    }
-    setTouchControlsHandler(s, data){
-        this.setTouchControls(data === 'false' ? false : true);
-    }
-    setTiltControlsHandler(s, data){
-        this.setTiltControls(data === 'false' ? false : true);
-    }
-    setKeyboardControls(yes = true){
-        if(yes) this.addControls(ControlType.Keyboard);
-        else this.removeControls(ControlType.Keyboard);
-    }
-    setTouchControls(yes = true){
-        if(yes) this.addControls(ControlType.Touch);
-        else this.removeControls(ControlType.Touch);
-    }
-    setTiltControls(yes = true){
-        if(yes) this.addControls(ControlType.Tilt);
-        else this.removeControls(ControlType.Tilt);
-    }
-    addControls(c: ControlType){
-        Game.instance.settings.controls.add(c);
-    }
-    removeControls(c: ControlType){
-        Game.instance.settings.controls.delete(c);
-    }
 }
 

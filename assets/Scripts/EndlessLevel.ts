@@ -1,10 +1,13 @@
 
 import Level from "./Level";
+import RandomHoleField from "./RandomHoleField";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class EndlessLevel extends Level {
+    @property({type:RandomHoleField, override: true})
+    holeFields: RandomHoleField[] = [];
     @property
     meterScale = 10;
     @property(cc.Node)
@@ -40,11 +43,9 @@ export default class EndlessLevel extends Level {
     moveBy(dy: number){
         super.moveBy(dy);
         if(dy !== 0 && this.isRun){
-            // if(dy < 0 && this.scoreCounter > 0 || dy > 0 && this.scoreCounter < 0){
-            //     this.scoreCounter = 0;
-            // }
             this.scoreCounter += dy*this.speed;
-            this.score = Math.floor(this.scoreCounter/this.meterScale);
+            if(this.scoreCounter >= 0)
+                this.score = Math.floor(this.scoreCounter/this.meterScale);
         }
         
     }
@@ -57,6 +58,9 @@ export default class EndlessLevel extends Level {
                 console.log("treshhold down");
             }
         }
+    }
+    speedUp(){
+        
     }
     onLevelUp(){
         

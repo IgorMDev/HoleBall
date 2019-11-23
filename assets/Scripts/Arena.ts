@@ -28,8 +28,6 @@ export default abstract class Arena extends cc.Component{
     @property(cc.String)
     levelsPath: string = '';
 
-    moveAxis = 0;
-    rotAxis = 0;
     isReady = false;
     sd = {};
     onLoad(){

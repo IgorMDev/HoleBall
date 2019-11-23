@@ -16,13 +16,6 @@ export default abstract class TransitionBtn extends cc.Component {
         if(!this.target) this.target = this.btn.target;
         this.registerEvents();
     }
-    onEnable(){
-        //this.btn.enabled = this.enabled = true;
-        
-    }
-    onDisable(){
-        //this.btn.enabled = this.enabled = false;
-    }
     onDestroy(){
         this.unregisterEvents();
     }
@@ -57,32 +50,32 @@ export default abstract class TransitionBtn extends cc.Component {
     }
     enable(){
         if(!this.enabled){
-            this.onEnable();
+            this.enabled = true;
         }
     }
     disable(){
         if(this.enabled){
-            this.onDisable();
+            this.enabled = false;
         }
     }
     onTouchStart(e){
-        if(this.pressedTween){
+        if(this.pressedTween && this.btn.interactable){
             this.pressedTween.start();
         }
     }
     onTouchEnd(e){
-        if(this.pressedTween){
+        if(this.pressedTween && this.btn.interactable){
             this.pressedTween.stop();
             this.resetTween.start();
         }
     }
     onHoverIn(){
-        if(this.hoverTween){
+        if(this.hoverTween && this.btn.interactable){
             this.hoverTween.start();
         }
     }
     onHoverOut(){
-        if(this.hoverTween){
+        if(this.hoverTween && this.btn.interactable){
             this.hoverTween.stop();
             this.resetTween.start();
         }

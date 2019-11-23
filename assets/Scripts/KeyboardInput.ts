@@ -37,13 +37,29 @@ export default class KeyboardInput extends cc.Component {
     }
     static getAxis(pk: key, nk: key){
         let res = 0;
-        if(KeyboardInput._instance.pressedKeys.has(pk)){
+        if(KeyboardInput.instance.pressedKeys.has(pk)){
             res++;
         }
-        if(KeyboardInput._instance.pressedKeys.has(nk)){
+        if(KeyboardInput.instance.pressedKeys.has(nk)){
             res--;
         }
         return res;
+    }
+    static getAxes(pk: key[], nk: key[]){
+        let res = 0;
+        if(pk.some(el => KeyboardInput.instance.pressedKeys.has(el))){
+            res++;
+        }
+        if(nk.some(el => KeyboardInput.instance.pressedKeys.has(el))){
+            res--;
+        }
+        return res;
+    }
+    static isSomeKeyPressed(){
+        if(KeyboardInput._instance.pressedKeys.size > 0){
+            return true;
+        }
+        return false;
     }
     static getKey(k: key){
         return KeyboardInput._instance.pressedKeys.has(k);

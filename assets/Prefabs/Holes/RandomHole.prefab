@@ -176,7 +176,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "6d49b355-ec2a-4d8c-9956-e84aff0f500c"
     },
     "fileId": "c8HYN/JQ1J1ZeC0kW5xAv5",
     "sync": false
@@ -258,7 +258,9 @@
       72,
       80,
       88,
-      96
+      96,
+      104,
+      112
     ],
     "_id": ""
   },
@@ -268,7 +270,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "6d49b355-ec2a-4d8c-9956-e84aff0f500c"
     },
     "fileId": "bfB9yzFFZLYLQZcYF0gCFA",
     "sync": false

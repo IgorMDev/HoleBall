@@ -17,7 +17,7 @@ export default class Game extends cc.Component {
     progressData = {};
     settings: gamedata = {
         sound: true, music: true,
-        controls: new Set([ControlType.Touch])
+        controls: new Set([ControlType.Touch, ControlType.Keyboard])
     }
     
     loadSaveData(){

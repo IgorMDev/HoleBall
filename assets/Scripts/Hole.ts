@@ -35,7 +35,7 @@ export default class Hole extends cc.Component {
     }
     captureBall(b: Ball){
         b.node.setParent(this.node);
-        if(this.node.scale > 1){
+        if(this.node.scale != 0){
             b.node.scale = 1 / this.node.scale;
         }
         let p = b.node.position.normalizeSelf().mulSelf(this.ccol.radius - b.radius);

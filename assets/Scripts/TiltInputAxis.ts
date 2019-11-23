@@ -1,4 +1,5 @@
 import Arena from "./Arena";
+import Game from "./Game";
 
 const {ccclass, property} = cc._decorator;
 
@@ -21,20 +22,16 @@ export default class TiltInputAxis extends cc.Component {
             this.arena = this.getComponent(Arena);
         }
         this.arena.node.on('resumed', this.onResume, this);
-        this.arena.node.on('paused', this.onPause, this);
-        cc.systemEvent.setAccelerometerEnabled(true);
-        this.touchArea.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
-        this.touchArea.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
-        this.touchArea.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
-        this.touchArea.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
-        cc.systemEvent.on(cc.SystemEvent.EventType.DEVICEMOTION, this.onTilt, this);
+        this.checkControls();
+    }
+    onEnable(){
+        this.registerEvents();
+    }
+    onDisable(){
+        this.unregisterEvents();
     }
     onDestroy(){
-        this.touchArea.off(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
-        this.touchArea.off(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
-        this.touchArea.off(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
-        this.touchArea.off(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
-        cc.systemEvent.off(cc.SystemEvent.EventType.DEVICEMOTION, this.onTilt, this);
+        
     }
     update(dt){
         if(this.isActive){
@@ -42,10 +39,30 @@ export default class TiltInputAxis extends cc.Component {
         }
     }
     onResume(){
-
+        this.checkControls();
     }
-    onPause(){
-
+    checkControls(){
+        if(Game.instance.settings.controls.has(ControlType.Tilt)){
+            this.enabled = true;
+        }else{
+            this.enabled = false;
+        }
+    }
+    registerEvents(){
+        cc.systemEvent.setAccelerometerEnabled(true);
+        this.touchArea.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
+        this.touchArea.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
+        this.touchArea.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
+        this.touchArea.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
+        cc.systemEvent.on(cc.SystemEvent.EventType.DEVICEMOTION, this.onTilt, this);
+    }
+    unregisterEvents(){
+        cc.systemEvent.setAccelerometerEnabled(false);
+        this.touchArea.off(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
+        this.touchArea.off(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
+        this.touchArea.off(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
+        this.touchArea.off(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
+        cc.systemEvent.off(cc.SystemEvent.EventType.DEVICEMOTION, this.onTilt, this);
     }
     onTouchStart(event: cc.Event.EventTouch){
         if(event.getID() < 1){

@@ -1,4 +1,5 @@
 import Arena from "./Arena";
+import Game from "./Game";
 
 const {ccclass, property} = cc._decorator;
 
@@ -20,22 +21,45 @@ export default class TouchInputAxis extends cc.Component {
         if(!this.arena){
             this.arena = this.getComponent(Arena);
         }
+        this.arena.node.on('resumed', this.onResume, this);
+        this.checkControls();
+    }
+    onEnable(){
+        this.registerEvents();
+    }
+    onDisable(){
+        this.unregisterEvents();
+    }
+    onDestroy(){
+        
+    }
+    update(dt){
+        if(this.isActive){
+            this.arena.level.moveBy(this.movePoint.y/this.moveUnit*dt);
+            this.arena.level.tiltTo(this.movePoint.x/this.rotUnit);
+        }
+    }
+    onResume(){
+        this.checkControls();
+    }
+    checkControls(){
+        if(Game.instance.settings.controls.has(ControlType.Touch)){
+            this.enabled = true;
+        }else{
+            this.enabled = false;
+        }
+    }
+    registerEvents(){
         this.touchArea.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.touchArea.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
         this.touchArea.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
         this.touchArea.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
     }
-    onDestroy(){
+    unregisterEvents(){
         this.touchArea.off(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.touchArea.off(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
         this.touchArea.off(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
         this.touchArea.off(cc.Node.EventType.TOUCH_CANCEL, this.onTouchEnd, this);
-    }
-    update(dt){
-        if(this.isActive){
-            this.arena.level.moveBy(this.movePoint.y/this.moveUnit*dt);
-            this.arena.level.tiltTo(-this.movePoint.x/this.rotUnit);
-        }
     }
     onTouchStart(event: cc.Event.EventTouch){
         cc.log('touch start id'+event.getID());
