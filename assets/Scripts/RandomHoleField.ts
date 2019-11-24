@@ -1,5 +1,4 @@
-import Hole from "./Hole";
-import HoleSpawner from "./HoleSpawner";
+
 import HoleField from "./HoleField";
 import RandomHole from "./RandomHole";
 
@@ -17,13 +16,13 @@ export default class RandomHoleField extends HoleField {
     cellSize = 100;
     @property({min: 0, max: 1})
     maxFillPercentage = 0.5;
-    
+
+    timeout = 2500;
     holesPool: cc.Node[] = [];
     activeHoles: cc.Node[] = [];
     holeSampleIndex = null;
     freeCellIndex = null;
-    level = 1;
-    numOfVariants = 0;
+    holeVariant = 0;
     holesLimit = 20;
     numOfHoles = 0;
     cellsMap: Map<string,cc.Node> = new Map();
@@ -51,7 +50,7 @@ export default class RandomHoleField extends HoleField {
             }
         }
         this.holesLimit = this.rows*this.columns*this.maxFillPercentage;
-        this.fillHolesPool(this.numOfVariants);
+        this.fillHolesPool(this.holeVariant);
         
     }
     start(){
@@ -102,7 +101,7 @@ export default class RandomHoleField extends HoleField {
                     this.cellsMap.delete(key);
                 }
                 let estTime = Date.now() - this.startTime;
-                if(this.clearDone = estTime > 2000){
+                if(this.clearDone = estTime > this.timeout){
                     this.clear();
                 }
             }else{
@@ -120,7 +119,7 @@ export default class RandomHoleField extends HoleField {
                     }
                 }
                 let estTime = Date.now() - this.startTime;
-                this.done = estTime > 2000;
+                this.done = estTime > this.timeout;
             }else{
                 this.done = true;
             }
@@ -176,7 +175,7 @@ export default class RandomHoleField extends HoleField {
         return null;
     }
     fillHolesPool(variant){
-        if(variant < this.holePrefabs.length && this.holesPool.length < this.holesLimit*2){
+        if(variant < this.holePrefabs.length && this.holesPool.length < this.rows*this.columns*2){
             let h = this.holePrefabs[variant];
             let fillNum = this.rows*this.columns*(this.holesDensity[variant] || 0);
             for(let i = 0; i < fillNum; i++){
@@ -185,5 +184,23 @@ export default class RandomHoleField extends HoleField {
             //console.log("-------pool filled with "+fillNum+" holes of variant "+variant);
         }
     }
-    
+    levelUp(){
+        let r = Math.random();
+        if(r < 0.6){
+            this.fillRateUp();
+        }else{
+            this.revealNextHole();
+        }
+    }
+    fillRateUp(){
+        this.maxFillPercentage = cc.misc.clamp01(this.maxFillPercentage + 0.05);
+        this.holesLimit = this.rows*this.columns*this.maxFillPercentage;
+        cc.log(this.node.name+ 'fill rate up');
+    }
+    revealNextHole(){
+        if(this.holeVariant < this.holePrefabs.length){
+            this.fillHolesPool(this.holeVariant++);
+            cc.log(this.node.name+ 'revealed new node');
+        }
+    }
 }

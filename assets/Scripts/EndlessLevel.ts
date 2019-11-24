@@ -32,14 +32,14 @@ export default class EndlessLevel extends Level {
         super.finish();
         cc.tween(this.ground).to(0.5,{y: -this.node.height/2},null).start();
     }
-    update(dt){
-        super.update(dt);
-        if(this.isRun){
-            // this.ground.y += (this.groundSpeed-this.dy*this.speed)*dt;
-            // this.ground.y = MathUtils.clamp(this.ground.y, -this.node.height/2, 0);
+    // update(dt){
+    //     //super.update(dt);
+    //     if(this.isRun){
+    //         // this.ground.y += (this.groundSpeed-this.dy*this.speed)*dt;
+    //         // this.ground.y = cc.misc.clampf(this.ground.y, -this.node.height/2 - 100, 0);
             
-        }
-    }
+    //     }
+    // }
     moveBy(dy: number){
         super.moveBy(dy);
         if(dy !== 0 && this.isRun){
@@ -51,7 +51,7 @@ export default class EndlessLevel extends Level {
     }
     moveFieldBy(dy: number){
         for(let field of this.holeFields){
-            field.node.y += dy*-this.speed;
+            field.node.y += dy*this.speed*this.moveDir;
             if(dy > 0 && field.node.y < -this.node.height/2-field.node.height/2){
                 field.node.y += this.node.height*this.holeFields.length;
                 field.reset();
@@ -59,10 +59,11 @@ export default class EndlessLevel extends Level {
             }
         }
     }
+    progressChecker(){
+        
+    }
     speedUp(){
-        
+        this.speed += 25;
     }
-    onLevelUp(){
-        
-    }
+    
 }

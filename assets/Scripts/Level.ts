@@ -79,9 +79,9 @@ export default abstract class Level extends cc.Component {
     end(){
         
     }
-    update(dt) {
+    // update(dt) {
         
-    }
+    // }
     onDestroy(){
         this.writeSaveData();
     }
@@ -143,6 +143,6 @@ export default abstract class Level extends cc.Component {
         cc.log(this.node.name+" save data "+JSON.stringify(this.sd));
     }
     writeSaveData(){
-        Game.instance.progressData[this.arena.node.name][this.node.name] = this.sd;
+        //Game.instance.progressData[this.arena.node.name][this.node.name] = this.sd;
     }
 }

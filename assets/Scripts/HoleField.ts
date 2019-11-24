@@ -1,5 +1,3 @@
-import Hole from "./Hole";
-import HoleSpawner from "./HoleSpawner";
 
 const {ccclass, property} = cc._decorator;
 
