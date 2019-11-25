@@ -16,6 +16,7 @@ export default class TiltInputAxis extends cc.Component {
 
     startPoint: cc.Vec2 = cc.Vec2.ZERO;
     movePoint: cc.Vec2 = cc.Vec2.ZERO;
+    accVec: cc.Vec2 = cc.Vec2.ZERO;
     isActive = false;
     onLoad(){
         if(!this.arena){
@@ -36,6 +37,8 @@ export default class TiltInputAxis extends cc.Component {
     update(dt){
         if(this.isActive){
             this.arena.level.moveBy(this.movePoint.y/this.moveUnit*dt);
+            this.arena.level.tiltTo(this.accVec.x/this.accUnit);
+
         }
     }
     onResume(){
@@ -83,10 +86,9 @@ export default class TiltInputAxis extends cc.Component {
         }
     }
     onTilt(event){
-        let accX = event.acc.x;
-        if(accX){
-            this.arena.level.tiltTo(accX/this.accUnit);
-            cc.log('acc vector x '+accX);
+        if(event.acc){
+            this.accVec.set(event.acc);
+            cc.log('acc vector x '+event.acc);
         }
     }
 }

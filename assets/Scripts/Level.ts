@@ -8,6 +8,7 @@ import KeyboardInput from "./KeyboardInput";
 import Gameplay from "./Gameplay";
 import Game from "./Game";
 import HoleField from "./HoleField";
+import BackgroundGrad from "./BackgroundGrad";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -109,11 +110,13 @@ export default abstract class Level extends cc.Component {
         for(let n of this.moveWatchers){
             n.y += dy*this.speed*this.moveDir;
         }
+        BackgroundGrad._instance.moveY(dy*this.speed*this.moveDir);
     }
     moveFieldBy(dy: number){
         for(let field of this.holeFields){
             field.node.y += dy*this.speed*this.moveDir;
         }
+        
     }
     ballReady(b = true){
         if(b) this.arena.readyGame();

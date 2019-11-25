@@ -14,13 +14,15 @@ export default class LinearGradientBg extends cc.Component {
     pixFormat = cc.Texture2D.PixelFormat.RGBA8888;
     onLoad () {
         this.sprite = this.getComponent(cc.Sprite);
-        this.tex = this.sprite.spriteFrame.getTexture();
+        //this.tex = this.sprite.spriteFrame.getTexture();
+        this.tex = new cc.Texture2D();
+        this.sprite.spriteFrame.setTexture(this.tex);
     }
     start(){
         this.setColors(...this.colors);
     }
     onFocusInEditor(){
-this.setColors(...this.colors);
+        this.setColors(...this.colors);
     }
     setColors(...cs: cc.Color[]){
         this.colors = cs;
@@ -35,9 +37,7 @@ this.setColors(...this.colors);
         }
         
     }
-    setBottomColor(){
-
-    }
+    
     
 }
 

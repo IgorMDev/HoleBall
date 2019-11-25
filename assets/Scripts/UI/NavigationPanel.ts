@@ -39,7 +39,7 @@ export default class NavigationPanel extends cc.Component {
         }
     }
     openNext(){
-        NavigationPanel.focusedPanel.hide();
+        if(NavigationPanel.focusedPanel) NavigationPanel.focusedPanel.hide();
         this.open();
         
     }

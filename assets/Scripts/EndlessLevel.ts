@@ -59,8 +59,25 @@ export default class EndlessLevel extends Level {
             }
         }
     }
+    minorChecks = 1; midChecks = 1; majorChecks = 1;
+
     progressChecker(){
-        
+        if(this.score >= 1000*this.majorChecks){
+
+        }else if(this.score >= 500*this.midChecks){
+
+        }else if(this.score >= 250*this.minorChecks){
+            
+        }
+    }
+    onMinorCheck(){
+
+    }
+    onMiddleCheck(){
+
+    }
+    onMajorCheck(){
+
     }
     speedUp(){
         this.speed += 25;
