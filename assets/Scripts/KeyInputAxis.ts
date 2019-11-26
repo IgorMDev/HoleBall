@@ -35,8 +35,8 @@ export default class KeyInputAxis extends cc.Component {
         if(KeyboardInput.isSomeKeyPressed()){
             this.moveAxis = KeyboardInput.getAxes([cc.macro.KEY.up,cc.macro.KEY.w], [cc.macro.KEY.down,cc.macro.KEY.s]);
             this.rotAxis = KeyboardInput.getAxes([cc.macro.KEY.left,cc.macro.KEY.a], [cc.macro.KEY.right,cc.macro.KEY.d]);
-            this.arena.level.moveBy(this.moveAxis*dt);
-            this.arena.level.tiltBy(this.rotAxis*dt);
+            this.arena.level.moveBy(this.moveAxis);
+            this.arena.level.tiltBy(this.rotAxis);
         }
     }
     onResume(){

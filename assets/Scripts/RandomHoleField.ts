@@ -192,8 +192,8 @@ export default class RandomHoleField extends HoleField {
             this.revealNextHole();
         }
     }
-    fillRateUp(){
-        this.maxFillPercentage = cc.misc.clamp01(this.maxFillPercentage + 0.05);
+    fillRateUp(dr: number = 0.05){
+        this.maxFillPercentage = cc.misc.clamp01(this.maxFillPercentage + dr);
         this.holesLimit = this.rows*this.columns*this.maxFillPercentage;
         cc.log(this.node.name+ 'fill rate up');
     }

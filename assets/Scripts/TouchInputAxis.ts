@@ -35,7 +35,7 @@ export default class TouchInputAxis extends cc.Component {
     }
     update(dt){
         if(this.isActive){
-            this.arena.level.moveBy(this.movePoint.y/this.moveUnit*dt);
+            this.arena.level.moveBy(this.movePoint.y/this.moveUnit);
             this.arena.level.tiltTo(-this.movePoint.x/this.rotUnit);
         }
     }

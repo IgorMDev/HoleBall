@@ -36,7 +36,7 @@ export default class TiltInputAxis extends cc.Component {
     }
     update(dt){
         if(this.isActive){
-            this.arena.level.moveBy(this.movePoint.y/this.moveUnit*dt);
+            this.arena.level.moveBy(this.movePoint.y/this.moveUnit);
             this.arena.level.tiltTo(this.accVec.x/this.accUnit);
 
         }

@@ -2,10 +2,7 @@ import BallSpawner from "./BallSpawner";
 import Ball from "./Ball";
 import PlatformBlock from "./Block";
 import Arena from "./Arena";
-import Mathu from "./MathModule";
 import Accelerator from "./Accelerator";
-import KeyboardInput from "./KeyboardInput";
-import Gameplay from "./Gameplay";
 import Game from "./Game";
 import HoleField from "./HoleField";
 import BackgroundGrad from "./BackgroundGrad";
@@ -18,6 +15,8 @@ export default abstract class Level extends cc.Component {
     speed = 0;
     @property({type: cc.Integer, min: -1, max: 1})
     moveDir = -1;
+    @property(cc.String)
+    moveEasing = '';
     @property
     startY = 0;
     @property(HoleField)
@@ -32,15 +31,19 @@ export default abstract class Level extends cc.Component {
     watchersStartY: number[] = [];
     arena: Arena = null;
     ball: Ball = null;
+    moveAcc: Accelerator = null;
     score = 0;
     isReady = false;
     isRun = false;
     sd: leveldata = null;
-    dy = 0; dr = 0;
+    dy = 0; da = 0; dt = 0;
     onLoad(){
         
         this.readSaveData();
         this.watchersStartY = this.moveWatchers.map(n => n.y);
+        this.moveAcc = this.node.addComponent(Accelerator);
+        this.moveAcc.isFlipping = true;
+        this.moveAcc.setEasing(this.moveEasing);
     }
     reset(){
         this.isReady = this.isRun = false;
@@ -80,26 +83,29 @@ export default abstract class Level extends cc.Component {
     end(){
         
     }
-    // update(dt) {
-        
-    // }
+    update(dt) {
+        this.dt = dt;
+    }
     onDestroy(){
         this.writeSaveData();
     }
     moveBy(dy: number){
+        this.dy = dy* this.dt;
+        this.moveAcc.by(dy);
         if(dy !== 0){
             if(!this.isRun){
-                this.isRun = true;
+                this.run();
             }
-            this.moveFieldBy(dy);
-            this.moveWatchersBy(dy);
-            this.platform.moveBy(dy);
+            this.moveFieldBy(this.dy);
+            this.moveWatchersBy(this.dy);
+            this.platform.moveBy(this.dy);
         }
         
     }
     tiltBy(da: number){
-        
+        this.da = da;
         if(da !== 0){
+            da *= this.dt;
             this.platform.tiltBy(da);
         }
     }
