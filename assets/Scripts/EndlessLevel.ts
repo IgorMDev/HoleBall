@@ -14,6 +14,14 @@ export default class EndlessLevel extends Level {
     maxSpeed = 10;
     @property(cc.Node)
     ground: cc.Node = null;
+    @property(cc.Node)
+    bestLine: cc.Node = null;
+    @property(cc.Node)
+    lastLine: cc.Node = null;
+    @property(cc.Label)
+    lastLineLabel: cc.Label = null;
+    @property(cc.Label)
+    bestLineLabel: cc.Label = null;
     
     groundY = 0;
     groundSpeed = 0;
@@ -22,11 +30,13 @@ export default class EndlessLevel extends Level {
         super.onLoad();
         this.groundSpeed = this.speed/2;
         this.groundY = this.ground.y;
+        //this.moveWatchers.push(this.lastLine, this.bestLine);
     }
     reset(){
         super.reset();
         this.scoreCounter = 0;
         cc.tween(this.ground).set({y: -this.node.height/2}).to(0.5,{y: this.groundY},null).start();
+        this.setRecordLines();
     }
     run(){
         super.run();
@@ -39,21 +49,26 @@ export default class EndlessLevel extends Level {
     }
     update(dt){
         super.update(dt);
-        if(this.isRun){
-            this.ground.y += (this.groundSpeed - this.moveAcc.y*this.speed)*dt;
+        if(this.dy !== 0 && this.isRun){
+            let ga = this.dyt;
+            if(ga < 0){ga = 0;}
+            this.ground.y += (this.groundSpeed*dt - ga*this.speed);
             this.ground.y = cc.misc.clampf(this.ground.y, -this.node.height/2 - 100, 0);
             
         }
     }
+    lateUpdate(){
+        this.dy = 0;
+    }
     moveBy(dy: number){
         super.moveBy(dy);
-        if(dy !== 0 && this.isRun){
-            this.scoreCounter += this.dy*this.speed;
+        if(dy !== 0 && this.isRun && this.isReady){
+            this.scoreCounter += this.dyt*this.speed;
             if(this.scoreCounter >= 0){
                 this.score = Math.floor(this.scoreCounter/this.meterScale);
             }
+
         }
-        
     }
     moveFieldBy(dy: number){
         for(let field of this.holeFields){
@@ -64,6 +79,24 @@ export default class EndlessLevel extends Level {
                 console.log("treshhold down");
             }
         }
+    }
+    setRecordLines(){
+        if(this.sd.score){
+            this.lastLine.active = true;
+            this.lastLine.y = this.sd.score*this.meterScale;
+        }
+        if(this.sd.bestScore && this.sd.bestScore !== this.sd.score){
+            this.bestLine.active = true;
+            this.bestLine.y = this.sd.bestScore*this.meterScale;
+        }
+        this.setRecordLinesLabel();
+    }
+    /*
+        UI
+    */
+    setRecordLinesLabel(){
+        this.lastLineLabel.string = this.sd.score+'';
+        this.bestLineLabel.string = this.sd.bestScore+'';
     }
     /*
         progress in game

@@ -36,13 +36,13 @@ export default abstract class Level extends cc.Component {
     isReady = false;
     isRun = false;
     sd: leveldata = null;
-    dy = 0; da = 0; dt = 0;
+    dy = 0; da = 0; dt = 0; dyt = 0;
     onLoad(){
         
         this.readSaveData();
         this.watchersStartY = this.moveWatchers.map(n => n.y);
         this.moveAcc = this.node.addComponent(Accelerator);
-        this.moveAcc.isFlipping = true;
+        this.moveAcc.isFlipping = false;
         this.moveAcc.setEasing(this.moveEasing);
     }
     reset(){
@@ -56,7 +56,7 @@ export default abstract class Level extends cc.Component {
             this.holeFields[i].clear();
             this.holeFields[i].node.y = this.startY+this.node.height*parseInt(i);
         }
-        for(let i in this.moveWatchers){
+        for(let i in this.watchersStartY){
             this.moveWatchers[i].y = this.watchersStartY[i];
         }
         this.ballSpawner.spawn((bn)=>{this.ballSpawned(bn.getComponent(Ball))});
@@ -90,15 +90,17 @@ export default abstract class Level extends cc.Component {
         this.writeSaveData();
     }
     moveBy(dy: number){
-        this.dy = dy* this.dt;
-        this.moveAcc.by(dy);
+        this.dy = dy;
+        //this.dyt = dy* this.dt;
+        this.dyt = this.moveAcc.by(dy*this.dt)*Math.abs(dy)*this.dt;
+        
         if(dy !== 0){
-            if(!this.isRun){
+            if(this.isReady && !this.isRun){
                 this.run();
             }
-            this.moveFieldBy(this.dy);
-            this.moveWatchersBy(this.dy);
-            this.platform.moveBy(this.dy);
+            this.moveFieldBy(this.dyt);
+            this.moveWatchersBy(this.dyt);
+            this.platform.moveBy(this.dyt);
         }
         
     }

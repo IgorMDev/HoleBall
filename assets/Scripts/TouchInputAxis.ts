@@ -9,6 +9,8 @@ export default class TouchInputAxis extends cc.Component {
     moveUnit = 100;
     @property({type:cc.Integer, min: 1})
     rotUnit = 100;
+    @property(cc.Vec2)
+    deadzone: cc.Vec2 = cc.Vec2.ZERO;
     @property(cc.Node)
     touchArea: cc.Node = null;
     @property(cc.Node)
@@ -70,7 +72,10 @@ export default class TouchInputAxis extends cc.Component {
     }
     onTouchMove(event: cc.Event.EventTouch){
         if(event.getID() < 1){
-            this.movePoint = event.getLocation().subSelf(this.startPoint);
+            let loc = event.getLocation();
+            this.movePoint = loc.sub(this.startPoint);
+            if(Math.abs(this.movePoint.x) < this.deadzone.x) this.movePoint.x = 0;
+            if(Math.abs(this.movePoint.y) < this.deadzone.y) this.movePoint.y = 0;
             this.movePoint.clampf(cc.v2(-this.rotUnit,-this.moveUnit), cc.v2(this.rotUnit,this.moveUnit));
         }
     }

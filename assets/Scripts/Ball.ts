@@ -1,4 +1,4 @@
-import Arena from "./Arena";
+
 import Level from "./Level";
 import Hole from "./Hole";
 
@@ -22,7 +22,7 @@ export default class Ball extends cc.Component {
         this.rb = this.getComponent(cc.RigidBody);
         this.cpcol = this.getComponent(cc.PhysicsCircleCollider);
         this.spawnTween = cc.tween(this.node).set({scale: 0}).to(0.5, {scale: 1}, null).call(()=>{this.onSpawned()});
-        this.destroyTween = cc.tween(this.node).to(0.3, {opacity: 0}, null).delay(0.5).call(()=>{this.onRemoved()});
+        this.destroyTween = cc.tween(this.node).to(0.3, {opacity: 0}, null).delay(0.3).call(()=>{this.onRemoved()});
         
     }
     start () {
@@ -68,11 +68,13 @@ export default class Ball extends cc.Component {
             this.isReady = true;
             this.level.ballReady();
         }else if(other.node.group === "ground"){
-            let prt = cc.instantiate(this.destroyParticle,);
             this.remove();
-            prt.setParent(this.node.parent);
-            prt.position = this.node.position;
-            console.log("particle instantiated at "+prt.parent);
+            if(other.tag === 0){
+                let prt = cc.instantiate(this.destroyParticle);
+                prt.setParent(this.node.parent);
+                prt.position = this.node.position;
+                console.log("particle instantiated at "+prt.parent);
+            }
         }
         
     }
