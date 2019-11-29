@@ -224,6 +224,15 @@
     "mask": {
       "__id__": 2
     },
+    "spawnAudio": {
+      "__uuid__": "9847589e-63e3-4191-9254-f9c7517bc0ab"
+    },
+    "removeAudio": {
+      "__uuid__": "789781f1-392b-4931-bdae-59173ce60772"
+    },
+    "ballCatchAudio": {
+      "__uuid__": "ced2523c-f4de-447e-960e-12303a492b4c"
+    },
     "_id": ""
   },
   {

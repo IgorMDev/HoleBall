@@ -49,16 +49,13 @@ export default class EndlessLevel extends Level {
     }
     update(dt){
         super.update(dt);
-        if(this.dy !== 0 && this.isRun){
+        if(this.isRun){
             let ga = this.dyt;
             if(ga < 0){ga = 0;}
             this.ground.y += (this.groundSpeed*dt - ga*this.speed);
             this.ground.y = cc.misc.clampf(this.ground.y, -this.node.height/2 - 100, 0);
             
         }
-    }
-    lateUpdate(){
-        this.dy = 0;
     }
     moveBy(dy: number){
         super.moveBy(dy);

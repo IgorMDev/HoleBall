@@ -42,7 +42,7 @@ export default abstract class Level extends cc.Component {
         this.readSaveData();
         this.watchersStartY = this.moveWatchers.map(n => n.y);
         this.moveAcc = this.node.addComponent(Accelerator);
-        this.moveAcc.isFlipping = false;
+        this.moveAcc.isFlipping = true;
         this.moveAcc.setEasing(this.moveEasing);
     }
     reset(){
@@ -85,15 +85,16 @@ export default abstract class Level extends cc.Component {
     }
     update(dt) {
         this.dt = dt;
+        if(this.isReady && this.isRun){
+            this.dyt = this.moveAcc.y*(this.dy!==0?Math.abs(this.dy):1)*this.dt;
+        }
     }
     onDestroy(){
         this.writeSaveData();
     }
     moveBy(dy: number){
         this.dy = dy;
-        //this.dyt = dy* this.dt;
-        this.dyt = this.moveAcc.by(dy*this.dt)*Math.abs(dy)*this.dt;
-        
+        this.moveAcc.by(this.dy*this.dt);
         if(dy !== 0){
             if(this.isReady && !this.isRun){
                 this.run();

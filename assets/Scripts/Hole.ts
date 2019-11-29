@@ -6,6 +6,12 @@ const {ccclass, property} = cc._decorator;
 export default class Hole extends cc.Component {
     @property(cc.Node)
     mask: cc.Node = null;
+    @property({type: cc.AudioClip})
+    spawnAudio: cc.AudioClip = null;
+    @property({type: cc.AudioClip})
+    removeAudio: cc.AudioClip = null;
+    @property({type: cc.AudioClip, })
+    ballCatchAudio: cc.AudioClip = null;
 
     spawnTween: cc.Tween = null;
     removeTween: cc.Tween = null;
@@ -17,6 +23,10 @@ export default class Hole extends cc.Component {
         this.node.on('spawn', this.onSpawn, this);
         this.node.on('remove', this.onRemove, this);
         //this.node.on('reset', this.onReset, this);
+        
+    }
+    start(){
+        
     }
     onDestroy(){
         this.node.off('spawn', this.onSpawn, this);
@@ -29,9 +39,18 @@ export default class Hole extends cc.Component {
     onSpawn(callback?: Function){
         if(callback) callback();
         this.spawnTween.start();
+        this.playAudio(this.spawnAudio);
     }
     onRemove(callback?: Function){
+        this.playAudio(this.removeAudio);
         this.removeTween.call(callback).start();
+    }
+    playAudio(ac: cc.AudioClip){
+        if(ac){
+            cc.audioEngine.playEffect(ac, false);
+        }else{
+            cc.log("audio clip is null in "+this.node.name);
+        }
     }
     captureBall(b: Ball){
         b.node.setParent(this.node);
@@ -40,6 +59,7 @@ export default class Hole extends cc.Component {
         }
         let p = b.node.position.normalizeSelf().mulSelf(this.ccol.radius - b.radius);
         b.rb.active = false;
+        this.playAudio(this.ballCatchAudio);
         cc.tween(b.node).to(0.3,{
             position: p
         },{easing:'quadIn'}).call(()=>{

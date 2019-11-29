@@ -58,8 +58,8 @@
       "__type__": "TypedArray",
       "ctor": "Float32Array",
       "array": [
-        -16.070999145507812,
-        666.9140014648438,
+        0,
+        0,
         0,
         0,
         0,
@@ -218,17 +218,17 @@
       "__id__": 1
     },
     "_enabled": true,
-    "spawnProbability": 1,
-    "maxPercentage": 1,
-    "border": 16,
-    "radiuses": [
-      64,
-      72,
-      80,
-      88
-    ],
     "mask": {
       "__id__": 2
+    },
+    "spawnAudio": {
+      "__uuid__": "9847589e-63e3-4191-9254-f9c7517bc0ab"
+    },
+    "removeAudio": {
+      "__uuid__": "789781f1-392b-4931-bdae-59173ce60772"
+    },
+    "ballCatchAudio": {
+      "__uuid__": "0e9ac654-54fc-4f67-92fb-5f10e1ff8b2b"
     },
     "_id": ""
   },

@@ -144,8 +144,8 @@ export default class RandomHoleField extends HoleField {
             for(let j = c0; j <= c1; j++){
                 let p = this.cellsMap.get(i+''+j);
                 if(p){
-                    let bb1 = {position: h.position, radius: Math.max(h.width, h.height)/2},
-                    bb2 = {position: p.position, radius: Math.max(p.width, p.height)/2};
+                    let bb1 = {position: h.position, radius: Math.max(h.width*h.scaleX, h.height*h.scaleY)/2},
+                    bb2 = {position: p.position, radius: Math.max(p.width*p.scaleX, p.height*p.scaleY)/2};
                     if(cc.Intersection.circleCircle(bb1, bb2)) {
                         return true;
                     }
@@ -180,6 +180,7 @@ export default class RandomHoleField extends HoleField {
             let fillNum = this.rows*this.columns*(this.holesDensity[variant] || 0);
             for(let i = 0; i < fillNum; i++){
                 this.holesPool.push(cc.instantiate(h));
+                
             }
             //console.log("-------pool filled with "+fillNum+" holes of variant "+variant);
         }

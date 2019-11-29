@@ -6,7 +6,7 @@ import Game from "./Game";
 const {ccclass, property, executionOrder, disallowMultiple} = cc._decorator;
 
 @ccclass
-@executionOrder(-12)
+@executionOrder(-11)
 @disallowMultiple
 export default class Gameplay extends cc.Component {
     private static _instance: Gameplay = null;
