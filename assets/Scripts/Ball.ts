@@ -8,6 +8,12 @@ const {ccclass, property} = cc._decorator;
 export default class Ball extends cc.Component {
     @property(cc.Prefab)
     destroyParticle: cc.Prefab = null;
+    @property({type: cc.AudioClip})
+    spawnAudio: cc.AudioClip = null;
+    @property({type: cc.AudioClip})
+    removeAudio: cc.AudioClip = null;
+    @property({type: cc.AudioClip})
+    touchAudio: cc.AudioClip = null;
 
     rb:cc.RigidBody = null;
     cpcol: cc.PhysicsCircleCollider = null;
@@ -31,12 +37,14 @@ export default class Ball extends cc.Component {
     }
     spawn(){
         this.spawnTween.start();
+        this.playAudio(this.spawnAudio);
         this.isReady = false;
     }
     remove(){
         this.isReady = false;
         this.rb.destroy();
         this.destroyTween.start();
+        this.playAudio(this.removeAudio);
         //this.level.ballReady(false);
     }
     onSpawned(){
@@ -47,6 +55,11 @@ export default class Ball extends cc.Component {
     onRemoved(){
         this.level.ballRemoved(this);
         this.node.destroy()
+    }
+    playAudio(ac:cc.AudioClip){
+        if(ac){
+            cc.audioEngine.playEffect(ac, false);
+        }
     }
     onDestroy(){
         
@@ -65,8 +78,11 @@ export default class Ball extends cc.Component {
     }
     onBeginContact(contact:cc.PhysicsContact, self: cc.PhysicsCollider, other: cc.PhysicsCollider){
         if(other.node.group === "platform"){
-            this.isReady = true;
-            this.level.ballReady();
+            if(!this.isReady){
+                this.isReady = true;
+                this.playAudio(this.touchAudio);
+                this.level.ballReady();
+            }
         }else if(other.node.group === "ground"){
             this.remove();
             if(other.tag === 0){

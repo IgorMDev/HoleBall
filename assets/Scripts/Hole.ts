@@ -18,14 +18,14 @@ export default class Hole extends cc.Component {
     ccol: cc.CircleCollider = null;
     onLoad(){
         this.ccol = this.getComponent(cc.CircleCollider);
-        this.spawnTween = cc.tween(this.node).set({scale: 0}).to(1, {scale:{value: this.node.scale, easing: 'elasticOut'}}, null);
-        this.removeTween = cc.tween(this.node).to(1, {scale:{value: 0, easing: 'backOut'}}, null);
+        this.spawnTween = cc.tween(this.node).set({scale: 0}).call(()=>{
+            this.playAudio(this.spawnAudio);
+        }).to(0.8, {scale:{value: this.node.scale, easing: 'elasticOut'}}, null);
+        this.removeTween = cc.tween(this.node).call(()=>{
+            this.playAudio(this.removeAudio);
+        }).to(0.5, {scale:{value: 0, easing: 'quadIn'}}, null);
         this.node.on('spawn', this.onSpawn, this);
         this.node.on('remove', this.onRemove, this);
-        //this.node.on('reset', this.onReset, this);
-        
-    }
-    start(){
         
     }
     onDestroy(){
@@ -33,20 +33,18 @@ export default class Hole extends cc.Component {
         this.node.off('remove', this.onRemove, this);
         //this.node.off('reset', this.onReset, this);
     }
-    onReset(){
-        
-    }
     onSpawn(callback?: Function){
         if(callback) callback();
         this.spawnTween.start();
-        this.playAudio(this.spawnAudio);
+        
     }
     onRemove(callback?: Function){
-        this.playAudio(this.removeAudio);
+        //this.playAudio(this.removeAudio);
         this.removeTween.call(callback).start();
     }
     playAudio(ac: cc.AudioClip){
         if(ac){
+            
             cc.audioEngine.playEffect(ac, false);
         }else{
             cc.log("audio clip is null in "+this.node.name);

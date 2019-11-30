@@ -65,7 +65,7 @@ export default abstract class Level extends cc.Component {
     ready(){
         this.isReady = true;
         for(let field of this.holeFields){
-            field.reset();
+            field.setSpawn();
         }
     }
     run(){

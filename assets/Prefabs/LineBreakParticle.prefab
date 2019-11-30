@@ -105,7 +105,7 @@
     "duration": 0.3,
     "emissionRate": 300,
     "life": 0.3,
-    "lifeVar": 0.3,
+    "lifeVar": 0.4,
     "_startColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -125,7 +125,7 @@
       "r": 255,
       "g": 255,
       "b": 255,
-      "a": 255
+      "a": 192
     },
     "_endColorVar": {
       "__type__": "cc.Color",
@@ -137,7 +137,7 @@
     "angle": 0,
     "angleVar": 0,
     "startSize": 20,
-    "startSizeVar": 0,
+    "startSizeVar": 25,
     "endSize": 20,
     "endSizeVar": 0,
     "startSpin": 0,
@@ -160,7 +160,7 @@
     "gravity": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": -1000
     },
     "speed": 50,
     "speedVar": 100,

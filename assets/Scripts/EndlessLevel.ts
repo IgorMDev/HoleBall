@@ -71,8 +71,9 @@ export default class EndlessLevel extends Level {
         for(let field of this.holeFields){
             field.node.y += dy*this.speed*this.moveDir;
             if(dy > 0 && field.node.y < -this.node.height/2-field.node.height/2){
-                field.node.y += this.node.height*this.holeFields.length;
-                field.reset();
+                field.node.y += field.node.height*this.holeFields.length;
+                field.clear();
+                field.spawn();
                 console.log("treshhold down");
             }
         }

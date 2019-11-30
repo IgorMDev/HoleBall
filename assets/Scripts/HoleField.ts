@@ -31,15 +31,29 @@ export default class HoleField extends cc.Component {
         if(cc.Camera.main.containsNode(this.node)){
             this.clearDone = false;
             console.log("_____field cleared by anim " +this.node.name);
-            
         }else{
             this.clear();
             console.log("_____field cleared by func "+this.node.name);
         }
     }
-    reset(){
-        this.clear();
-        this.done = false;
+    spawn(){
+        if(this.holesPool.length){
+            for(let n of this.holesPool){
+                n.active = true;
+            }
+            this.activeHoles = this.holesPool.splice(0);
+            this.done = true;
+            console.log("_____field spawned " +this.node.name);
+        }
+    }
+    setSpawn(){
+        if(cc.Camera.main.containsNode(this.node)){
+            this.done = false;
+            console.log("_____field spawned by anim " +this.node.name);
+        }else{
+            this.spawn();
+            console.log("_____field spawned by func "+this.node.name);
+        }
     }
     update(){
         this.holeEmitter();
