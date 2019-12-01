@@ -1,6 +1,7 @@
 
 import Level from "./Level";
 import RandomHoleField from "./RandomHoleField";
+import Gameplay from "./Gameplay";
 
 const {ccclass, property} = cc._decorator;
 
@@ -36,6 +37,10 @@ export default class EndlessLevel extends Level {
         super.reset();
         this.scoreCounter = 0;
         cc.tween(this.ground).set({y: -this.node.height/2}).to(0.5,{y: this.groundY},null).start();
+        
+    }
+    ready(){
+        super.ready();
         this.setRecordLines();
     }
     run(){
@@ -46,18 +51,18 @@ export default class EndlessLevel extends Level {
         super.finish();
         this.unscheduleAllCallbacks();
         cc.tween(this.ground).to(0.5,{y: -this.node.height/2},null).start();
+        this.hideRecordLines();
     }
     update(dt){
         super.update(dt);
-        if(this.isRun){
-            let ga = this.dyt;
-            if(ga < 0){ga = 0;}
-            this.ground.y += (this.groundSpeed*dt - ga*this.speed);
+        if(!Gameplay.paused && this.isRun){
+            this.ground.y += (this.groundSpeed*dt - this.dyt*this.speed);
             this.ground.y = cc.misc.clampf(this.ground.y, -this.node.height/2 - 100, 0);
             
         }
     }
     moveBy(dy: number){
+        if(!Gameplay.paused){
         super.moveBy(dy);
         if(dy !== 0 && this.isRun && this.isReady){
             this.scoreCounter += this.dyt*this.speed;
@@ -65,6 +70,7 @@ export default class EndlessLevel extends Level {
                 this.score = Math.floor(this.scoreCounter/this.meterScale);
             }
 
+        }
         }
     }
     moveFieldBy(dy: number){
@@ -88,6 +94,9 @@ export default class EndlessLevel extends Level {
             this.bestLine.y = this.sd.bestScore*this.meterScale;
         }
         this.setRecordLinesLabel();
+    }
+    hideRecordLines(){
+        this.lastLine.active = this.bestLine.active = false;
     }
     /*
         UI

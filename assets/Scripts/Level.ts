@@ -6,11 +6,12 @@ import Accelerator from "./Accelerator";
 import Game from "./Game";
 import HoleField from "./HoleField";
 import BackgroundGrad from "./BackgroundGrad";
+import SoundManager from "./SoundManager";
+import Gameplay from "./Gameplay";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default abstract class Level extends cc.Component {
-    
     @property
     speed = 0;
     @property({type: cc.Integer, min: -1, max: 1})
@@ -27,6 +28,12 @@ export default abstract class Level extends cc.Component {
     ballSpawner: BallSpawner = null;
     @property(PlatformBlock)
     platform: PlatformBlock = null;
+    @property({type: cc.AudioClip})
+    readyAudio: cc.AudioClip = null;
+    @property({type: cc.AudioClip})
+    finishAudio: cc.AudioClip = null;
+    @property({type: cc.AudioClip})
+    ballCatchAudio: cc.AudioClip = null;
 
     watchersStartY: number[] = [];
     arena: Arena = null;
@@ -67,32 +74,39 @@ export default abstract class Level extends cc.Component {
         for(let field of this.holeFields){
             field.setSpawn();
         }
+        SoundManager.playEffect(this.readyAudio);
     }
     run(){
         this.isRun = true;
     }
     finish(){
         this.isReady = this.isRun = false;
-        
+        this.platform.remove();
         for(let field of this.holeFields){
             field.setClear();
         }
         this.writeScores();
-        this.platform.remove();
+        cc.tween(this.node).call(()=>{
+            SoundManager.playEffect(this.finishAudio);
+        }).start();
     }
     end(){
         
     }
     update(dt) {
         this.dt = dt;
+        if(!Gameplay.paused){
+        
         if(this.isReady && this.isRun){
             this.dyt = this.moveAcc.y*(this.dy!==0?Math.abs(this.dy):1)*this.dt;
+        }
         }
     }
     onDestroy(){
         this.writeSaveData();
     }
     moveBy(dy: number){
+        if(!Gameplay.paused){
         this.dy = dy;
         this.moveAcc.by(this.dy*this.dt);
         if(dy !== 0){
@@ -103,13 +117,15 @@ export default abstract class Level extends cc.Component {
             this.moveWatchersBy(this.dyt);
             this.platform.moveBy(this.dyt);
         }
-        
+        }
     }
     tiltBy(da: number){
+        if(!Gameplay.paused){
         this.da = da;
         if(da !== 0){
             da *= this.dt;
             this.platform.tiltBy(da);
+        }
         }
     }
     tiltTo(a: number){
@@ -137,6 +153,10 @@ export default abstract class Level extends cc.Component {
         }
         this.ball = b;
         this.ball.level = this;
+    }
+    ballCaptured(b: Ball){
+        this.isReady = false;
+        SoundManager.playEffect(this.ballCatchAudio);
     }
     ballRemoved(b: Ball){
         this.ball = null;

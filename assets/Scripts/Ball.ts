@@ -28,7 +28,7 @@ export default class Ball extends cc.Component {
         this.rb = this.getComponent(cc.RigidBody);
         this.cpcol = this.getComponent(cc.PhysicsCircleCollider);
         this.spawnTween = cc.tween(this.node).set({scale: 0}).to(0.5, {scale: 1}, null).call(()=>{this.onSpawned()});
-        this.destroyTween = cc.tween(this.node).to(0.3, {opacity: 0}, null).delay(0.3).call(()=>{this.onRemoved()});
+        this.destroyTween = cc.tween(this.node).to(0.5, {scale: 0}, null).delay(0.3).call(()=>{this.onRemoved()});
         
     }
     start () {
@@ -68,13 +68,12 @@ export default class Ball extends cc.Component {
     onCollisionEnter(other: cc.Collider, self: cc.Collider){
         if(this.isReady){
             if(other.node.group === "hole"){
-                other.getComponent(Hole).captureBall(this);
                 this.isReady = false;
-                this.level.isRun = false;
+                this.level.ballCaptured(this);
+                other.getComponent(Hole).captureBall(this);
                 console.log("hole collision enter with "+other.name);
             }
         }
-
     }
     onBeginContact(contact:cc.PhysicsContact, self: cc.PhysicsCollider, other: cc.PhysicsCollider){
         if(other.node.group === "platform"){

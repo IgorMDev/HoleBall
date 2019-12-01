@@ -23,6 +23,7 @@ export default class TiltInputAxis extends cc.Component {
             this.arena = this.getComponent(Arena);
         }
         this.arena.node.on('resumed', this.onResume, this);
+        this.arena.node.on('started', this.checkControls, this);
         this.checkControls();
     }
     onEnable(){
@@ -30,9 +31,6 @@ export default class TiltInputAxis extends cc.Component {
     }
     onDisable(){
         this.unregisterEvents();
-    }
-    onDestroy(){
-        
     }
     update(dt){
         if(this.isActive){

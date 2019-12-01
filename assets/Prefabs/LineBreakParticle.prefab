@@ -21,10 +21,13 @@
     "_components": [
       {
         "__id__": 2
+      },
+      {
+        "__id__": 3
       }
     ],
     "_prefab": {
-      "__id__": 3
+      "__id__": 4
     },
     "_opacity": 255,
     "_color": {
@@ -104,7 +107,7 @@
     "totalParticles": 100,
     "duration": 0.3,
     "emissionRate": 300,
-    "life": 0.3,
+    "life": 0.4,
     "lifeVar": 0.4,
     "_startColor": {
       "__type__": "cc.Color",
@@ -125,7 +128,7 @@
       "r": 255,
       "g": 255,
       "b": 255,
-      "a": 192
+      "a": 255
     },
     "_endColorVar": {
       "__type__": "cc.Color",
@@ -160,10 +163,10 @@
     "gravity": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -1000
+      "y": -1500
     },
-    "speed": 50,
-    "speedVar": 100,
+    "speed": 100,
+    "speedVar": 200,
     "tangentialAccel": 0,
     "tangentialAccelVar": 0,
     "radialAccel": 0,
@@ -176,6 +179,24 @@
     "rotatePerS": 0,
     "rotatePerSVar": 0,
     "_N$preview": true,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.AudioSource",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "_clip": {
+      "__uuid__": "046a76ff-b795-4808-9a83-c2ac5710ece9"
+    },
+    "_volume": 1,
+    "_mute": false,
+    "_loop": false,
+    "playOnLoad": true,
+    "preload": false,
     "_id": ""
   },
   {

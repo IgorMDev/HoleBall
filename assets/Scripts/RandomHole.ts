@@ -13,10 +13,6 @@ export default class RandomHole extends cc.Component {
     @property({type: cc.Float})
     radiuses: number[] = [];
 
-    ccol: cc.CircleCollider = null;
-    onLoad () {
-        this.ccol = this.getComponent(cc.CircleCollider);
-    }
     setSize(r: number){
         let nr = (r+this.border)*2;
         this.node.setScale(this.node.width/nr, this.node.height/nr);

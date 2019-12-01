@@ -20,5 +20,12 @@ export default class SoundManager extends cc.Component {
     start(){
         cc.audioEngine.playMusic(this.backgroundMusic, true);
     }
+    static playEffect(ac: cc.AudioClip, isLoop = false){
+        if(ac){
+            cc.audioEngine.playEffect(ac, isLoop);
+        }else{
+            cc.log('audio clip is null');
+        }
+    }
 }
 

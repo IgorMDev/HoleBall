@@ -14,15 +14,6 @@ export default abstract class Arena extends cc.Component{
     static get instance(){
         return Arena._instance;
     }
-    static setup(){
-        const pm = cc.director.getPhysicsManager();
-        pm.enabled = true;
-        pm.gravity = cc.v2(0, -10);
-        const colman = cc.director.getCollisionManager();
-        colman.enabled = true;
-        //colman.enabledDebugDraw = true;
-        //colman.enabledDrawBoundingBox = true;
-    }
     @property(Level)
     level: Level = null;
     @property(cc.String)
@@ -31,9 +22,6 @@ export default abstract class Arena extends cc.Component{
     isReady = false;
     sd = {};
     onLoad(){
-        if(!Arena.instance){
-            Arena.setup();
-        }
         this.level.arena = this;
         this.readSaveData();
         cc.log("@@@ arena loaded");
@@ -87,6 +75,7 @@ export default abstract class Arena extends cc.Component{
     startGame(){
         this.isReady = false;
         this.level.reset();
+        this.node.emit('started');
         Gameplay.instance.gameStart();
     }
     readyGame(){
@@ -104,7 +93,7 @@ export default abstract class Arena extends cc.Component{
     finishGame(){
         this.isReady = false;
         this.level.finish();
-
+        this.node.emit('finished');
     }
     endGame(){
         

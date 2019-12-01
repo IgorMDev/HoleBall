@@ -25,8 +25,8 @@ export default class PlatformBlock extends cc.Component {
     startY = 0;
     onLoad() {
         this.rb = this.getComponent(cc.RigidBody);
-        this.spawnTween = cc.tween(this.node).set({scaleX: 0}).to(0.5,{scaleX: 1},null);
-        this.removeTween = cc.tween(this.node).to(0.5, {scaleX: 0}, null);
+        this.spawnTween = cc.tween(this.node).set({scaleX: 0}).to(0.5,{scaleX: 1}, {easing: 'quadOut'});
+        this.removeTween = cc.tween(this.node).to(0.5, {scaleX: 0}, {easing: 'quadIn'});
         this.startY = this.node.y;
         this.moveAcc = this.node.addComponent(Accelerator);
         this.rotAcc = this.node.addComponent(Accelerator);

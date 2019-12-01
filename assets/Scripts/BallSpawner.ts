@@ -16,7 +16,7 @@ export default class BallSpawner extends cc.Component {
     spawn(callback: (b: cc.Node) => void){
         var ball = cc.instantiate(this.ballPrefab);
         ball.parent = this.mask;
-        ball.setPosition(cc.v2(0, this.mask.height/2 + ball.height*1.5));
+        ball.setPosition(cc.v2(0, this.mask.height/2 + ball.height));
         ball.active = false;
         cc.tween(this.node).set({scale: 0}).delay(0.5).call(()=>{
             if(this.spawnAudio) cc.audioEngine.playEffect(this.spawnAudio, false);
