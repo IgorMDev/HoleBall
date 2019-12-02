@@ -1,6 +1,6 @@
 
 import HoleField from "./HoleField";
-import RandomHole from "./RandomHole";
+import Hole from "./Hole";
 
 const {ccclass, property} = cc._decorator;
 
@@ -16,6 +16,8 @@ export default class RandomHoleField extends HoleField {
     cellSize = 100;
     @property({min: 0, max: 1})
     maxFillPercentage = 0.5;
+    @property([cc.Float])
+    holeRadiuses: number[] = [];
 
     timeout = 2500;
     holesPool: cc.Node[] = [];
@@ -84,7 +86,7 @@ export default class RandomHoleField extends HoleField {
     }
     spawn(){
         let i = 0;
-        while(i < this.freeCells.length && this.numOfHoles <= this.holesLimit && this.freeCells.length > 0){
+        while(i < this.freeCells.length*2 && this.numOfHoles <= this.holesLimit && this.freeCells.length > 0){
             let hole = this.getHoleSample();
             if(hole){
                 if(this.checkExtent(hole) && !this.intersectNear(hole)){
@@ -169,8 +171,8 @@ export default class RandomHoleField extends HoleField {
             for(let j = c0; j <= c1; j++){
                 let p = this.cellsMap.get(i+''+j);
                 if(p){
-                    let bb1 = {position: h.position, radius: Math.max(h.width*h.scaleX, h.height*h.scaleY)/2},
-                    bb2 = {position: p.position, radius: Math.max(p.width*p.scaleX, p.height*p.scaleY)/2};
+                    let bb1 = {position: h.position, radius: h.getComponent(Hole).getRadius()},
+                    bb2 = {position: p.position, radius: p.getComponent(Hole).getRadius()};
                     if(cc.Intersection.circleCircle(bb1, bb2)) {
                         return true;
                     }
@@ -189,7 +191,7 @@ export default class RandomHoleField extends HoleField {
             let hole = this.holesPool[this.holeSampleIndex];
             this.freeCellIndex = Math.floor(Math.random()*this.freeCells.length);
             let r = Math.random();
-            hole.getComponent(RandomHole).setRandSize();
+            this.setHoleRandSize(hole.getComponent(Hole));
             let cpos = cc.v2(this.gridPoints.get(this.freeCells[this.freeCellIndex]));
             let offsetp = cc.Vec2.RIGHT.mul(r*(this.cellSize/2)).rotate(r*2*Math.PI);
             hole.position = cpos.add(offsetp);
@@ -210,6 +212,11 @@ export default class RandomHoleField extends HoleField {
             //console.log("-------pool filled with "+fillNum+" holes of variant "+variant);
         }
     }
+    setHoleRandSize(h: Hole){
+        let rad = this.holeRadiuses[Math.floor(Math.random()*this.holeRadiuses.length)]
+        h.setHoleSize(rad);
+    }
+
     levelUp(){
         let r = Math.random();
         if(r < 0.6){

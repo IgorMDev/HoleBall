@@ -1,0 +1,113 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "GHole",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.4444444444444444,
+  "sample": 45,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "paths": {
+      "Waves/wcircle2": {
+        "comps": {},
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 2,
+                "y": 2
+              },
+              "curve": "linear"
+            },
+            {
+              "frame": 1.4444444444444444,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            }
+          ],
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0,
+              "curve": "quadOut"
+            },
+            {
+              "frame": 1.4444444444444444,
+              "value": 96
+            }
+          ]
+        }
+      },
+      "Waves/wcircle": {
+        "comps": {},
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1.5,
+                "y": 1.5
+              },
+              "curve": "linear"
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              },
+              "curve": "constant"
+            },
+            {
+              "frame": 0.7777777777777778,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 2,
+                "y": 2
+              },
+              "curve": "linear"
+            },
+            {
+              "frame": 1.4444444444444444,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1.5,
+                "y": 1.5
+              }
+            }
+          ],
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 48,
+              "curve": "quadOut"
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 96,
+              "curve": "linear"
+            },
+            {
+              "frame": 0.7777777777777778,
+              "value": 0,
+              "curve": "quadOut"
+            },
+            {
+              "frame": 1.4444444444444444,
+              "value": 48
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

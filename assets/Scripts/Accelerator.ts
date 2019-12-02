@@ -13,9 +13,9 @@ export default class Accelerator extends cc.Component{
     @property(cc.String)
     easing: string = '';
     easeFunc: Function = (k:number)=>k;
+    dumpingSpeed = 1;
     y = 0;
     x = 0;
-    da = 0;
     active = false;
     onLoad(){
         if(this.easing)
@@ -27,7 +27,7 @@ export default class Accelerator extends cc.Component{
         }
         this.active = false;
     }
-    to(p: number, dt?: number){
+    /* to(p: number, dt?: number){
         if(!dt){dt = cc.director.getDeltaTime();}
         let sign = Math.sign(p);
         let np = dt * p;
@@ -42,7 +42,7 @@ export default class Accelerator extends cc.Component{
         this.y = this.easeFunc(Math.abs(this.x))*p;
         this.active = true;
         return this.y;
-    }
+    } */
     by(da: number){
         let sign = Math.sign(da);
         if((sign > 0 && this.x < 0) || (sign < 0 && this.x > 0)){
@@ -50,7 +50,7 @@ export default class Accelerator extends cc.Component{
                 this.x = 0;
         }
         if(da === 0){
-            da = cc.director.getDeltaTime();
+            da = cc.director.getDeltaTime()*this.dumpingSpeed;
         }
         this.x = Mathu.moveTowards(this.x, sign, Math.abs(da));
         this.y = this.easeFunc(Math.abs(this.x))*this.scale*Math.sign(this.x);

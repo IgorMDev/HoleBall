@@ -67,10 +67,10 @@ export default class Ball extends cc.Component {
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider){
         if(this.isReady){
-            if(other.node.group === "hole"){
+            if(other.node.group === "hole" && other.tag === 0){
                 this.isReady = false;
-                this.level.ballCaptured(this);
                 other.getComponent(Hole).captureBall(this);
+                this.level.ballCaptured(this);
                 console.log("hole collision enter with "+other.name);
             }
         }

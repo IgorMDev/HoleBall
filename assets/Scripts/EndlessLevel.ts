@@ -55,22 +55,16 @@ export default class EndlessLevel extends Level {
     }
     update(dt){
         super.update(dt);
-        if(!Gameplay.paused && this.isRun){
-            this.ground.y += (this.groundSpeed*dt - this.dyt*this.speed);
-            this.ground.y = cc.misc.clampf(this.ground.y, -this.node.height/2 - 100, 0);
-            
-        }
-    }
-    moveBy(dy: number){
-        if(!Gameplay.paused){
-        super.moveBy(dy);
-        if(dy !== 0 && this.isRun && this.isReady){
-            this.scoreCounter += this.dyt*this.speed;
-            if(this.scoreCounter >= 0){
-                this.score = Math.floor(this.scoreCounter/this.meterScale);
-            }
+        if(!Gameplay.paused && this.isRun && this.isReady){
+            //this.ground.y += (this.groundSpeed*dt - this.dyt*this.speed);
+            //this.ground.y = cc.misc.clampf(this.ground.y, -this.node.height/2 - 100, 0);
+            if(this.dyt !== 0){
+                this.scoreCounter += this.dyt*this.speed;
+                if(this.scoreCounter >= 0){
+                    this.score = Math.floor(this.scoreCounter/this.meterScale);
+                }
 
-        }
+            }
         }
     }
     moveFieldBy(dy: number){

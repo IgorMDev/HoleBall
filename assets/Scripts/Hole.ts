@@ -4,9 +4,14 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Hole extends cc.Component {
+    @property
+    radius = 0;
+    @property
+    border = 0;
     @property(cc.Node)
     mask: cc.Node = null;
 
+    isBallCaptured = false;
     spawnTween: cc.Tween = null;
     removeTween: cc.Tween = null;
     ccol: cc.CircleCollider = null;
@@ -18,6 +23,11 @@ export default class Hole extends cc.Component {
         this.node.on('remove', this.onRemove, this);
         
     }
+    start(){
+        if(!this.radius){
+            this.radius = Math.max(this.node.width, this.node.height)/2;
+        }
+    }
     onDestroy(){
         this.node.off('spawn', this.onSpawn, this);
         this.node.off('remove', this.onRemove, this);
@@ -26,17 +36,18 @@ export default class Hole extends cc.Component {
     onSpawn(callback?: Function){
         if(callback) callback();
         this.spawnTween.start();
-        
+        this.isBallCaptured = false;
     }
     onRemove(callback?: Function){
         this.removeTween.call(callback).start();
     }
     captureBall(b: Ball){
+        this.isBallCaptured = true;
         b.node.setParent(this.node);
         if(this.node.scale != 0){
             b.node.scale = 1 / this.node.scale;
         }
-        let p = b.node.position.normalizeSelf().mulSelf(this.ccol.radius - b.radius);
+        let p = b.node.position.normalize().mul(this.ccol.radius - b.radius);
         b.rb.active = false;
         cc.tween(b.node).to(0.3,{
             position: p
@@ -48,7 +59,7 @@ export default class Hole extends cc.Component {
             position: cc.v2(0, -this.ccol.radius*2)
         },null).start();
     }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider){
+    /* onCollisionEnter(other: cc.Collider, self: cc.Collider){
         
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider){
@@ -57,5 +68,11 @@ export default class Hole extends cc.Component {
     onCollisionExit(other: cc.Collider, self: cc.Collider){
         //console.log("hole collision exit");
         
+    } */
+    getRadius(){
+        return this.radius*this.node.scale + this.border;
+    }
+    setHoleSize(r: number){
+        this.node.setScale(r/this.radius);
     }
 }

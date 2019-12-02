@@ -45,11 +45,12 @@ export default abstract class Level extends cc.Component {
     sd: leveldata = null;
     dy = 0; da = 0; dt = 0; dyt = 0;
     onLoad(){
-        
         this.readSaveData();
+        this.platform.level = this;
         this.watchersStartY = this.moveWatchers.map(n => n.y);
         this.moveAcc = this.node.addComponent(Accelerator);
         this.moveAcc.isFlipping = true;
+        this.moveAcc.dumpingSpeed = 2;
         this.moveAcc.setEasing(this.moveEasing);
     }
     reset(){
@@ -95,28 +96,26 @@ export default abstract class Level extends cc.Component {
     }
     update(dt) {
         this.dt = dt;
-        if(!Gameplay.paused){
+        if(!Gameplay.paused && this.isReady){
+            if(this.isRun){
+                this.dyt = this.moveAcc.y*(this.dy!==0?Math.abs(this.dy):1)*this.dt;
+                if(this.dyt !== 0){
+                    this.moveFieldBy(this.dyt);
+                    this.moveWatchersBy(this.dyt);
+                    this.platform.moveBy(this.dyt);
+                }
+            }
+        }
         
-        if(this.isReady && this.isRun){
-            this.dyt = this.moveAcc.y*(this.dy!==0?Math.abs(this.dy):1)*this.dt;
-        }
-        }
     }
     onDestroy(){
         this.writeSaveData();
     }
     moveBy(dy: number){
         if(!Gameplay.paused){
-        this.dy = dy;
-        this.moveAcc.by(this.dy*this.dt);
-        if(dy !== 0){
-            if(this.isReady && !this.isRun){
-                this.run();
-            }
-            this.moveFieldBy(this.dyt);
-            this.moveWatchersBy(this.dyt);
-            this.platform.moveBy(this.dyt);
-        }
+            if(!this.isRun) this.run();
+            this.dy = dy;
+            this.moveAcc.by(this.dy*this.dt);
         }
     }
     tiltBy(da: number){
@@ -135,7 +134,7 @@ export default abstract class Level extends cc.Component {
         for(let n of this.moveWatchers){
             n.y += dy*this.speed*this.moveDir;
         }
-        BackgroundGrad._instance.moveY(dy*this.speed*this.moveDir);
+        BackgroundGrad._instance.moveY(dy*this.speed/3*this.moveDir);
     }
     moveFieldBy(dy: number){
         for(let field of this.holeFields){

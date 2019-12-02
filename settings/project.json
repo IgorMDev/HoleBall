@@ -39,7 +39,6 @@
   "excluded-modules": [
     "DragonBones",
     "EditBox",
-    "Mesh",
     "NodePool",
     "Native Socket",
     "PageView",
