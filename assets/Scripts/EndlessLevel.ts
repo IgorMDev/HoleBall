@@ -37,7 +37,7 @@ export default class EndlessLevel extends Level {
         super.reset();
         this.scoreCounter = 0;
         cc.tween(this.ground).set({y: -this.node.height/2}).to(0.5,{y: this.groundY},null).start();
-        
+        this.hideRecordLines();
     }
     ready(){
         super.ready();

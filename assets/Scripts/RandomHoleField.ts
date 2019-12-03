@@ -37,6 +37,7 @@ export default class RandomHoleField extends HoleField {
     startTime = 0;
     done = true;
     clearDone = true;
+    anim = false;
     onLoad() {
         this.rect = this.rectNode.getBoundingBox();
         this.rows = Math.ceil(this.rect.height / this.cellSize);
@@ -59,8 +60,10 @@ export default class RandomHoleField extends HoleField {
         this.numOfHoles = 0;
         this.freeCells = [...this.gridPoints.keys()];
         if(this.activeHoles.length){
-            this.holesPool = this.activeHoles.splice(0);
+            this.holesPool.push(...this.activeHoles.splice(0));
         }
+        this.cellsMap.clear();
+        console.log("_____field resetted by func "+this.node.name);
     }
     clear(){
         if(this.cellsMap.size){
@@ -72,6 +75,7 @@ export default class RandomHoleField extends HoleField {
         }
         this.reset();
         
+        console.log("_____field cleared by func "+this.node.name);
     }
     setClear(){
         if(this.isInParentRect()){
@@ -81,7 +85,6 @@ export default class RandomHoleField extends HoleField {
             
         }else{
             this.clear();
-            console.log("_____field cleared by func "+this.node.name);
         }
     }
     spawn(){
@@ -96,15 +99,18 @@ export default class RandomHoleField extends HoleField {
             ++i;
         }
         this.done = true;
+        console.log("_____field spawned by func "+this.node.name);
     }
     setSpawn(){
+        this.done = false;
+        this.startTime = Date.now();
         if(this.isInParentRect()){
-            this.done = false;
-            this.startTime = Date.now();
+            this.anim = true;
             console.log("_____field spawned by anim " +this.node.name);
         }else{
-            this.spawn();
-            console.log("_____field spawned by func "+this.node.name);
+            this.anim = false;
+            //this.spawn();
+            
         }
     }
     isInParentRect(){
@@ -141,7 +147,7 @@ export default class RandomHoleField extends HoleField {
                 if(hole){
                     if(this.checkExtent(hole) && !this.intersectNear(hole)){
                         this.spawnSample(hole);
-                        hole.emit('spawn');
+                        if(this.anim) hole.emit('spawn');
                     }
                 }
                 let estTime = Date.now() - this.startTime;
@@ -186,7 +192,7 @@ export default class RandomHoleField extends HoleField {
         return this.rect.containsRect(bb);
     }
     getHoleSample(){
-        if(this.holesPool.length > 0 && this.freeCells.length > 0){
+        if(this.holesPool.length > 0){
             this.holeSampleIndex = Math.floor(Math.random()*this.holesPool.length);
             let hole = this.holesPool[this.holeSampleIndex];
             this.freeCellIndex = Math.floor(Math.random()*this.freeCells.length);

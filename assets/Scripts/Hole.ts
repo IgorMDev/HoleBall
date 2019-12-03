@@ -14,19 +14,22 @@ export default class Hole extends cc.Component {
     isBallCaptured = false;
     spawnTween: cc.Tween = null;
     removeTween: cc.Tween = null;
-    ccol: cc.CircleCollider = null;
+    scale = 1;
     onLoad(){
-        this.ccol = this.getComponent(cc.CircleCollider);
         this.spawnTween = cc.tween(this.node).set({scale: 0}).to(0.8, {scale:{value: this.node.scale, easing: 'elasticOut'}}, null);
         this.removeTween = cc.tween(this.node).to(0.5, {scale:{value: 0, easing: 'quadIn'}}, null);
         this.node.on('spawn', this.onSpawn, this);
         this.node.on('remove', this.onRemove, this);
         
     }
+    onEnable(){
+        this.isBallCaptured = false;
+    }
     start(){
         if(!this.radius){
             this.radius = Math.max(this.node.width, this.node.height)/2;
         }
+        this.scale = this.node.scale;
     }
     onDestroy(){
         this.node.off('spawn', this.onSpawn, this);
@@ -47,7 +50,7 @@ export default class Hole extends cc.Component {
         if(this.node.scale != 0){
             b.node.scale = 1 / this.node.scale;
         }
-        let p = b.node.position.normalize().mul(this.ccol.radius - b.radius);
+        let p = b.node.position.normalize().mul(this.radius - b.radius);
         b.rb.active = false;
         cc.tween(b.node).to(0.3,{
             position: p
@@ -56,7 +59,7 @@ export default class Hole extends cc.Component {
             b.remove();
         })
         .by(0.5,{
-            position: cc.v2(0, -this.ccol.radius*2)
+            position: cc.v2(0, -this.radius*2)
         },null).start();
     }
     /* onCollisionEnter(other: cc.Collider, self: cc.Collider){
@@ -70,9 +73,10 @@ export default class Hole extends cc.Component {
         
     } */
     getRadius(){
-        return this.radius*this.node.scale + this.border;
+        return this.radius*this.scale + this.border;
     }
     setHoleSize(r: number){
-        this.node.setScale(r/this.radius);
+        this.scale = r/this.radius;
+        this.node.setScale(this.scale);
     }
 }

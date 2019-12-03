@@ -73,6 +73,7 @@ export default abstract class Arena extends cc.Component{
         }
     }
     startGame(){
+        this.node.opacity = 255;
         this.isReady = false;
         this.level.reset();
         this.node.emit('started');
@@ -113,9 +114,11 @@ export default abstract class Arena extends cc.Component{
         
     }
     onPause(){
+        this.node.opacity = 0;
         this.node.emit('paused');
     }
     onResume(){
+        this.node.opacity = 255;
         this.node.emit('resumed');
     }
     readSaveData(){
