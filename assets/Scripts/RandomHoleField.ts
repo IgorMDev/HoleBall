@@ -17,8 +17,9 @@ export default class RandomHoleField extends HoleField {
     @property({min: 0, max: 1})
     maxFillPercentage = 0.5;
     @property([cc.Float])
-    holeRadiuses: number[] = [];
 
+    holeRadiuses: number[] = [];
+    holeVariantsPool: Array<Array<cc.Node>> = [];
     timeout = 2500;
     holesPool: cc.Node[] = [];
     activeHoles: cc.Node[] = [];
@@ -38,8 +39,10 @@ export default class RandomHoleField extends HoleField {
     done = true;
     clearDone = true;
     anim = false;
+    startFillRate = 0;
     onLoad() {
         this.rect = this.rectNode.getBoundingBox();
+        this.startFillRate = this.maxFillPercentage;
         this.rows = Math.ceil(this.rect.height / this.cellSize);
         this.columns = Math.ceil(this.rect.width / this.cellSize);
         console.log("---------grid initialized rows "+this.rows+" cols "+this.columns);
@@ -53,16 +56,15 @@ export default class RandomHoleField extends HoleField {
             }
         }
         this.holesLimit = this.rows*this.columns*this.maxFillPercentage;
-        this.fillHolesPool(this.holeVariant);
+        
     }
-    start(){}
     reset(){
-        this.numOfHoles = 0;
-        this.freeCells = [...this.gridPoints.keys()];
-        if(this.activeHoles.length){
-            this.holesPool.push(...this.activeHoles.splice(0));
-        }
-        this.cellsMap.clear();
+        this.maxFillPercentage = this.startFillRate;
+        this.activeHoles = [];
+        this.holesPool = [];
+        this.fillHolesPool(this.holeVariant = 0);
+        this.clear();
+        
         console.log("_____field resetted by func "+this.node.name);
     }
     clear(){
@@ -71,11 +73,18 @@ export default class RandomHoleField extends HoleField {
                 cn.removeFromParent(false);
             }
             this.cellsMap.clear();
-            this.clearDone = true;
+            console.log("_____field cleared by func "+this.node.name);
         }
-        this.reset();
-        
-        console.log("_____field cleared by func "+this.node.name);
+        this.onCleared();
+    }
+    onCleared(){
+        this.numOfHoles = 0;
+        this.freeCells = [...this.gridPoints.keys()];
+        if(this.activeHoles.length){
+            this.holesPool.push(...this.activeHoles.splice(0));
+        }
+        this.cellsMap.clear();
+        this.clearDone = true;
     }
     setClear(){
         if(this.isInParentRect()){
@@ -135,8 +144,7 @@ export default class RandomHoleField extends HoleField {
                     this.clear();
                 }
             }else{
-                this.reset();
-                this.clearDone = true;
+                this.onCleared();
             }
         }
     }
@@ -208,14 +216,19 @@ export default class RandomHoleField extends HoleField {
         return null;
     }
     fillHolesPool(variant){
-        if(variant < this.holePrefabs.length && this.holesPool.length < this.rows*this.columns*2){
-            let h = this.holePrefabs[variant];
-            let fillNum = this.rows*this.columns*(this.holesDensity[variant] || 0);
-            for(let i = 0; i < fillNum; i++){
-                this.holesPool.push(cc.instantiate(h));
-                
+        if(variant < this.holePrefabs.length  && this.holesPool.length < this.rows*this.columns*2){
+            if(!this.holeVariantsPool[variant]){
+                let h = this.holePrefabs[variant];
+                let fillNum = this.rows*this.columns*(this.holesDensity[variant] || 0);
+                this.holeVariantsPool[variant] = [];
+                for(let i = 0; i < fillNum; i++){
+                    this.holeVariantsPool[variant].push(cc.instantiate(h));
+                    
+                }
+                console.log("-------variantsPool filled with "+fillNum+" holes of variant "+variant+', length '+this.holeVariantsPool[variant].length);
             }
-            //console.log("-------pool filled with "+fillNum+" holes of variant "+variant);
+            this.holesPool.push(...this.holeVariantsPool[variant]);
+            console.log("-------pool filled and length now "+this.holesPool.length);
         }
     }
     setHoleRandSize(h: Hole){
@@ -234,12 +247,13 @@ export default class RandomHoleField extends HoleField {
     fillRateUp(dr: number = 0.05){
         this.maxFillPercentage = cc.misc.clamp01(this.maxFillPercentage + dr);
         this.holesLimit = this.rows*this.columns*this.maxFillPercentage;
-        cc.log(this.node.name+ 'fill rate up');
+        cc.log(this.node.name+ ' fill rate up');
     }
     revealNextHole(){
         if(this.holeVariant < this.holePrefabs.length){
-            this.fillHolesPool(this.holeVariant++);
-            cc.log(this.node.name+ 'revealed new node');
+            cc.log(this.node.name+ ' revealed new node');
+            this.fillHolesPool(++this.holeVariant);
+            
         }
     }
 }

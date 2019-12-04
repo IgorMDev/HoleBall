@@ -1305,11 +1305,19 @@
     },
     "holePrefabs": [
       {
+        "__uuid__": "d4eae971-0662-4e7a-8989-6a0f6441852c"
+      },
+      {
         "__uuid__": "f8df8fd4-9c0c-47e8-ab95-3960a0526999"
+      },
+      {
+        "__uuid__": "7e8ba1d4-0a63-4eaf-b884-ddad4f9f8167"
       }
     ],
     "holesDensity": [
-      1
+      1,
+      0.5,
+      0.5
     ],
     "cellSize": 320,
     "maxFillPercentage": 0.2,
@@ -1486,10 +1494,18 @@
     "holePrefabs": [
       {
         "__uuid__": "d4eae971-0662-4e7a-8989-6a0f6441852c"
+      },
+      {
+        "__uuid__": "f8df8fd4-9c0c-47e8-ab95-3960a0526999"
+      },
+      {
+        "__uuid__": "7e8ba1d4-0a63-4eaf-b884-ddad4f9f8167"
       }
     ],
     "holesDensity": [
-      1
+      1,
+      0.5,
+      0.5
     ],
     "cellSize": 320,
     "maxFillPercentage": 0.2,
@@ -3865,7 +3881,7 @@
     "ballCatchAudio": {
       "__uuid__": "8cd322a1-fe29-4780-a60d-2c14a69bab4d"
     },
-    "meterScale": 50,
+    "meterScale": 10,
     "maxSpeed": 800,
     "ground": {
       "__id__": 89

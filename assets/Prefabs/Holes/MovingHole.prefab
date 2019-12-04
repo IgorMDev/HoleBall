@@ -61,8 +61,8 @@
       "__type__": "TypedArray",
       "ctor": "Float32Array",
       "array": [
-        0,
-        0,
+        -21.11199951171875,
+        311.40399169921875,
         0,
         0,
         0,
@@ -176,7 +176,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7e8ba1d4-0a63-4eaf-b884-ddad4f9f8167"
     },
     "fileId": "adSOrk8MFHGrTv25FAfpwv",
     "sync": false
@@ -268,7 +268,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7e8ba1d4-0a63-4eaf-b884-ddad4f9f8167"
     },
     "fileId": "9bex/RD5JOdYojPBmOgUxx",
     "sync": false

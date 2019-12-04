@@ -14,7 +14,7 @@ export default class HoleField extends cc.Component {
         this.activeHoles = [...this.rectNode.children];
         cc.log('copy children, count '+this.holesPool.length);
     }
-    start(){
+    reset(){
         this.clear();
     }
     clear(){
@@ -30,7 +30,7 @@ export default class HoleField extends cc.Component {
     setClear(){
         if(cc.Camera.main.containsNode(this.node)){
             this.clearDone = false;
-            
+
             console.log("_____field cleared by anim " +this.node.name);
         }else{
             this.clear();

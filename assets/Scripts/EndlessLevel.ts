@@ -27,14 +27,17 @@ export default class EndlessLevel extends Level {
     groundY = 0;
     groundSpeed = 0;
     scoreCounter = 0;
+    startSpeed = 0;
     onLoad() {
         super.onLoad();
         this.groundSpeed = this.speed/2;
         this.groundY = this.ground.y;
+        this.startSpeed = this.speed;
         //this.moveWatchers.push(this.lastLine, this.bestLine);
     }
     reset(){
         super.reset();
+        this.speed = this.startSpeed;
         this.scoreCounter = 0;
         cc.tween(this.ground).set({y: -this.node.height/2}).to(0.5,{y: this.groundY},null).start();
         this.hideRecordLines();
@@ -96,8 +99,8 @@ export default class EndlessLevel extends Level {
         UI
     */
     setRecordLinesLabel(){
-        this.lastLineLabel.string = this.sd.score+'';
-        this.bestLineLabel.string = this.sd.bestScore+'';
+        this.lastLineLabel.string = this.sd.score+'m';
+        this.bestLineLabel.string = this.sd.bestScore+'m';
     }
     /*
         progress in game

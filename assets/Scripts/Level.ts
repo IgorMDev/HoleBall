@@ -61,7 +61,7 @@ export default abstract class Level extends cc.Component {
             this.ball = null;
         }
         for(let i in this.holeFields){
-            this.holeFields[i].clear();
+            this.holeFields[i].reset();
             this.holeFields[i].node.y = this.startY+this.node.height*parseInt(i);
         }
         for(let i in this.watchersStartY){

@@ -20,16 +20,13 @@ export default class Hole extends cc.Component {
         this.removeTween = cc.tween(this.node).to(0.5, {scale:{value: 0, easing: 'quadIn'}}, null);
         this.node.on('spawn', this.onSpawn, this);
         this.node.on('remove', this.onRemove, this);
-        
-    }
-    onEnable(){
-        this.isBallCaptured = false;
-    }
-    start(){
         if(!this.radius){
             this.radius = Math.max(this.node.width, this.node.height)/2;
         }
         this.scale = this.node.scale;
+    }
+    onEnable(){
+        this.isBallCaptured = false;
     }
     onDestroy(){
         this.node.off('spawn', this.onSpawn, this);
