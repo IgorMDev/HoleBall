@@ -18,7 +18,9 @@ export default class SoundManager extends cc.Component {
     backgroundMusic: cc.AudioClip = null;
 
     start(){
+        
         cc.audioEngine.playMusic(this.backgroundMusic, true);
+        
     }
     static playEffect(ac: cc.AudioClip, isLoop = false){
         if(ac){

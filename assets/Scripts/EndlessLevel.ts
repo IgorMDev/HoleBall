@@ -33,6 +33,7 @@ export default class EndlessLevel extends Level {
         this.groundSpeed = this.speed/2;
         this.groundY = this.ground.y;
         this.startSpeed = this.speed;
+        this.node.on('powerup', this.powerUpHandler, this);
         //this.moveWatchers.push(this.lastLine, this.bestLine);
     }
     reset(){
@@ -41,6 +42,7 @@ export default class EndlessLevel extends Level {
         this.scoreCounter = 0;
         cc.tween(this.ground).set({y: -this.node.height/2}).to(0.5,{y: this.groundY},null).start();
         this.hideRecordLines();
+        this.resetProgress();
     }
     ready(){
         super.ready();
@@ -52,7 +54,7 @@ export default class EndlessLevel extends Level {
     }
     finish(){
         super.finish();
-        this.unscheduleAllCallbacks();
+        this.unschedule(this.progressChecker);
         cc.tween(this.ground).to(0.5,{y: -this.node.height/2},null).start();
         this.hideRecordLines();
     }
@@ -81,6 +83,28 @@ export default class EndlessLevel extends Level {
             }
         }
     }
+    powerUpHandler(type){
+        cc.log('powerup handler');
+        switch(type){
+            case 'liftUp':
+                cc.log('on lift up');
+                cc.tween(this.node).call(()=>{
+                    this.ball.canBeCaught = false;
+                    //this.isReady = false;
+                    
+                    this.schedule(this.onLiftUp,0);
+                }).delay(3).call(()=>{
+                    this.ball.canBeCaught = true;
+                    //this.isReady = true;
+                    this.unschedule(this.onLiftUp);
+                }).start();
+                break;
+        }
+        
+    }
+    onLiftUp(){
+        this.moveBy(3);
+    }
     setRecordLines(){
         if(this.sd.score){
             this.lastLine.active = true;
@@ -105,6 +129,12 @@ export default class EndlessLevel extends Level {
     /*
         progress in game
     */
+    resetProgress(){
+        this.minorChecks = this.midChecks = this.majorChecks = 1;
+        this.funcInvokeData = {
+            default: {name: '', count: 0}
+        }
+    }
     minorChecks = 1; midChecks = 1; majorChecks = 1;
 
     progressChecker(){
@@ -125,10 +155,12 @@ export default class EndlessLevel extends Level {
         let invoked = false;
         do{
             r = Math.random();
-            if(r < 0.4){
+            if(r < 0.2){
                 invoked = this.funcInvokeLimiter(()=>{this.speedUp(20)}, 'speedUp20',2);
-            }else{
+            }else if(r < 0.3){
                 invoked = this.funcInvokeLimiter(()=>{this.speedUp(10)}, 'speedUp10',2);
+            }else{
+                invoked = this.funcInvokeLimiter(this.fieldsRevealNewPowerUp, 'revealPowerup',2);
             }
         }while(!invoked);
         
@@ -152,10 +184,8 @@ export default class EndlessLevel extends Level {
         let invoked = false;
         do{
             r = Math.random();
-            if(r < 0.4){
-                invoked = this.funcInvokeLimiter(()=>{
-                    this.fieldsRevealNewHoles();
-                }, '',2);
+            if(r < 0.8){
+                invoked = this.funcInvokeLimiter(this.fieldsRevealNewHoles, 'revealHole',2);
             }else{
                 // invoked = this.funcInvokeLimiter(()=>{
                     
@@ -183,6 +213,16 @@ export default class EndlessLevel extends Level {
             }, 'holeFieldRevealHole'+r, 2, 'holeFieldsHoles');
         }while(!invoked);
     }
+    fieldsRevealNewPowerUp(){
+        let r;
+        let invoked = false;
+        do{
+            r = Math.floor(Math.random()*this.holeFields.length);
+            invoked = this.funcInvokeLimiter(()=>{
+                this.holeFields[r].revealNextPowerUp();
+            }, 'holeFieldRevealPowerup'+r, 2, 'holeFieldsPowerups');
+        }while(!invoked);
+    }
     speedUpByRate(rate = 0.1){
         this.speed = cc.misc.clampf(this.speed + this.speed*rate, 0, this.maxSpeed);
     }
@@ -200,13 +240,13 @@ export default class EndlessLevel extends Level {
         }
         if(name === d.name){
             if(d.count < limit){
-                f();
+                f.call(this);
                 d.count++;
             }else{
                 return false;
             }
         }else{
-            f();
+            f.call(this);
             d.name = name;
             d.count = 1;
         }

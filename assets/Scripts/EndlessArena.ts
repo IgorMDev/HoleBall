@@ -18,6 +18,7 @@ export default class EndlessArena extends Arena{
     scoreLabel: cc.Label = null;
     @property(cc.Label)
     bestScoreLabel: cc.Label = null;
+    keyName = "EndlessArena";
     onLoad () {
         super.onLoad();
     }

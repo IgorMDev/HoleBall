@@ -35,7 +35,7 @@ export default class PlatformBlock extends cc.Component {
         this.moveAcc = this.node.addComponent(Accelerator);
         this.rotAcc = this.node.addComponent(Accelerator);
         this.moveAcc.isFlipping = true;
-        this.moveAcc.dumpingSpeed = 3;
+        this.moveAcc.dumpingSpeed = 4;
         this.rotAcc.isFlipping = true;
         this.moveAcc.setEasing(this.moveEasing);
         this.rotAcc.setEasing(this.rotEasing);

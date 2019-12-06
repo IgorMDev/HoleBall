@@ -97,7 +97,19 @@
 		}
 	],
 	"game": {
-		"name": "UNKNOW GAME",
-		"appid": "UNKNOW"
-	}
+		"name": "Hole Ball",
+		"appid": "655444894",
+		"cid": "0"
+	},
+	"configs": [
+		{
+			"appid": "655444894",
+			"services": [
+				{
+					"service_id": "235",
+					"enable": false
+				}
+			]
+		}
+	]
 }

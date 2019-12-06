@@ -92,7 +92,7 @@ export default abstract class Level extends cc.Component {
         }).start();
     }
     end(){
-        
+        this.writeSaveData();
     }
     update(dt) {
         this.dt = dt;
@@ -112,14 +112,14 @@ export default abstract class Level extends cc.Component {
         this.writeSaveData();
     }
     moveBy(dy: number){
-        if(!Gameplay.paused){
+        if(!Gameplay.paused && this.isReady){
             if(!this.isRun) this.run();
             this.dy = dy;
             this.moveAcc.by(this.dy*this.dt);
         }
     }
     tiltBy(da: number){
-        if(!Gameplay.paused){
+        if(!Gameplay.paused && this.isReady){
         this.da = da;
         if(da !== 0){
             da *= this.dt;
@@ -168,12 +168,12 @@ export default abstract class Level extends cc.Component {
         }
     }
     readSaveData(){
-        this.sd = Game.instance.progressData[this.arena.node.name][this.node.name] || {
+        this.sd = Game.instance.progressData[this.arena.keyName][this.node.name] || {
             score: 0, bestScore: 0
         };
         cc.log(this.node.name+" save data "+JSON.stringify(this.sd));
     }
     writeSaveData(){
-        //Game.instance.progressData[this.arena.node.name][this.node.name] = this.sd;
+        Game.instance.progressData[this.arena.keyName][this.node.name] = this.sd;
     }
 }

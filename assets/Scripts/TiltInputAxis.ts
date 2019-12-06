@@ -16,7 +16,8 @@ export default class TiltInputAxis extends cc.Component {
 
     startPoint: cc.Vec2 = cc.Vec2.ZERO;
     movePoint: cc.Vec2 = cc.Vec2.ZERO;
-    accVec: cc.Vec2 = cc.Vec2.ZERO;
+    accX = 0;
+    oAccX = 0;
     isActive = false;
     onLoad(){
         if(!this.arena){
@@ -36,7 +37,10 @@ export default class TiltInputAxis extends cc.Component {
         if(this.isActive){
             this.arena.level.moveBy(this.movePoint.y/this.moveUnit);
         }
-        this.arena.level.tiltTo(-this.accVec.x/this.accUnit);
+        if(Math.abs(this.accX - this.oAccX) > 0.05){
+            this.arena.level.tiltTo(-this.accX/this.accUnit);
+        }
+        
     }
     onResume(){
         this.checkControls();
@@ -50,6 +54,7 @@ export default class TiltInputAxis extends cc.Component {
     }
     registerEvents(){
         cc.systemEvent.setAccelerometerEnabled(true);
+        cc.systemEvent.setAccelerometerInterval(0.05);
         this.touchArea.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.touchArea.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
         this.touchArea.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
@@ -84,7 +89,8 @@ export default class TiltInputAxis extends cc.Component {
     }
     onTilt(event){
         if(event.acc){
-            this.accVec.set(event.acc);
+            this.oAccX = this.accX;
+            this.accX = event.acc.x;
             cc.log('acc vector x '+event.acc);
         }
     }

@@ -9,6 +9,53 @@ export default class SettingUI extends cc.Component {
     
     onLoad(){
         SettingUI._instance = this;
+        if(Game.instance.settings.music){
+            this.musicOn();
+        }else{
+            this.musicOff();
+        }
+        if(Game.instance.settings.sound){
+            this.soundOn();
+        }else{
+            this.soundOff();
+        }
+    }
+
+    toggleMusic(){
+        if(Game.instance.settings.music){
+            this.musicOff();
+        }else{
+            this.musicOn();
+        }
+    }
+    toggleSound(){
+        if(Game.instance.settings.sound){
+            this.soundOff();
+        }else{
+            this.soundOn();
+        }
+    }
+    soundOn(){
+        cc.audioEngine.setEffectsVolume(1);
+        Game.instance.settings.sound = true;
+        cc.log('sound on');
+        this.musicOn();
+    }
+    soundOff(){
+        cc.audioEngine.setEffectsVolume(0);
+        Game.instance.settings.sound = false;
+        cc.log('sound off');
+        this.musicOff();
+    }
+    musicOn(){
+        cc.audioEngine.setMusicVolume(1);
+        Game.instance.settings.music = true;
+        cc.log('music on');
+    }
+    musicOff(){
+        cc.audioEngine.setMusicVolume(0);
+        Game.instance.settings.music = false;
+        cc.log('music off');
     }
     setKeyboardControlsHandler(s, data){
         cc.log("%%%%%% key sender "+ typeof s);

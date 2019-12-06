@@ -2,7 +2,6 @@
 import Level from "./Level";
 import Game from "./Game";
 import Gameplay from "./Gameplay";
-import MathUtils from "./MathModule";
 
 const {ccclass, property, executionOrder, disallowMultiple} = cc._decorator;
 
@@ -20,6 +19,7 @@ export default abstract class Arena extends cc.Component{
     levelsPath: string = '';
 
     isReady = false;
+    keyName = 'Arena';
     sd = {};
     onLoad(){
         this.level.arena = this;
@@ -122,15 +122,15 @@ export default abstract class Arena extends cc.Component{
         this.node.emit('resumed');
     }
     readSaveData(){
-        this.sd = Game.instance.progressData[this.node.name];
+        this.sd = Game.instance.progressData[this.keyName];
         if(!this.sd){
-            Game.instance.progressData[this.node.name] = this.sd = {
+            Game.instance.progressData[this.keyName] = this.sd = {
 
             };
         }
     }
     writeSaveData(){
-        Game.instance.progressData[this.node.name] = this.sd;
+        Game.instance.progressData[this.keyName] = this.sd;
     }
     // touchStart = (event: cc.Event.EventTouch) => {
     //     let loc = event.getLocation();

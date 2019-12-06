@@ -20,6 +20,7 @@ export default class Ball extends cc.Component {
     spawnTween: cc.Tween = null;
     destroyTween: cc.Tween = null;
     isReady = false;
+    canBeCaught = true;
     level: Level = null;
     get radius(){
         return this.cpcol.radius;
@@ -67,7 +68,7 @@ export default class Ball extends cc.Component {
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider){
         if(this.isReady){
-            if(other.node.group === "hole" && other.tag === 0){
+            if(this.canBeCaught && other.node.group === "hole" && self.tag === 0 && other.tag === 0){
                 this.isReady = false;
                 other.getComponent(Hole).captureBall(this);
                 this.level.ballCaptured(this);
@@ -91,9 +92,6 @@ export default class Ball extends cc.Component {
                 console.log("particle instantiated at "+prt.parent);
             }
         }
-        
-    }
-    onEndContact(contact:cc.PhysicsContact, self: cc.PhysicsCollider, other: cc.PhysicsCollider){
         
     }
     

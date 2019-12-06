@@ -14,14 +14,19 @@ export default class Game extends cc.Component {
         super();
         return Game._instance || (Game._instance = this);
     }
-    progressData = {};
+    progressData = {
+        EndlessArena: {
+            gems: 0
+        },
+        LevelsArena: {}
+    };
     settings: gamedata = {
         sound: true, music: true,
         controls: new Set([ControlType.Touch, ControlType.Keyboard])
     }
     
     loadSaveData(){
-
+        
     }
 
     writeSaveData(){
