@@ -18,7 +18,9 @@ export default class Game extends cc.Component {
         EndlessArena: {
             gems: 0
         },
-        LevelsArena: {}
+        LevelsArena: {
+            Level1: {score: 0, bestScore:0}
+        }
     };
     settings: gamedata = {
         sound: true, music: true,

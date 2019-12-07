@@ -36,6 +36,9 @@ export default class EndlessArena extends Arena{
         super.readyGame();
         this.readyUI();
     }
+    failGame(){
+        this.finishGame();
+    }
     finishGame(){
         super.finishGame();
         this.showSummaryUI();

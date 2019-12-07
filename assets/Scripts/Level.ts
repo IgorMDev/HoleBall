@@ -57,10 +57,6 @@ export default abstract class Level extends cc.Component {
     reset(){
         this.isReady = this.isRun = false;
         this.score = 0;
-        if(this.ball){
-            this.ball.node.destroy();
-            this.ball = null;
-        }
         for(let i in this.holeFields){
             this.holeFields[i].reset();
             this.holeFields[i].node.y = this.startY+this.node.height*parseInt(i);
@@ -81,16 +77,26 @@ export default abstract class Level extends cc.Component {
     run(){
         this.isRun = true;
     }
+    fail(){
+        this.onFinished();
+    }
     finish(){
+        this.writeScores();
+        this.onFinished();
+    }
+    onFinished(){
         this.isReady = this.isRun = false;
         this.platform.remove();
         for(let field of this.holeFields){
             field.setClear();
         }
-        this.writeScores();
         cc.tween(this.node).call(()=>{
             SoundManager.playEffect(this.finishAudio);
         }).start();
+        if(this.ball && this.ball.node){
+            this.ball.node.destroy();
+            this.ball = null;
+        }
     }
     end(){
         this.writeSaveData();
@@ -171,7 +177,7 @@ export default abstract class Level extends cc.Component {
     }
     ballRemoved(b: Ball){
         this.ball = null;
-        this.arena.finishGame();
+        this.arena.failGame();
     }
     writeScores(){
         this.sd.score = this.score;
@@ -180,12 +186,12 @@ export default abstract class Level extends cc.Component {
         }
     }
     readSaveData(){
-        this.sd = Game.instance.progressData[this.arena.keyName][this.node.name] || {
+        this.sd = this.arena.sd[this.node.name] || {
             score: 0, bestScore: 0
         };
         cc.log(this.node.name+" save data "+JSON.stringify(this.sd));
     }
     writeSaveData(){
-        Game.instance.progressData[this.arena.keyName][this.node.name] = this.sd;
+        this.arena.sd[this.node.name] = this.sd;
     }
 }

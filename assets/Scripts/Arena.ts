@@ -43,19 +43,14 @@ export default abstract class Arena extends cc.Component{
             this.node.active = true;
         }
     }
-    // update(dt) {
-    //     if(this.isReady && !Gameplay.paused){
-            
-    //     }
-    // }
     loadLevelHandler(s, data){
         cc.log("%%%%%% sender "+ typeof s);
         cc.log("%%%%%% data "+data);
         this.loadLevel(data);
     }
     loadLevel(lname?: String){
-        if(lname && this.level && this.level.name !== lname){
-            cc.loader.loadRes(this.levelsPath + lname, (err, prefab)=>{
+        if(lname && this.level && this.level.node.name !== lname){
+            cc.loader.loadRes(this.levelsPath + lname, cc.Prefab, (err, prefab)=>{
                 if(err){
                     cc.error(err.message || err)
                     return;
@@ -65,10 +60,14 @@ export default abstract class Arena extends cc.Component{
                     ln.setParent(this.level.node.parent);
                     this.level.node.destroy();
                     this.level = ln.getComponent(Level);
+                    this.level.arena = this;
+                    cc.log('load new level '+this.level.node.name);
                     this.enable();
                 }
             })
+            cc.loader.releaseRes(this.levelsPath + lname, cc.Prefab);
         }else if(this.level){
+            cc.log('load same level');
             this.enable();
         }
     }
@@ -91,15 +90,18 @@ export default abstract class Arena extends cc.Component{
         this.startGame();
         //Gameplay.instance.gameRestart();
     }
+    failGame(){
+        this.isReady = false;
+        this.level.fail();
+    }
     finishGame(){
         this.isReady = false;
         this.level.finish();
         this.node.emit('finished');
     }
     endGame(){
-        
+        this.writeSaveData();
         this.level.end();
-        //this.writeSaveData();
         this.disable();
         Gameplay.instance.gameEnd();
     }
@@ -122,27 +124,11 @@ export default abstract class Arena extends cc.Component{
         this.node.emit('resumed');
     }
     readSaveData(){
-        this.sd = Game.instance.progressData[this.keyName];
-        if(!this.sd){
-            Game.instance.progressData[this.keyName] = this.sd = {
-
-            };
-        }
+        this.sd = Game.instance.progressData[this.keyName] || {};
     }
     writeSaveData(){
         Game.instance.progressData[this.keyName] = this.sd;
     }
-    // touchStart = (event: cc.Event.EventTouch) => {
-    //     let loc = event.getLocation();
-    //     let dx = loc.x - this.touchArea.width/2,
-    //         dy = loc.y - this.touchArea.height/2;
-    //     this.touchVec = cc.v2(dx, dy);
-    //     console.log("*******t loc "+loc);
-        
-    // }
-    // touchEnd = (event: cc.Event.EventTouch) => {
-    //     this.touchVec = cc.Vec2.ZERO;
-    // }
 }
 /* 
 const {ccclass, property} = cc._decorator;

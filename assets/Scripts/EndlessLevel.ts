@@ -52,6 +52,9 @@ export default class EndlessLevel extends Level {
         super.run();
         this.schedule(this.progressChecker, 0.2);
     }
+    fail(){
+        this.finish();
+    }
     finish(){
         super.finish();
         this.unschedule(this.progressChecker);
@@ -61,8 +64,8 @@ export default class EndlessLevel extends Level {
     update(dt){
         super.update(dt);
         if(!Gameplay.paused && this.isRun && this.isReady){
-            //this.ground.y += (this.groundSpeed*dt - this.dyt*this.speed);
-            //this.ground.y = cc.misc.clampf(this.ground.y, -this.node.height/2 - 100, 0);
+            this.ground.y += (this.groundSpeed*dt - this.dyt*this.speed);
+            this.ground.y = cc.misc.clampf(this.ground.y, -this.node.height/2 - 100, 0);
             if(this.dyt !== 0){
                 this.scoreCounter += this.dyt*this.speed;
                 if(this.scoreCounter >= 0){

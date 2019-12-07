@@ -67,8 +67,8 @@
       "__type__": "TypedArray",
       "ctor": "Float32Array",
       "array": [
-        -23.072999954223633,
-        -103.3270034790039,
+        0,
+        300,
         0,
         0,
         0,
@@ -608,19 +608,6 @@
     "sync": false
   },
   {
-    "__type__": "e8b6fZqDX9CJbW1BeCA8kmL",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "mask": {
-      "__id__": 14
-    },
-    "_id": ""
-  },
-  {
     "__type__": "cc.CircleCollider",
     "_name": "",
     "_objFlags": 0,
@@ -654,6 +641,22 @@
       }
     ],
     "playOnLoad": true,
+    "_id": ""
+  },
+  {
+    "__type__": "fc513wpIxBIVYNELakhifjT",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "radius": 80,
+    "border": 0,
+    "mask": {
+      "__id__": 14
+    },
+    "ballCatchParticle": null,
     "_id": ""
   },
   {

@@ -1,6 +1,7 @@
 
 import Arena from "./Arena";
 import NavigationPanel from "./UI/NavigationPanel";
+import TimeLevel from "./TimeLevel";
 
 const {ccclass, property, executionOrder, disallowMultiple} = cc._decorator;
 
@@ -8,20 +9,32 @@ const {ccclass, property, executionOrder, disallowMultiple} = cc._decorator;
 @executionOrder(-10)
 @disallowMultiple
 export default class LevelsArena extends Arena{
+    private static time = new Date();
+    static MilisecondsToMinSec(ms: number){
+        this.time.setTime(ms);
+        let m = LevelsArena.time.getMinutes().toString(),
+            s = LevelsArena.time.getSeconds().toString();
+        return m.padStart(2, '0')+':'+s.padStart(2, '0');
+    }
     @property(cc.Node)
     uiNode: cc.Node = null;
     @property(NavigationPanel)
     scorePanel: NavigationPanel = null;
     @property(NavigationPanel)
     summaryPanel: NavigationPanel = null;
+    @property(NavigationPanel)
+    failurePanel: NavigationPanel = null;
+    @property(cc.Node)
+    nextBtn: cc.Node = null;
     @property(cc.Label)
     scoreLabel: cc.Label = null;
     @property(cc.Label)
     bestScoreLabel: cc.Label = null;
+
+    keyName = "LevelsArena";
     onLoad () {
         super.onLoad();
     }
-
     lateUpdate(){
         if(this.level.isRun){
             this.setScoreLabel(this.level.score);
@@ -35,8 +48,13 @@ export default class LevelsArena extends Arena{
         super.readyGame();
         this.readyUI();
     }
+    failGame(){
+        super.failGame();
+        this.showFailureUI();
+    }
     finishGame(){
         super.finishGame();
+        this.checkNextBtn();
         this.showSummaryUI();
     }
     endGame(){
@@ -44,10 +62,18 @@ export default class LevelsArena extends Arena{
         super.endGame();
     }
     onPause(){
+        super.onPause();
         this.hideUI();
     }
     onResume(){
+        super.onResume();
         this.showUI();
+    }
+    nextLevel(){
+        let tl = this.level.getComponent(TimeLevel);
+        if(tl && tl.nextLevel){
+            this.loadLevel(tl.nextLevel);
+        }
     }
     /*
     **********--- UI ---*************
@@ -56,6 +82,7 @@ export default class LevelsArena extends Arena{
         this.showUI();
         this.scorePanel.hide();
         this.summaryPanel.close();
+        this.failurePanel.close();
         this.setScoreLabel(this.level.score);
     }
     private readyUI(){
@@ -63,18 +90,29 @@ export default class LevelsArena extends Arena{
     }
     private showSummaryUI(){
         this.summaryPanel.openNext();
-        this.scoreLabel.string = this.level.sd.score +'m';
+        this.setScoreLabel(this.level.sd.score);
         this.setBestScoreLabel(this.level.sd.bestScore);
+    }
+    private showFailureUI(){
+        this.failurePanel.openNext();
+    }
+    private checkNextBtn(){
+        let tl = this.level.getComponent(TimeLevel);
+        if(tl && tl.nextLevel){
+            this.nextBtn.active = true;
+        }else{
+            this.nextBtn.active = false;
+        }
     }
     private closeUI(){
         this.scorePanel.hide();
         this.summaryPanel.close();
     }
     private setScoreLabel(sc: number){
-        this.scoreLabel.string = sc+'';
+        this.scoreLabel.string = LevelsArena.MilisecondsToMinSec(sc);
     }
     private setBestScoreLabel(sc: number){
-        this.bestScoreLabel.string = sc + 'm';
+        this.bestScoreLabel.string = LevelsArena.MilisecondsToMinSec(sc);
     }
     hideUI(){
         this.uiNode.active = false;
