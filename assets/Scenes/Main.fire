@@ -1405,7 +1405,7 @@
       "__id__": 27
     },
     "maxGemsNum": 3,
-    "maxPowerupNum": 2,
+    "maxPowerupNum": 1,
     "cellSize": 320,
     "maxFillPercentage": 0.2,
     "holeRadiuses": [
@@ -1680,7 +1680,7 @@
       "__id__": 34
     },
     "maxGemsNum": 3,
-    "maxPowerupNum": 2,
+    "maxPowerupNum": 1,
     "cellSize": 320,
     "maxFillPercentage": 0.2,
     "holeRadiuses": [

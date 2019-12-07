@@ -157,8 +157,8 @@
       "x": 720,
       "y": 10
     },
-    "_positionType": 0,
-    "positionType": 0,
+    "_positionType": 1,
+    "positionType": 1,
     "emitterMode": 0,
     "gravity": {
       "__type__": "cc.Vec2",

@@ -48,8 +48,8 @@
       "__type__": "TypedArray",
       "ctor": "Float32Array",
       "array": [
-        190.60499572753906,
-        -4.211999893188477,
+        0,
+        0,
         0,
         0,
         0,
@@ -102,7 +102,7 @@
     },
     "_stopped": true,
     "playOnLoad": true,
-    "autoRemoveOnFinish": false,
+    "autoRemoveOnFinish": true,
     "totalParticles": 15,
     "duration": 0.2,
     "emissionRate": 100,
@@ -186,7 +186,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "567f79e7-8b2d-4112-aa23-ead3d5889871"
     },
     "fileId": "1buz1d9W1A4JumE3cKHO0a",
     "sync": false

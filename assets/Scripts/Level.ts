@@ -42,6 +42,7 @@ export default abstract class Level extends cc.Component {
     score = 0;
     isReady = false;
     isRun = false;
+    canMove = true;
     sd: leveldata = null;
     dy = 0; da = 0; dt = 0; dyt = 0;
     onLoad(){
@@ -111,20 +112,31 @@ export default abstract class Level extends cc.Component {
     onDestroy(){
         this.writeSaveData();
     }
-    moveBy(dy: number){
-        if(!Gameplay.paused && this.isReady){
+    moveByHandler(dy: number){
+        if(!Gameplay.paused && this.canMove && this.isReady){
             if(!this.isRun) this.run();
-            this.dy = dy;
-            this.moveAcc.by(this.dy*this.dt);
+            this.moveBy(dy);
         }
     }
-    tiltBy(da: number){
+    tiltByHandler(da: number){
         if(!Gameplay.paused && this.isReady){
+            this.tiltBy(da);
+        }
+    }
+    tiltToHandler(da: number){
+        if(!Gameplay.paused && this.isReady){
+            this.tiltTo(da);
+        }
+    }
+    moveBy(dy: number){
+        this.dy = dy;
+        this.moveAcc.by(this.dy*this.dt);
+    }
+    tiltBy(da: number){
         this.da = da;
         if(da !== 0){
             da *= this.dt;
             this.platform.tiltBy(da);
-        }
         }
     }
     tiltTo(a: number){

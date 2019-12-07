@@ -88,9 +88,11 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 1,
-    "_custom": true,
+    "_custom": {
+      "custom": false
+    },
     "_file": {
-      "__uuid__": "b2687ac4-099e-403c-a192-ff477686f4f5"
+      "__uuid__": "53bb3e05-211b-4526-b798-d58623cf1ac8"
     },
     "_spriteFrame": {
       "__uuid__": "159e13a5-0d96-451c-aca4-ae0abdd457ca"
@@ -98,7 +100,7 @@
     "_texture": {
       "__uuid__": "da967e93-a271-4fe0-9278-4cdfd345b71d"
     },
-    "_stopped": true,
+    "_stopped": false,
     "playOnLoad": true,
     "autoRemoveOnFinish": true,
     "totalParticles": 100,

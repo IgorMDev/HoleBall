@@ -71,21 +71,20 @@ export default class RandomHoleField extends HoleField {
         }
     }
     reset(){
+        this.clear();
         this.maxFillPercentage = this.startFillRate;
         this.holesLimit = this.rows*this.columns*this.maxFillPercentage;
         this.activeHoles = [];
         this.holesPool = [];
-        this.powerupVariant = 0;
+        this.powerupVariant = -1;
         this.fillHolesPool(this.holeVariant = 0);
-        this.clear();
-        
-        console.log("_____field resetted by func "+this.node.name);
+        //console.log("_____field resetted by func "+this.node.name);
     }
     clear(){
         for(let cn of this.activeHoles){
             cn.removeFromParent(false);
         }
-        console.log("_____field cleared by func "+this.node.name);
+        //console.log("_____field cleared by func "+this.node.name);
         
         this.onCleared();
     }
@@ -104,7 +103,7 @@ export default class RandomHoleField extends HoleField {
         if(this.isInParentRect()){
             this.clearDone = false;
             this.startTime = Date.now();
-            console.log("_____field cleared by anim " +this.node.name);
+            //console.log("_____field cleared by anim " +this.node.name);
             
         }else{
             this.clear();
@@ -122,14 +121,14 @@ export default class RandomHoleField extends HoleField {
             ++i;
         }
         this.onSpawned();
-        console.log("_____field spawned by func "+this.node.name);
+        //console.log("_____field spawned by func "+this.node.name);
     }
     setSpawn(){
         this.done = false;
         this.startTime = Date.now();
         if(this.isInParentRect()){
             this.anim = true;
-            console.log("_____field spawned by anim " +this.node.name);
+            //console.log("_____field spawned by anim " +this.node.name);
         }else{
             this.anim = false;
             //this.spawn();
@@ -204,21 +203,21 @@ export default class RandomHoleField extends HoleField {
     spawnGems(){
         if(this.gemPrefab)
         for(let i = 0; i < this.maxGemsNum && this.gemsCount <= this.maxGemsNum; ++i){
-            if(Math.random() > 0.2){
+            if(Math.random() < 0.5){
                 this.spawnPrefabIn(this.gemPrefab, this.bonuseRect);
                 ++this.gemsCount;
             }
         }
-        console.log("_____gems Spawned " +this.node.name);
+        //console.log("_____gems Spawned " +this.node.name);
     }
     spawnPowerUp(){
         if(this.powerupVariant > -1 && this.powerupPrefabs.length > 0)
         for(let i = 0; i < this.maxPowerupNum && this.powerupsCount <= this.maxPowerupNum; ++i){
-            if(Math.random() > 0.2){
+            if(Math.random() < 0.3){
                 let pup = this.powerupPrefabs[Math.floor(Math.random()*this.powerupVariant)];
                 this.spawnPrefabIn(pup, this.bonuseRect);
                 ++this.powerupsCount;
-                console.log("_____powerup Spawned " +this.node.name);
+                //console.log("_____powerup Spawned " +this.node.name);
             }
         }
     }
@@ -226,7 +225,7 @@ export default class RandomHoleField extends HoleField {
         this.bonuseRect.destroyAllChildren()
         this.gemsCount = 0;
         this.powerupsCount = 0;
-        console.log("_____bonuses cleared " +this.node.name);
+        //console.log("_____bonuses cleared " +this.node.name);
     }
     intersectNear(h: cc.Node){
         let l = 2,

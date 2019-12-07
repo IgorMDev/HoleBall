@@ -88,23 +88,38 @@ export default class EndlessLevel extends Level {
         switch(type){
             case 'liftUp':
                 cc.log('on lift up');
+                let ballBlink = cc.tween(this.ball.node).repeat(4, cc.tween().to(0.3, {opacity: 128}, null).to(0.3, {opacity: 255}, null))
+                .call(()=>{
+                    this.ball.canBeCaught = true; 
+                })
                 cc.tween(this.node).call(()=>{
                     this.ball.canBeCaught = false;
-                    //this.isReady = false;
-                    
-                    this.schedule(this.onLiftUp,0);
-                }).delay(3).call(()=>{
-                    this.ball.canBeCaught = true;
-                    //this.isReady = true;
-                    this.unschedule(this.onLiftUp);
+                    this.canMove = false;
+                    ballBlink.stop();
+                    this.schedule(this.onLiftUp(1),0);
+                }).delay(1).call(()=>{
+                    if(this.onLiftUp(-1) === null){
+                        ballBlink.start();
+                        this.canMove = true;
+                    }
                 }).start();
                 break;
         }
-        
     }
-    onLiftUp(){
-        this.moveBy(3);
-    }
+    onLiftUp = (()=>{
+        var count = 0;
+        var func = ()=>{
+            this.moveBy(4);
+        }
+        return (num)=>{
+            count += num;
+            if(count <= 0){
+                this.unschedule(func);
+                return null;
+            }
+            return func;
+        }
+    })()
     setRecordLines(){
         if(this.sd.score){
             this.lastLine.active = true;
@@ -155,9 +170,9 @@ export default class EndlessLevel extends Level {
         let invoked = false;
         do{
             r = Math.random();
-            if(r < 0.2){
+            if(r < 0.3){
                 invoked = this.funcInvokeLimiter(()=>{this.speedUp(20)}, 'speedUp20',2);
-            }else if(r < 0.3){
+            }else if(r < 0.6){
                 invoked = this.funcInvokeLimiter(()=>{this.speedUp(10)}, 'speedUp10',2);
             }else{
                 invoked = this.funcInvokeLimiter(this.fieldsRevealNewPowerUp, 'revealPowerup',2);
