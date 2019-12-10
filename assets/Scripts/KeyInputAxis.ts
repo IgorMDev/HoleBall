@@ -35,11 +35,7 @@ export default class KeyInputAxis extends cc.Component {
         this.checkControls();
     }
     checkControls(){
-        if(Game.instance.settings.controls.has(ControlType.Keyboard)){
-            this.enabled = true;
-        }else{
-            this.enabled = false;
-        }
+        this.enabled = Game.instance.settings.controls[ControlType.Keyboard];
     }
     // arrowsAxis(){
     //     this.moveAxis = KeyboardInput.getAxis(cc.macro.KEY.up, cc.macro.KEY.down);

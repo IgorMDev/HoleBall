@@ -1,3 +1,5 @@
+import BackgroundGrad from "./BackgroundGrad";
+
 //import encrypt from "encryptjs";
 
 const {ccclass, property, executionOrder, disallowMultiple} = cc._decorator;
@@ -14,7 +16,15 @@ export default class Game extends cc.Component {
         super();
         return Game._instance || (Game._instance = this);
     }
+    
+    onLoad(){
+        this.loadSaveData();
+        window.addEventListener('beforeunload', (e)=>{console.log('window before unloaded'); this.writeSaveData();});
+        
+        
+    }
     progressData = {
+        Background: null,
         EndlessArena: {
             gems: 0
         },
@@ -24,18 +34,42 @@ export default class Game extends cc.Component {
     };
     settings: gamedata = {
         sound: true, music: true,
-        controls: new Set([ControlType.Touch, ControlType.Keyboard])
+        controls: {
+            [ControlType.Touch]: false,
+            [ControlType.Keyboard]: false,
+            [ControlType.Tilt]: false,
+        }
     }
-    
+    onDestroy(){
+        this.writeSaveData();
+        cc.log('game destroyed');
+    }
     loadSaveData(){
+        let pd = cc.sys.localStorage.getItem('progressData'),
+            set = cc.sys.localStorage.getItem('settings');
+        if(pd){
+            this.progressData = JSON.parse(pd);
+        }
+        if(set){
+            this.settings = JSON.parse(set);
+        }
         
     }
 
     writeSaveData(){
-        //Object.assign(this.saveData, JSON.parse(cc.sys.localStorage.getItem('saveData')));
+        BackgroundGrad._instance.writeSaveData();
+        cc.sys.localStorage.setItem('progressData', JSON.stringify(this.progressData));
+        cc.sys.localStorage.setItem('settings', JSON.stringify(this.settings));
+        cc.log('-=-=-write game savedata');
+    }
+    clearSaveData(){
+        cc.sys.localStorage.removeItem('progressData');
+        cc.sys.localStorage.removeItem('settings');
     }
     exit(){
+        this.writeSaveData();
         cc.game.end();
+        
     }
 }
 enum ControlType{
@@ -47,7 +81,7 @@ declare global{
     type gamedata = {
         sound: boolean,
         music: boolean,
-        controls: Set<ControlType>
+        controls: {}
     }
     type levelsdata = {
         [key: string]: leveldata

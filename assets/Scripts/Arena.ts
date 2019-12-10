@@ -24,14 +24,13 @@ export default abstract class Arena extends cc.Component{
     onLoad(){
         this.level.arena = this;
         this.readSaveData();
-        cc.log("@@@ arena loaded");
-    
     }
     onEnable(){
         if(Arena._instance && Arena._instance !== this){
             Arena._instance.disable();
         }
         Arena._instance = this;
+
         this.level.arena = this;
         
         this.startGame();
@@ -57,15 +56,17 @@ export default abstract class Arena extends cc.Component{
                 }
                 let ln = cc.instantiate<cc.Node>(prefab);
                 if(ln){
+                    let newLevel = ln.getComponent(Level);
+                    newLevel.arena = this;
                     ln.setParent(this.level.node.parent);
+                    cc.loader.releaseRes(this.levelsPath + this.level.node.name, cc.Prefab);
                     this.level.node.destroy();
-                    this.level = ln.getComponent(Level);
-                    this.level.arena = this;
+                    this.level = newLevel;
                     cc.log('load new level '+this.level.node.name);
                     this.enable();
                 }
             })
-            cc.loader.releaseRes(this.levelsPath + lname, cc.Prefab);
+            
         }else if(this.level){
             cc.log('load same level');
             this.enable();
@@ -100,8 +101,8 @@ export default abstract class Arena extends cc.Component{
         this.node.emit('finished');
     }
     endGame(){
-        this.writeSaveData();
         this.level.end();
+        this.writeSaveData();
         this.disable();
         Gameplay.instance.gameEnd();
     }
@@ -124,7 +125,7 @@ export default abstract class Arena extends cc.Component{
         this.node.emit('resumed');
     }
     readSaveData(){
-        this.sd = Game.instance.progressData[this.keyName] || {};
+        this.sd = Game.instance.progressData[this.keyName] || this.sd;
     }
     writeSaveData(){
         Game.instance.progressData[this.keyName] = this.sd;

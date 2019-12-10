@@ -33,22 +33,5 @@ export default class TranslateTransitionBtn extends TransitionBtn {
             },{easing: this.easing});
         }
     }
-    // onTouchStart(e){
-    //     //if(this.pressedTween){
-    //         cc.tween(this.target).to(this.duration, {
-    //             position: this.startPos.add(this.pressedDelta)
-    //         },{easing: this.easing}).start();
-    //     //}
-    //     cc.log('touch start')
-    // }
-    // onTouchEnd(e){
-    //     //if(this.tween){
-    //         //this.pressedTween.stop();
-    //         cc.tween(this.target).to(this.duration, {
-    //             position: this.startPos
-    //         },{easing: this.easing}).start();
-    //     //}
-    //     cc.log('touch end');
-    // }
 
 }

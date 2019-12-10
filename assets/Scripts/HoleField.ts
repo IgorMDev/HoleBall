@@ -11,8 +11,18 @@ export default class HoleField extends cc.Component {
     done = true;
     clearDone = true;
     onLoad() {
-        this.activeHoles = [...this.rectNode.children];
-        cc.log('copy children, count '+this.holesPool.length);
+        this.fillHPool(...this.rectNode.children);
+        cc.log('-----pool filled length now '+this.holesPool.length);
+    }
+    fillHPool(...nodes: cc.Node[]){
+        for(let n of nodes){
+            if(n.group === 'hole'){
+                this.activeHoles.push(n);
+            }else if(n.children){
+                this.fillHPool(...n.children);
+            }
+        }
+        
     }
     reset(){
         this.clear();

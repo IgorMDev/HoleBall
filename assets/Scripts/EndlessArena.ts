@@ -1,6 +1,7 @@
 
 import Arena from "./Arena";
 import NavigationPanel from "./UI/NavigationPanel";
+import Game from "./Game";
 
 const {ccclass, property, executionOrder, disallowMultiple} = cc._decorator;
 
@@ -18,7 +19,10 @@ export default class EndlessArena extends Arena{
     scoreLabel: cc.Label = null;
     @property(cc.Label)
     bestScoreLabel: cc.Label = null;
+    @property(cc.Label)
+    gemsLabel: cc.Label = null;
     keyName = "EndlessArena";
+    gems = 0;
     onLoad () {
         super.onLoad();
     }
@@ -30,6 +34,7 @@ export default class EndlessArena extends Arena{
     }
     startGame(){
         super.startGame();
+        this.gems = 0;
         this.resetUI();
     }
     readyGame(){
@@ -41,6 +46,7 @@ export default class EndlessArena extends Arena{
     }
     finishGame(){
         super.finishGame();
+        Game.instance.progressData.EndlessArena.gems += this.gems;
         this.showSummaryUI();
     }
     endGame(){
@@ -54,6 +60,10 @@ export default class EndlessArena extends Arena{
     onResume(){
         super.onResume();
         this.showUI();
+    }
+    onGemPicked(){
+        ++this.gems;
+        this.gemsLabel.string = this.gems+'';
     }
     /*
     **********--- UI ---*************

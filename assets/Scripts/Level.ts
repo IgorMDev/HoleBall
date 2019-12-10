@@ -3,7 +3,6 @@ import Ball from "./Ball";
 import PlatformBlock from "./Block";
 import Arena from "./Arena";
 import Accelerator from "./Accelerator";
-import Game from "./Game";
 import HoleField from "./HoleField";
 import BackgroundGrad from "./BackgroundGrad";
 import SoundManager from "./SoundManager";
@@ -43,10 +42,10 @@ export default abstract class Level extends cc.Component {
     isReady = false;
     isRun = false;
     canMove = true;
-    sd: leveldata = null;
+    sd: leveldata = {score: 0, bestScore: 0};
     dy = 0; da = 0; dt = 0; dyt = 0;
     onLoad(){
-        this.readSaveData();
+        
         this.platform.level = this;
         this.watchersStartY = this.moveWatchers.map(n => n.y);
         this.moveAcc = this.node.addComponent(Accelerator);
@@ -54,7 +53,11 @@ export default abstract class Level extends cc.Component {
         this.moveAcc.dumpingSpeed = 2;
         this.moveAcc.setEasing(this.moveEasing);
     }
+    onEnable(){
+        this.readSaveData();
+    }
     reset(){
+        this.node.opacity = 255;
         this.isReady = this.isRun = false;
         this.score = 0;
         for(let i in this.holeFields){
@@ -66,6 +69,10 @@ export default abstract class Level extends cc.Component {
         }
         this.ballSpawner.spawn((bn)=>{this.ballSpawned(bn.getComponent(Ball))});
         this.platform.spawn();
+        if(this.ball && this.ball.node){
+            this.ball.node.destroy();
+            this.ball = null;
+        }
     }
     ready(){
         this.isReady = true;
@@ -87,12 +94,12 @@ export default abstract class Level extends cc.Component {
     onFinished(){
         this.isReady = this.isRun = false;
         this.platform.remove();
+        cc.tween(this.node).call(()=>{
+            SoundManager.playEffect(this.finishAudio);
+        }).to(0.5, {opacity: 0}, null).start();
         for(let field of this.holeFields){
             field.setClear();
         }
-        cc.tween(this.node).call(()=>{
-            SoundManager.playEffect(this.finishAudio);
-        }).start();
         if(this.ball && this.ball.node){
             this.ball.node.destroy();
             this.ball = null;
@@ -186,9 +193,7 @@ export default abstract class Level extends cc.Component {
         }
     }
     readSaveData(){
-        this.sd = this.arena.sd[this.node.name] || {
-            score: 0, bestScore: 0
-        };
+        this.sd = this.arena.sd[this.node.name] || this.sd;
         cc.log(this.node.name+" save data "+JSON.stringify(this.sd));
     }
     writeSaveData(){

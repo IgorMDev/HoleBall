@@ -44,7 +44,6 @@
     "PageView",
     "PageViewIndicator",
     "ProgressBar",
-    "RichText",
     "Spine Skeleton",
     "TiledMap",
     "VideoPlayer",
@@ -70,13 +69,12 @@
     "hole",
     "ground"
   ],
-  "last-module-event-record-time": 1575234764204,
+  "last-module-event-record-time": 1575925015891,
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 1280,
     "width": 720
   },
   "use-customize-simulator": true,
-  "use-project-simulator-setting": true,
-  "start-scene": "current"
+  "use-project-simulator-setting": true
 }

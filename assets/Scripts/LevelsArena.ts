@@ -36,7 +36,7 @@ export default class LevelsArena extends Arena{
         super.onLoad();
     }
     lateUpdate(){
-        if(this.level.isRun){
+        if(this.level && this.level.isRun){
             this.setScoreLabel(this.level.score);
         }
     }
@@ -54,7 +54,10 @@ export default class LevelsArena extends Arena{
     }
     finishGame(){
         super.finishGame();
-        this.checkNextBtn();
+        let tl = this.level.getComponent(TimeLevel);
+        if(tl && tl.nextLevel){
+            this.sd[tl.nextLevel] = {score:0, bestScore: 0}
+        }
         this.showSummaryUI();
     }
     endGame(){
@@ -89,11 +92,14 @@ export default class LevelsArena extends Arena{
         this.scorePanel.show();
     }
     private showSummaryUI(){
+        this.checkNextBtn();
         this.summaryPanel.openNext();
         this.setScoreLabel(this.level.sd.score);
         this.setBestScoreLabel(this.level.sd.bestScore);
     }
     private showFailureUI(){
+        this.nextBtn.active = false;
+        this.scorePanel.hide();
         this.failurePanel.openNext();
     }
     private checkNextBtn(){

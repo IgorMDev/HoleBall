@@ -19,7 +19,8 @@ export default class TouchInputAxis extends cc.Component {
     startPoint: cc.Vec2 = cc.Vec2.ZERO;
     movePoint: cc.Vec2 = cc.Vec2.ZERO;
     isActive = false;
-    onLoad () {
+    onLoad(){
+        
         if(!this.arena){
             this.arena = this.getComponent(Arena);
         }
@@ -44,11 +45,7 @@ export default class TouchInputAxis extends cc.Component {
         this.checkControls();
     }
     checkControls(){
-        if(Game.instance.settings.controls.has(ControlType.Touch)){
-            this.enabled = true;
-        }else{
-            this.enabled = false;
-        }
+        this.enabled = Game.instance.settings.controls[ControlType.Touch];
     }
     registerEvents(){
         this.touchArea.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
@@ -82,6 +79,7 @@ export default class TouchInputAxis extends cc.Component {
         cc.log('touch end id'+event.getID());
         if(event.getID() < 1){
             this.startPoint = cc.Vec2.ZERO;
+            this.movePoint = cc.Vec2.ZERO;
             this.isActive = false;
         }
     }

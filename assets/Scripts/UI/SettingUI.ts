@@ -1,26 +1,55 @@
 import Game from "../Game";
-
+import RadioBtn from "./RadioBtn";
+import SpriteToggleBtn from "./SpriteToggleBtn";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class SettingUI extends cc.Component {
     static _instance: SettingUI = null;
-    
+    @property(SpriteToggleBtn)
+    soundBtn: SpriteToggleBtn = null;
+    @property(SpriteToggleBtn)
+    musicBtn: SpriteToggleBtn = null;
+    @property(RadioBtn)
+    keyContrBtn: RadioBtn = null;
+    @property(RadioBtn)
+    touchContrBtn: RadioBtn = null;
+    @property(RadioBtn)
+    tiltContrBtn: RadioBtn = null;
     onLoad(){
         SettingUI._instance = this;
         if(Game.instance.settings.music){
-            this.musicOn();
+            this.musicBtn.toggleOn();
         }else{
-            this.musicOff();
+            this.musicBtn.toggleOff();
         }
         if(Game.instance.settings.sound){
-            this.soundOn();
+            this.soundBtn.toggleOn();
         }else{
-            this.soundOff();
+            this.soundBtn.toggleOff();
+        }
+        this.keyContrBtn.node.active = !cc.sys.isMobile;
+        this.touchContrBtn.node.active = cc.sys.isMobile || cc.sys.isNative || cc.sys.isBrowser;
+        this.tiltContrBtn.node.active = cc.sys.isMobile;
+        
+    }
+    start(){
+        if(Game.instance.settings.controls[ControlType.Keyboard]){
+            this.keyContrBtn.checkOn();
+        }else if(Game.instance.settings.controls[ControlType.Touch]){
+            this.touchContrBtn.checkOn();
+        }else if(Game.instance.settings.controls[ControlType.Tilt]){
+            this.tiltContrBtn.checkOn();
+        }else{
+            if(!cc.sys.isMobile){
+                this.keyContrBtn.node.active = true;
+                this.keyContrBtn.checkOn();
+            }else{
+                this.touchContrBtn.checkOn();
+            }
         }
     }
-
     toggleMusic(){
         if(Game.instance.settings.music){
             this.musicOff();
@@ -85,9 +114,11 @@ export default class SettingUI extends cc.Component {
         else this.removeControls(ControlType.Tilt);
     }
     addControls(c: ControlType){
-        Game.instance.settings.controls.add(c);
+        if(!Game.instance.settings.controls[c])
+            Game.instance.settings.controls[c] = true;
     }
     removeControls(c: ControlType){
-        Game.instance.settings.controls.delete(c);
+        if(Game.instance.settings.controls[c])
+            Game.instance.settings.controls[c] = false;
     }
 }

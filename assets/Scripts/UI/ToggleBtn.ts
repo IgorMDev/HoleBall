@@ -44,15 +44,11 @@ export default class ToggleBtn extends cc.Component {
     }
     toggleOn(){
         this.isOn = true;
-        this.btn.interactable = false;
         this.onEvents.forEach(val=>val.emit([val.customEventData]));
-        cc.log('toggle on '+this.node.name);
     }
     toggleOff(){
         this.isOn = false;
-        this.btn.interactable = true;
         this.offEvents.forEach(val=>val.emit([val.customEventData]));
-        cc.log('toggle off '+this.node.name);
     }
     onTouchEnd(e){
         this.toggle();

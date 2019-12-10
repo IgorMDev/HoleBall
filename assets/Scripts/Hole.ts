@@ -14,7 +14,7 @@ export default class Hole extends cc.Component {
     isBallCaptured = false;
     spawnTween: cc.Tween = null;
     removeTween: cc.Tween = null;
-    scale = 1;
+    lscale = 1;
     onLoad(){
         this.spawnTween = cc.tween(this.node).set({scale: 0}).to(0.8, {scale:{value: this.node.scale, easing: 'elasticOut'}}, null);
         this.removeTween = cc.tween(this.node).to(0.5, {scale:{value: 0, easing: 'quadIn'}}, null);
@@ -23,7 +23,10 @@ export default class Hole extends cc.Component {
         if(!this.radius){
             this.radius = Math.max(this.node.width, this.node.height)/2;
         }
-        this.scale = this.node.scale;
+        // if(this.lscale === 0){
+        //     this.lscale = this.node.scale;
+        // }
+        
     }
     onEnable(){
         this.isBallCaptured = false;
@@ -35,7 +38,8 @@ export default class Hole extends cc.Component {
     }
     onSpawn(callback?: Function){
         if(callback) callback();
-        this.spawnTween.start();
+        //this.spawnTween.start();
+        cc.tween(this.node).set({scale: 0}).to(0.8, {scale:{value: this.node.scale, easing: 'elasticOut'}}, null).start();
         this.isBallCaptured = false;
     }
     onRemove(callback?: Function){
@@ -70,10 +74,9 @@ export default class Hole extends cc.Component {
         
     } */
     getRadius(){
-        return this.radius*this.scale + this.border;
+        return (this.radius + this.border)*this.lscale;
     }
     setHoleSize(r: number){
-        this.scale = r/this.radius;
-        this.node.setScale(this.scale);
+        this.node.setScale(this.lscale = r/this.radius);
     }
 }

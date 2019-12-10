@@ -1,5 +1,6 @@
 import SoundManager from "./SoundManager";
-import Game from "./Game";
+import Arena from "./Arena";
+import EndlessArena from "./EndlessArena";
 
 const {ccclass, property} = cc._decorator;
 
@@ -10,9 +11,11 @@ export default class Gem extends cc.Component {
     @property({type: cc.AudioClip})
     pickSound: cc.AudioClip = null;
     onLoad () {
-
+        this.node.opacity = 0;
     }
-
+    start(){
+        cc.tween(this.node).to(0.3, {opacity: 255}, null).start();
+    }
     onCollisionEnter(other: cc.Collider, self: cc.Collider){
         if(other.node.group === 'ball'){
             if(this.destroyParticle){
@@ -22,10 +25,10 @@ export default class Gem extends cc.Component {
             }
             SoundManager.playEffect(this.pickSound);
             this.node.destroy();
-            this.onPicked();
+            if(Arena.instance instanceof EndlessArena){
+                (Arena.instance as EndlessArena).onGemPicked();
+            }
         }
     }
-    onPicked(){
-        Game.instance.progressData.EndlessArena.gems++;
-    }
+    
 }

@@ -46,11 +46,7 @@ export default class TiltInputAxis extends cc.Component {
         this.checkControls();
     }
     checkControls(){
-        if(Game.instance.settings.controls.has(ControlType.Tilt)){
-            this.enabled = true;
-        }else{
-            this.enabled = false;
-        }
+        this.enabled = Game.instance.settings.controls[ControlType.Tilt];
     }
     registerEvents(){
         cc.systemEvent.setAccelerometerEnabled(true);
@@ -84,6 +80,7 @@ export default class TiltInputAxis extends cc.Component {
     onTouchEnd(event: cc.Event.EventTouch){
         if(event.getID() < 1){
             this.startPoint = cc.Vec2.ZERO;
+            this.movePoint = cc.Vec2.ZERO;
             this.isActive = false;
         }
     }

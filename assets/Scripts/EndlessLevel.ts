@@ -2,6 +2,7 @@
 import Level from "./Level";
 import RandomHoleField from "./RandomHoleField";
 import Gameplay from "./Gameplay";
+import EndlessArena from "./EndlessArena";
 
 const {ccclass, property} = cc._decorator;
 
@@ -23,7 +24,7 @@ export default class EndlessLevel extends Level {
     lastLineLabel: cc.Label = null;
     @property(cc.Label)
     bestLineLabel: cc.Label = null;
-    
+    arena: EndlessArena = null;
     groundY = 0;
     groundSpeed = 0;
     scoreCounter = 0;
@@ -34,7 +35,6 @@ export default class EndlessLevel extends Level {
         this.groundY = this.ground.y;
         this.startSpeed = this.speed;
         this.node.on('powerup', this.powerUpHandler, this);
-        //this.moveWatchers.push(this.lastLine, this.bestLine);
     }
     reset(){
         super.reset();
@@ -85,6 +85,9 @@ export default class EndlessLevel extends Level {
                 console.log("treshhold down");
             }
         }
+    }
+    onGemPicked(){
+        this.arena.onGemPicked();
     }
     powerUpHandler(type){
         cc.log('powerup handler');
@@ -160,6 +163,7 @@ export default class EndlessLevel extends Level {
             this.onMajorCheck();
             this.majorChecks++;
             this.midChecks++;
+            this.minorChecks++;
         }else if(this.score >= 500*this.midChecks){
             this.onMiddleCheck();
             this.midChecks++;
@@ -208,14 +212,16 @@ export default class EndlessLevel extends Level {
                 // invoked = this.funcInvokeLimiter(()=>{
                     
                 // }, '',2);
+                break;
             }
         }while(!invoked);
     }
-    fieldsFillRateUp(dr = 0.05){
-        let r;
+    fieldsFillRateUp(){
+        let r, dr;
         let invoked = false;
         do{
             r = Math.floor(Math.random()*this.holeFields.length);
+            dr = Math.random()*0.08;
             invoked = this.funcInvokeLimiter(()=>{
                 this.holeFields[r].fillRateUp(dr)
             }, 'holeFieldRateUp'+r, 2, 'holeFieldsFill');

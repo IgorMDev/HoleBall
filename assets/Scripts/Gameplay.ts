@@ -21,28 +21,31 @@ export default class Gameplay extends cc.Component {
     gameEndEvents: cc.Component.EventHandler[] = [];
     onLoad(){
         cc.director.getPhysicsManager().gravity = cc.v2(0, -10);
+        cc.game.on(cc.game.EVENT_HIDE, this.pauseGame, this);
+        cc.game.on(cc.game.EVENT_SHOW, this.resumeGame, this);
     }
     startGame(){
         Arena.instance.enable();
-        
-        this.gameStart();
     }
     pauseGame(){
         Gameplay.paused = true;
-        this.enablePhysics(false);
-        Arena.instance.onPause();
+        if(Arena.instance){
+            this.enablePhysics(false);
+            Arena.instance.onPause();
+        }
     }
     resumeGame(){
         Gameplay.paused = false;
-        this.enablePhysics();
-        Arena.instance.onResume();
+        if(Arena.instance){
+            this.enablePhysics();
+            Arena.instance.onResume();
+        }
     }
     restartGame(){
         Arena.instance.restartGame()
     }
     exitGame(){
         Arena.instance.endGame();
-        this.gameEnd();
     }
     gameStart(){
         Gameplay.paused = false;

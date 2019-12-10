@@ -2,6 +2,7 @@ import HoleSpawner from "./HoleSpawner";
 import Hole from "./Hole";
 import Level from "./Level";
 import Gameplay from "./Gameplay";
+import LevelsArena from "./LevelsArena";
 
 
 const {ccclass, property} = cc._decorator;
@@ -10,7 +11,7 @@ const {ccclass, property} = cc._decorator;
 export default class TimeLevel extends Level {
     @property(cc.String)
     nextLevel = '';
-    
+    arena: LevelsArena = null;
     reset(){
         super.reset();
 
