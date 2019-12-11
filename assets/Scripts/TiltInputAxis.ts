@@ -50,7 +50,7 @@ export default class TiltInputAxis extends cc.Component {
     }
     registerEvents(){
         cc.systemEvent.setAccelerometerEnabled(true);
-        cc.systemEvent.setAccelerometerInterval(0.05);
+        cc.systemEvent.setAccelerometerInterval(0.02);
         this.touchArea.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
         this.touchArea.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
         this.touchArea.on(cc.Node.EventType.TOUCH_END, this.onTouchEnd, this);
@@ -80,7 +80,7 @@ export default class TiltInputAxis extends cc.Component {
     onTouchEnd(event: cc.Event.EventTouch){
         if(event.getID() < 1){
             this.startPoint = cc.Vec2.ZERO;
-            this.movePoint = cc.Vec2.ZERO;
+            this.movePoint.y = 0;
             this.isActive = false;
         }
     }

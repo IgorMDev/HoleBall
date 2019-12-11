@@ -47,6 +47,7 @@
     "Spine Skeleton",
     "TiledMap",
     "VideoPlayer",
+    "WebView",
     "3D",
     "3D Primitive"
   ],
@@ -61,7 +62,7 @@
     }
   },
   "fit-height": true,
-  "fit-width": true,
+  "fit-width": false,
   "group-list": [
     "default",
     "platform",

@@ -23,9 +23,9 @@ export default class Hole extends cc.Component {
         if(!this.radius){
             this.radius = Math.max(this.node.width, this.node.height)/2;
         }
-        // if(this.lscale === 0){
-        //     this.lscale = this.node.scale;
-        // }
+        if(this.lscale === 0){
+            this.lscale = this.node.scale;
+        }
         
     }
     onEnable(){
@@ -39,7 +39,7 @@ export default class Hole extends cc.Component {
     onSpawn(callback?: Function){
         if(callback) callback();
         //this.spawnTween.start();
-        cc.tween(this.node).set({scale: 0}).to(0.8, {scale:{value: this.node.scale, easing: 'elasticOut'}}, null).start();
+        cc.tween(this.node).set({scale: 0}).to(0.8, {scale:{value: this.lscale, easing: 'elasticOut'}}, null).start();
         this.isBallCaptured = false;
     }
     onRemove(callback?: Function){

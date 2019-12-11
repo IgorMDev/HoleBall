@@ -79,7 +79,7 @@ export default class TouchInputAxis extends cc.Component {
         cc.log('touch end id'+event.getID());
         if(event.getID() < 1){
             this.startPoint = cc.Vec2.ZERO;
-            this.movePoint = cc.Vec2.ZERO;
+            this.movePoint.y = 0;
             this.isActive = false;
         }
     }

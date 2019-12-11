@@ -61,6 +61,7 @@ export default class PlatformBlock extends cc.Component {
     reset(){
         this.node.angle = 0;
         this.node.y = this.startY;
+        this.streakNode.scaleY = 0;
     }
     moveBy(dy){
         this.node.y = Mathu.clamp(this.node.y + this.moveAcc.by(dy)*this.moveSpeed*cc.director.getDeltaTime(), this.startY-this.moveDelta, this.startY+this.moveDelta);

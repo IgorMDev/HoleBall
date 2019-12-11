@@ -42,6 +42,10 @@ export default abstract class TransitionBtn extends cc.Component {
     show(){
         this.node.active = true;
     }
+    click(){
+        this.clickDown();
+        this.clickUp();
+    }
     clickDown(){
         this.btn.node.dispatchEvent(new cc.Event.EventCustom('touchstart',true));
     }

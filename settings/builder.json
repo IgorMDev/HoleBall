@@ -1,6 +1,6 @@
 {
   "android-instant": {
-    "REMOTE_SERVER_ROOT": "",
+    "REMOTE_SERVER_ROOT": "http://127.0.0.1:7456/preview-android-instant/",
     "host": "",
     "packageName": "com.leapp.holeball",
     "pathPattern": "",
@@ -18,7 +18,7 @@
   "encryptJs": false,
   "excludeScenes": [],
   "fb-instant-games": {},
-  "includeSDKBox": true,
+  "includeSDKBox": false,
   "inlineSpriteFrames": true,
   "inlineSpriteFrames_native": false,
   "md5Cache": false,
@@ -57,5 +57,6 @@
   "mac": {
     "packageName": "com.leapp.holeball"
   },
-  "win32": {}
+  "win32": {},
+  "includeAnySDK": null
 }
