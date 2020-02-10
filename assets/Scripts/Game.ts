@@ -36,7 +36,7 @@ export default class Game extends cc.Component {
         sound: true, music: true,
         controls: {
             [ControlType.Touch]: false,
-            [ControlType.Keyboard]: false,
+            [ControlType.Keyboard]: true,
             [ControlType.Tilt]: false,
         }
     }

@@ -14,7 +14,7 @@ export default class Hole extends cc.Component {
     isBallCaptured = false;
     spawnTween: cc.Tween = null;
     removeTween: cc.Tween = null;
-    lscale = 1;
+    lscale = 0;
     onLoad(){
         this.spawnTween = cc.tween(this.node).set({scale: 0}).to(0.8, {scale:{value: this.node.scale, easing: 'elasticOut'}}, null);
         this.removeTween = cc.tween(this.node).to(0.5, {scale:{value: 0, easing: 'quadIn'}}, null);

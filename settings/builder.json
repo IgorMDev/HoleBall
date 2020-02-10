@@ -49,7 +49,7 @@
   "xxteaKey": "6f9b234d-9a88-4f",
   "zipCompressJs": true,
   "android": {
-    "packageName": "com.leapp.holeball"
+    "packageName": "com.onedevstudio.holeball"
   },
   "ios": {
     "packageName": "com.leapp.holeball"
