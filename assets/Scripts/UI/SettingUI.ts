@@ -6,7 +6,15 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class SettingUI extends cc.Component {
-    static _instance: SettingUI = null;
+    private static _instance: SettingUI = null;
+    static get instance(){
+        return SettingUI._instance;
+    }
+    constructor(){
+        super();
+        console.log('setting constructor');
+        return SettingUI._instance || (SettingUI._instance = this);
+    }
     @property(SpriteToggleBtn)
     soundBtn: SpriteToggleBtn = null;
     @property(SpriteToggleBtn)
@@ -18,7 +26,6 @@ export default class SettingUI extends cc.Component {
     @property(RadioBtn)
     tiltContrBtn: RadioBtn = null;
     onLoad(){
-        SettingUI._instance = this;
         if(Game.instance.settings.music){
             this.musicBtn.toggleOn();
         }else{
@@ -32,9 +39,15 @@ export default class SettingUI extends cc.Component {
         this.keyContrBtn.node.active = !cc.sys.isMobile;
         this.touchContrBtn.node.active = cc.sys.isMobile || cc.sys.isNative || cc.sys.isBrowser;
         this.tiltContrBtn.node.active = cc.sys.isMobile;
-        
     }
-    start(){
+    init(){
+        if(cc.sys.isMobile){
+            this.setTouchControls();
+        }else{
+            this.setKeyboardControls();
+        }
+    }
+    star(){
         if(Game.instance.settings.controls[ControlType.Keyboard]){
             this.keyContrBtn.checkOn();
         }else if(Game.instance.settings.controls[ControlType.Touch]){

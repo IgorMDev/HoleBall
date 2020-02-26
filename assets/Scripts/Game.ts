@@ -1,4 +1,5 @@
 import BackgroundGrad from "./BackgroundGrad";
+import SettingUI from "./UI/SettingUI";
 
 //import encrypt from "encryptjs";
 
@@ -21,7 +22,9 @@ export default class Game extends cc.Component {
         this.loadSaveData();
         window.addEventListener('beforeunload', (e)=>{console.log('window before unloaded'); this.writeSaveData();});
         
-        
+    }
+    start(){
+        SettingUI.instance.init();
     }
     progressData = {
         Background: null,
@@ -36,7 +39,7 @@ export default class Game extends cc.Component {
         sound: true, music: true,
         controls: {
             [ControlType.Touch]: false,
-            [ControlType.Keyboard]: true,
+            [ControlType.Keyboard]: false,
             [ControlType.Tilt]: false,
         }
     }
